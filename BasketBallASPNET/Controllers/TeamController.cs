@@ -6,7 +6,7 @@ namespace BasketBallASPNET.Controllers
 {
     public class TeamController : Controller
     {
-        private TeamContainer container = new TeamContainer(new MSSQLDAL());
+        private TeamContainer container = new TeamContainer(new TeamMSSQLDAL());
 
         public IActionResult Index()
         {

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace DALMSSQLServer
 {
-    public class MSSQLDAL : ITeamContainer
+    public class TeamMSSQLDAL : ITeamContainer
     {
         private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
         private SqlDataReader QueryForDataBase(string Query)
@@ -24,7 +24,16 @@ namespace DALMSSQLServer
         }
         public TeamDTO FindByID(long id)
         {
-            return new TeamDTO(id, $"team({id})");
+            SqlDataReader reader = QueryForDataBase($"SELECT ID,TeamName FROM Team WHERE ID ='{id}'");
+            if (reader.HasRows)
+            {
+                return new TeamDTO(reader.GetInt64("ID"), reader.GetString("TeamName"));
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public List<TeamDTO> GetAll()
