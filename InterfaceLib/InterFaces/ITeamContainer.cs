@@ -4,6 +4,7 @@
     {
         public TeamDTO FindByID(long id);
 
-        public List<TeamDTO> GetAll();
+        public List<TeamDTO> GetAllTeams();
+
     }
 }

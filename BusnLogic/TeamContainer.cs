@@ -18,14 +18,15 @@ namespace BusnLogic
         public Team FindByID(long id)
         {
             TeamDTO dto = container.FindByID(id);
-            return new Team(dto.ID, dto.Name);
+            return new Team(dto);
         }
-        public List<Team> GetAll()
+
+        public List<Team> GetAllTeams()
         {
             List<Team> list = new List<Team>();
-            foreach (TeamDTO item in container.GetAll())
+            foreach (TeamDTO item in container.GetAllTeams())
             {
-                list.Add(new Team(item.ID, item.Name));
+                list.Add(new Team(item));
             }
             return list;
         }

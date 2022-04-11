@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BusnLogic;
 using DALMSSQLServer;
+using BasketBallASPNET.Models;
 
 namespace BasketBallASPNET.Controllers
 {
@@ -10,28 +11,22 @@ namespace BasketBallASPNET.Controllers
 
         public IActionResult Index()
         {
-            return Content("Hier Komt Mijn Team");
+            List<Team> Lt = container.GetAllTeams();
+            List<TeamVM> Lvm = new List<TeamVM>();
+            foreach(Team T in Lt)
+            {
+                Lvm.Add(new TeamVM(T.ID, T.Name));
+            }
+            return View(Lvm);
         }
-        [Route("~/Team/{id?}")]
-        public IActionResult TeamDetail(string id)
-        {
-            long teamId = Convert.ToInt64(id);
-            if (teamId == 0)
-            {
-                List<Team> teams = container.GetAll();
-                string content = "";
-                foreach (Team team in teams)
-                {
-                    content += team.ToString();
-                }
-                return Content(content);
-            }
-            else
-            {
-                Team team = container.FindByID(teamId);
-                return Content($"{team}");
-            }
 
+
+        public IActionResult Detail(long id)
+        {
+            Team t = container.FindByID(id);
+            TeamVM vm = new(t.ID, t.Name);
+            return View(vm);
         }
+ 
     }
 }

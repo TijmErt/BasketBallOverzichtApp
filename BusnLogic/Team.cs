@@ -20,7 +20,7 @@ namespace BusnLogic
 
         public override string? ToString()
         {
-            return $"Team met naam: {Name} en ID: {ID}";
+            return $"Team met naam: {Name} en ID: {ID} \n ";
         }
     }
 }

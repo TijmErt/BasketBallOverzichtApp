@@ -1,13 +1,17 @@
 ﻿using InterfaceLib;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DALMSSQLServer
 {
-    public class TeamMSSQLDAL : ITeamContainer
+    public class ClubMSSQLDAL : IClubContainer
     {
         private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
-
 
         private SqlDataReader QueryForDataBase(string Query)
         {
@@ -26,27 +30,25 @@ namespace DALMSSQLServer
         }
 
 
-        public TeamDTO FindByID(long id)
+        public ClubDTO FindByID(long id)
         {
-            SqlDataReader reader = QueryForDataBase("SELECT ID, TeamName FROM Team WHERE ID ='" + id + "'");
+            SqlDataReader reader = QueryForDataBase("SELECT ID, ClubName FROM Club WHERE ID ='" + id + "'");
             reader.Read();
             if (reader.HasRows)
             {
-                return new TeamDTO(reader.GetInt64("ID"), reader.GetString("TeamName"));
+                return new ClubDTO(reader.GetInt64("ID"), reader.GetString("ClubName"));
             }
             throw new Exception("bestaat niet");
-
-
         }
 
-        public List<TeamDTO> GetAllTeams()
+        public List<ClubDTO> GetAll()
         {
-            SqlDataReader reader = QueryForDataBase("SELECT ID,TeamName FROM Team");
+            SqlDataReader reader = QueryForDataBase("SELECT ID, ClubName FROM Club");
 
-            List<TeamDTO> list = new List<TeamDTO>();
+            List<ClubDTO> list = new List<ClubDTO>();
             while (reader.Read())
             {
-                list.Add(new TeamDTO(reader.GetInt64("ID"), reader.GetString("TeamName")));
+                list.Add(new ClubDTO(reader.GetInt64("ID"), reader.GetString("ClubName")));
             }
 
             return list;
