@@ -9,9 +9,9 @@ namespace BasketBallASPNET.Controllers
     {
         private TeamContainer container = new TeamContainer(new TeamMSSQLDAL());
 
-        public IActionResult Index()
+        public IActionResult Index(long clubID)
         {
-            List<Team> Lt = container.GetAllTeams();
+            List<Team> Lt = container.GetAllTeamsFromClub(clubID);
             List<TeamVM> Lvm = new List<TeamVM>();
             foreach(Team T in Lt)
             {

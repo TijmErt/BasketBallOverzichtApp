@@ -6,5 +6,7 @@
 <h1>ClubList</h1>
 @foreach(ClubVM vm in Model)
 {
-    <a asp-controller="Team">@vm.Name</a> <br />
+    <a asp-controller="Team" asp-route-clubID=@vm.ID >@vm.Name</a> <br />
 }
+<br />
+<a href="##" onClick="history.go(-1); return false;">Go back</a>  

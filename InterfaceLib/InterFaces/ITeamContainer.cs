@@ -6,5 +6,7 @@
 
         public List<TeamDTO> GetAllTeams();
 
+        public List<TeamDTO> GetAllTeamsFromClub(long clubID);
+
     }
 }

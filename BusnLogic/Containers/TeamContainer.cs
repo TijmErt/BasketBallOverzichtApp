@@ -30,5 +30,15 @@ namespace BusnLogic
             }
             return list;
         }
+
+        public List<Team> GetAllTeamsFromClub(long clubID)
+        {
+            List<Team> list = new List<Team>();
+            foreach (TeamDTO item in container.GetAllTeamsFromClub(clubID))
+            {
+                list.Add(new Team(item));
+            }
+            return list;
+        }
     }
 }

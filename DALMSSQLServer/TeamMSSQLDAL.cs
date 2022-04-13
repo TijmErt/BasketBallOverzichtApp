@@ -28,7 +28,7 @@ namespace DALMSSQLServer
 
         public TeamDTO FindByID(long id)
         {
-            SqlDataReader reader = QueryForDataBase("SELECT ID, TeamName FROM Team WHERE ID ='" + id + "'");
+            SqlDataReader reader = QueryForDataBase($"SELECT ID, TeamName FROM Team WHERE ID ='{id}'");
             reader.Read();
             if (reader.HasRows)
             {
@@ -42,6 +42,19 @@ namespace DALMSSQLServer
         public List<TeamDTO> GetAllTeams()
         {
             SqlDataReader reader = QueryForDataBase("SELECT ID,TeamName FROM Team");
+
+            List<TeamDTO> list = new List<TeamDTO>();
+            while (reader.Read())
+            {
+                list.Add(new TeamDTO(reader.GetInt64("ID"), reader.GetString("TeamName")));
+            }
+
+            return list;
+        }
+
+        public List<TeamDTO> GetAllTeamsFromClub(long clubID)
+        {
+            SqlDataReader reader = QueryForDataBase($"SELECT T.ID, T.TeamName FROM Team T JOIN Club C ON t.Club_ID = C.ID AND T.Club_ID = '{clubID}'");
 
             List<TeamDTO> list = new List<TeamDTO>();
             while (reader.Read())
