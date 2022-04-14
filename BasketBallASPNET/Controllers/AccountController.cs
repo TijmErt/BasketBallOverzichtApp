@@ -1,9 +1,7 @@
 ﻿using BasketBallASPNET.Models;
 using BusnLogic.Containers;
-using BusnLogic.Entity;
 using DALMSSQLServer;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace BasketBallASPNET.Controllers
 {
@@ -11,28 +9,21 @@ namespace BasketBallASPNET.Controllers
     {
         private GebruikerContainer container = new GebruikerContainer(new GebruikerMSSQLDAL());
 
-        [HttpPost]
-        public IActionResult Index(AccountVM accountVM)
+        [HttpGet]
+        public IActionResult Index()
         {
-            /*
-            if (ModelState.IsValid)
-            {
-                if (container.controleerOfGebruikerBestaat(accountVM.Email, accountVM.Wachtwoord))
-                {
-                    Gebruiker gebruiker = container.GetGebruiker(accountVM.Email);
-
-                    var str = JsonConvert.SerializeObject(gebruiker);
-                    HttpContext.Session.SetString("gebruiker", str);
-
-                    return Redirect("/Groep/GroepPagina");
-                }
-                container.AccountAanmaken(accountVM.FirstName, accountVM.Wachtwoord, accountVM.Email);
-                ViewData["Success"] = "Account gecreëerd";
-                ViewData["Error"] = "Inloggegevens niet correct";
-            } */
-
             return View();
+        }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Register(AccountVM account)
+        {
+            return View();
         }
     }
 }

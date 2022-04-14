@@ -1,0 +1,35 @@
+﻿@model AccountVM
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<form asp-action="Index">
+    <div class="form-group" style="color: black;">
+        <label class="sr-only" for="exampleInputEmail2">Voornaam</label>
+        <input type="text" asp-for="FirstName" class=" form-control" placeholder="Voer voornaam in"><br>
+    </div>
+
+    <div class="form-group" style="color: black;">
+        <label class="sr-only" for="exampleInputEmail2">Achternaam</label>
+        <input type="text" asp-for="LastName" class=" form-control" placeholder="Voer achternaam in"><br>
+    </div>
+
+    <div class="form-group" style="color: black;">
+        <label class="sr-only" for="exampleInputEmail2">Wachtwoord</label>
+        <input type="text" asp-for="Wachtwoord" class=" form-control" placeholder="Voer wachtwoord in"><br>
+    </div>
+
+    <div class="form-group" style="color: black;">
+        <label class="sr-only" for="exampleInputEmail2">Bevestig wachtwoord</label>
+        <input type="text" asp-for="BevestigWachtwoord" class=" form-control" placeholder="Voer wachtwoord nog een keer in"><br>
+    </div>
+
+    <div class="form-group" style="color: black;">
+        <label class="sr-only" for="exampleInputEmail2">geboortedatum</label>
+        <input type="datetime-local" asp-for="GeboorteDatum" class=" form-control" placeholder="Voer geboortedatum in"><br>
+    </div>
+
+    <button type="submit" class="btn btn-block">CreateAccount</button>
+</form>

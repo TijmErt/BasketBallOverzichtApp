@@ -17,6 +17,17 @@ namespace BasketBallASPNET.Models
         public string Wachtwoord;
 
         public string BevestigWachtwoord;
-        
+
+        public AccountVM(int iD, string firstName, string lastName, string geslacht, DateTime geboorteDatum, string email, string wachtwoord, string bevestigWachtwoord)
+        {
+            ID = iD;
+            FirstName = firstName;
+            LastName = lastName;
+            Geslacht = geslacht;
+            GeboorteDatum = geboorteDatum;
+            Email = email;
+            Wachtwoord = wachtwoord;
+            BevestigWachtwoord = bevestigWachtwoord;
+        }
     }
 }
