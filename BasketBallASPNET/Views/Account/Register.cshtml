@@ -2,34 +2,43 @@
 @{
     ViewData["Title"] = "Register";
 }
+<head>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
 
 <h1>Register</h1>
 
 <form asp-action="Index">
     <div class="form-group" style="color: black;">
-        <label class="sr-only" for="exampleInputEmail2">Voornaam</label>
-        <input type="text" asp-for="FirstName" class=" form-control" placeholder="Voer voornaam in"><br>
+        <label class="sr-only" for="FirstName">Voornaam</label>
+        <input id="FirstName" type="text" asp-for="FirstName" class=" form-control" placeholder="Voer voornaam in"><br>
     </div>
 
     <div class="form-group" style="color: black;">
-        <label class="sr-only" for="exampleInputEmail2">Achternaam</label>
-        <input type="text" asp-for="LastName" class=" form-control" placeholder="Voer achternaam in"><br>
+        <label class="sr-only" for="LastName">Achternaam</label>
+        <input id="LastName" type="text" asp-for="LastName" class=" form-control" placeholder="Voer achternaam in"><br>
     </div>
 
     <div class="form-group" style="color: black;">
-        <label class="sr-only" for="exampleInputEmail2">Wachtwoord</label>
-        <input type="text" asp-for="Wachtwoord" class=" form-control" placeholder="Voer wachtwoord in"><br>
+        <label class="sr-only" for="Wachtwoord">Wachtwoord</label>
+        <input id="Wachtwoord" type="text" asp-for="Wachtwoord" class=" form-control" placeholder="Voer wachtwoord in"><br>
     </div>
 
     <div class="form-group" style="color: black;">
-        <label class="sr-only" for="exampleInputEmail2">Bevestig wachtwoord</label>
-        <input type="text" asp-for="BevestigWachtwoord" class=" form-control" placeholder="Voer wachtwoord nog een keer in"><br>
+        <label class="sr-only" for="BevestigWachtwoord">Bevestig wachtwoord</label>
+        <input id="BevestigWachtwoord" type="text" asp-for="BevestigWachtwoord" class=" form-control" placeholder="Voer wachtwoord nog een keer in"><br>
     </div>
 
     <div class="form-group" style="color: black;">
-        <label class="sr-only" for="exampleInputEmail2">geboortedatum</label>
-        <input type="datetime-local" asp-for="GeboorteDatum" class=" form-control" placeholder="Voer geboortedatum in"><br>
+        <label class="sr-only" for="Geboortedatum">Geboortedatum</label>
+        <input id="Geboortedatum" type="date" asp-for="GeboorteDatum" class=" form-control" placeholder="Voer geboortedatum in"><br>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary btn-lg" >
+            Create <span class="glyphicon glyphicon-save"></span>
+        </button>
     </div>
 
-    <button type="submit" class="btn btn-block">CreateAccount</button>
+
 </form>

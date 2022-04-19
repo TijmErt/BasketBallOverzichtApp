@@ -31,5 +31,14 @@ namespace BusnLogic.Containers
             GebruikerDTO dto= Container.GetGebruiker(Email);
             return new Gebruiker(dto);
         }
+        public List<Gebruiker> GetGebruikerFromTeam(long TeamID)
+        {
+            List<Gebruiker> list = new List<Gebruiker>();
+            foreach (GebruikerDTO Item in Container.GetGebruikerFromTeam(TeamID))
+            {
+                list.Add(new Gebruiker(Item));
+            }
+            return list;
+        }
     }
 }

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusnLogic\BusnLogic.csproj" />
     <ProjectReference Include="..\InterfaceLib\InterfaceLib.csproj" />
   </ItemGroup>
 

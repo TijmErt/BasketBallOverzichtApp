@@ -1,10 +1,18 @@
-﻿@model TeamVM
+﻿@model List<SpelerVM>
+
 @{
     ViewData["Title"] = "Detail";
 }
 
 <h1>Detail</h1>
-hier komt een specifieke team
-@Model.Name Heeft ID: @Model.ID en zegt Hallo!! <br />
+hier komt een specifieke team <br />
+<ul class="list-group">
+
+    @foreach(SpelerVM vm in Model)
+{
+    <li class="list-group-item">@vm.FirstName </li> 
+}
+</ul>
+
 
 <a href="##" onClick="history.go(-1); return false;">Go back</a>  

@@ -2,16 +2,19 @@
 using BusnLogic;
 using DALMSSQLServer;
 using BasketBallASPNET.Models;
+using BusnLogic.Containers;
+using BusnLogic.Entity;
 
 namespace BasketBallASPNET.Controllers
 {
     public class TeamController : Controller
     {
-        private TeamContainer container = new TeamContainer(new TeamMSSQLDAL());
+        private TeamContainer TMcontainer = new TeamContainer(new TeamMSSQLDAL());
+        private GebruikerContainer GBcontainter = new GebruikerContainer(new GebruikerMSSQLDAL());
 
         public IActionResult Index(long clubID)
         {
-            List<Team> Lt = container.GetAllTeamsFromClub(clubID);
+            List<Team> Lt = TMcontainer.GetAllTeamsFromClub(clubID);
             List<TeamVM> Lvm = new List<TeamVM>();
             foreach(Team T in Lt)
             {
@@ -21,11 +24,15 @@ namespace BasketBallASPNET.Controllers
         }
 
 
-        public IActionResult Detail(long id)
+        public IActionResult Detail(long TeamID)
         {
-            Team t = container.FindByID(id);
-            TeamVM vm = new(t.ID, t.Name);
-            return View(vm);
+            List<Gebruiker> Lc = GBcontainter.GetGebruikerFromTeam(TeamID);
+            List<SpelerVM> Lvm = new List<SpelerVM>();
+            foreach (Gebruiker c in Lc)
+            {
+                Lvm.Add(new SpelerVM(c));
+            }
+            return View(Lvm);
         }
  
     }

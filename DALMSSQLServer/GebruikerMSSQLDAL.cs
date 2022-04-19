@@ -52,7 +52,7 @@ namespace DALMSSQLServer
 
         public GebruikerDTO GetGebruiker(string Email)
         {
-            SqlDataReader reader = QueryForDataBase("SELECT * FROM Club WHERE Email ='" + Email + "'");
+            SqlDataReader reader = QueryForDataBase("SELECT * FROM Gebruiker WHERE Email ='" + Email + "'");
             reader.Read();
             if (reader.HasRows)
             {
@@ -70,10 +70,23 @@ namespace DALMSSQLServer
             }
             throw new Exception("bestaat niet");
         }
+        public List<GebruikerDTO> GetGebruikerFromTeam(long TeamID)
+        {
+            SqlDataReader reader = QueryForDataBase($"SELECT g.* FROM Gebruiker g JOIN Team t ON g.Team_ID = t.ID AND g.Team_ID = {TeamID}");
 
+            List<GebruikerDTO> list = new List<GebruikerDTO>();
+            while (reader.Read())
+            {
+                list.Add(new GebruikerDTO(reader.GetInt64("ID"), reader.GetString("FirstName"), reader.GetString("LastName"), reader.GetDateTime("BirthDate"), reader.GetString("Geslacht"), reader.GetString("Email")));
+            }
+
+            return list;
+        }
         public void CreateGebruikerAccount()
         {
             QueryForDataBase("INSERT");
         }
+
+
     }
 }
