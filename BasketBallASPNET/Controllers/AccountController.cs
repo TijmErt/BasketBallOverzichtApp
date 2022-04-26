@@ -23,6 +23,12 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult Register(AccountVM account)
         {
+            string wachtwoord = BCrypt.Net.BCrypt.EnhancedHashPassword(account.Wachtwoord, 13);
+            string bevestigWachtwoord = BCrypt.Net.BCrypt.EnhancedHashPassword(account.BevestigWachtwoord, 13);
+            if (BCrypt.Net.BCrypt.EnhancedVerify(wachtwoord, bevestigWachtwoord))
+            {
+
+            }
             return View();
         }
     }

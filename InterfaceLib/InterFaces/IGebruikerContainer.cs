@@ -12,7 +12,7 @@ namespace InterfaceLib.InterFaces
         public bool CheckGebruiker(string Email, string wachtwoord);
         public GebruikerDTO GetGebruiker(string Email);
 
-        public void CreateGebruikerAccount();
+        public void CreateGebruikerAccount(GebruikerDTO dto, string wachtwoord);
 
         public List<GebruikerDTO> GetGebruikerFromTeam(long TeamID);
     }
