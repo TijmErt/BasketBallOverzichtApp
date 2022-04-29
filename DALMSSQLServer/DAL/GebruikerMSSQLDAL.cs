@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace DALMSSQLServer
 {
@@ -14,25 +15,35 @@ namespace DALMSSQLServer
     {
         private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
 
-        public bool CheckGebruiker(string Email, string wachtwoord)
+        public GebruikerDTO FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord)
         {
             SqlCommand cmd;
             SqlDataReader reader;
-
-            string sql = "SELECT Email FROM Gebruiker WHERE Email = @gebruikersnaam AND PassWord = @wachtwoord";
+            string sql = "SELECT * FROM Gebruiker WHERE Email = @Email ";
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("@wachtwoord", wachtwoord);
-
-            if (databaseConnection.State == ConnectionState.Open)
-            {
-                databaseConnection.Close();
-            }
-
             databaseConnection.Open();
+
             reader = cmd.ExecuteReader();
-            bool returnValue = reader.HasRows;
-            return returnValue;
+
+            if (reader.Read())
+            {
+                if (BCrypt.Net.BCrypt.EnhancedVerify(wachtwoord, reader.GetString("PassWord")))
+                {
+                    GebruikerDTO temp = new GebruikerDTO(
+
+                        reader.GetString("FirstName"),
+                        reader.GetString("lastName"),
+                        reader.GetDateTime("BirthDate"),
+                        reader.GetString("Geslacht"),
+                        reader.GetString("Email"),
+                        reader.GetInt32("ID"));
+                    databaseConnection.Close();
+                    return temp;
+                }
+            }
+            databaseConnection.Close();
+            return null;
         }
 
         public GebruikerDTO GetGebruiker(string Email)
@@ -40,36 +51,30 @@ namespace DALMSSQLServer
             SqlDataReader reader;
             SqlCommand cmd;
 
-            string sql = "SELECT* FROM Gebruiker WHERE Email = @Email ";
+            string sql = "SELECT * FROM Gebruiker WHERE Email = @Email ";
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@Email", Email);
-
-            if (databaseConnection.State == ConnectionState.Open)
-            {
-                databaseConnection.Close();
-            }
-
             databaseConnection.Open();
+
             reader = cmd.ExecuteReader();
 
             reader.Read();
             if (reader.HasRows)
             {
-                return new GebruikerDTO(
+                GebruikerDTO temp = new GebruikerDTO(
 
-                    reader.GetInt64("ID"),
                     reader.GetString("FirstName"),
                     reader.GetString("lastName"),
                     reader.GetDateTime("BirthDate"),
                     reader.GetString("Geslacht"),
-                    reader.GetString("PassWord"),
-                    reader.GetString("Email")
-
-                    );
+                    reader.GetString("Email"),
+                    reader.GetInt32("ID"));
+                databaseConnection.Close();
+                return temp;
             }
             throw new Exception("bestaat niet");
         }
-        public List<GebruikerDTO> GetGebruikerFromTeam(long TeamID)
+        public List<GebruikerDTO> GetGebruikerFromTeam(int TeamID)
         {
             SqlDataReader reader;
             SqlCommand cmd;
@@ -78,10 +83,7 @@ namespace DALMSSQLServer
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@TeamID", TeamID);
 
-            if (databaseConnection.State == ConnectionState.Open)
-            {
-                databaseConnection.Close();
-            }
+            databaseConnection.Open();
 
             databaseConnection.Open();
             reader = cmd.ExecuteReader();
@@ -93,16 +95,16 @@ namespace DALMSSQLServer
 
                     new GebruikerDTO(
 
-                    reader.GetInt64("ID"),
                     reader.GetString("FirstName"),
                     reader.GetString("LastName"),
                     reader.GetDateTime("BirthDate"),
                     reader.GetString("Geslacht"),
-                    reader.GetString("Email")
+                    reader.GetString("Email"),
+                    reader.GetInt32("ID")
                     )
                     );
             }
-
+            databaseConnection.Close();
             return list;
 
 
@@ -120,21 +122,19 @@ namespace DALMSSQLServer
 
             cmd = new SqlCommand(sql, databaseConnection);
 
+            string hash = BCrypt.Net.BCrypt.EnhancedHashPassword(wachtwoord, 13);
+
             cmd.Parameters.AddWithValue("@Firstname", dto.FirstName);
             cmd.Parameters.AddWithValue("@LastName", dto.LastName);
             cmd.Parameters.AddWithValue("@Email", dto.Email);
             cmd.Parameters.AddWithValue("@BirthDate", dto.GeboorteDatum);
             cmd.Parameters.AddWithValue("@Geslacht", dto.Geslacht);
-            cmd.Parameters.AddWithValue("@wachtwoord", wachtwoord);
-
-            if (databaseConnection.State == ConnectionState.Open)
-            {
-                databaseConnection.Close();
-            }
+            cmd.Parameters.AddWithValue("@wachtwoord", hash);
 
             databaseConnection.Open();
 
             cmd.ExecuteNonQuery();
+            databaseConnection.Close();
         }
 
 

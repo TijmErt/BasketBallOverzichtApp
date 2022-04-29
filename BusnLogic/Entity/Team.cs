@@ -4,10 +4,10 @@ namespace BusnLogic
 {
     public class Team
     {
-        public long ID;
+        public int ID;
         public string Name;
 
-        public Team(long id, string name)
+        public Team(int id, string name)
         {
             ID = id;
             Name = name;

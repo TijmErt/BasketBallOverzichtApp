@@ -10,6 +10,14 @@ namespace BasketBallASPNET.Controllers
         private ClubContainer container = new ClubContainer(new ClubMSSQLDAL());
         public IActionResult Index()
         {
+
+            int? id = HttpContext.Session.GetInt32("ID");
+            if(id == null)
+            {
+                return Redirect("/");
+            }
+            // de code hierboven kan wel weg, was om de sessions te testen.
+
             List<Club> Lc = container.GetAll();
             List<ClubVM> Lvm = new List<ClubVM>();
             foreach (Club c in Lc)

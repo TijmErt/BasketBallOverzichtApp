@@ -9,10 +9,10 @@ namespace BusnLogic
 {
     public class Club
     {
-        public long ID;
+        public int ID;
         public string Name;
 
-        public Club(long iD, string name)
+        public Club(int iD, string name)
         {
             ID = iD;
             Name = name;

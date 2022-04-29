@@ -8,10 +8,10 @@ namespace InterfaceLib
 {
     public class ClubDTO
     {
-        public long ID;
+        public int ID;
         public string Name;
 
-        public ClubDTO(long iD, string name)
+        public ClubDTO(int iD, string name)
         {
             ID = iD;
             Name = name;

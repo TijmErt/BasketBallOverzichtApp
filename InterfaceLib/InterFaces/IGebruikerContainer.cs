@@ -9,11 +9,13 @@ namespace InterfaceLib.InterFaces
 {
     public interface IGebruikerContainer
     {
-        public bool CheckGebruiker(string Email, string wachtwoord);
+        public GebruikerDTO FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord);
         public GebruikerDTO GetGebruiker(string Email);
 
         public void CreateGebruikerAccount(GebruikerDTO dto, string wachtwoord);
 
-        public List<GebruikerDTO> GetGebruikerFromTeam(long TeamID);
+        public List<GebruikerDTO> GetGebruikerFromTeam(int TeamID);
+
+
     }
 }

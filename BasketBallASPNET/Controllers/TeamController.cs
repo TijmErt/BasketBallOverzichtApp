@@ -12,7 +12,7 @@ namespace BasketBallASPNET.Controllers
         private TeamContainer TMcontainer = new TeamContainer(new TeamMSSQLDAL());
         private GebruikerContainer GBcontainter = new GebruikerContainer(new GebruikerMSSQLDAL());
 
-        public IActionResult Index(long clubID)
+        public IActionResult Index(int clubID)
         {
             List<Team> Lt = TMcontainer.GetAllTeamsFromClub(clubID);
             List<TeamVM> Lvm = new List<TeamVM>();
@@ -24,7 +24,7 @@ namespace BasketBallASPNET.Controllers
         }
 
 
-        public IActionResult Detail(long TeamID)
+        public IActionResult Detail(int TeamID)
         {
             List<Gebruiker> Lc = GBcontainter.GetGebruikerFromTeam(TeamID);
             List<SpelerVM> Lvm = new List<SpelerVM>();

@@ -2,10 +2,10 @@
 {
     public class ClubVM
     {
-        public long ID;
+        public int ID;
         public string Name;
 
-        public ClubVM(long iD, string name)
+        public ClubVM(int iD, string name)
         {
             ID = iD;
             Name = name;

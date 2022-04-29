@@ -18,20 +18,21 @@ namespace BusnLogic.Containers
             Container = container;
         }
 
-        public bool controleerOfGebruikerBestaat(string gebruikersnaam, string wachtwoord)
+        /* public Gebruiker controleerOfGebruikerBestaat(string gebruikersnaam, string wachtwoord)
         {
             bool check;
 
             check = Container.CheckGebruiker(gebruikersnaam, wachtwoord);
 
             return check;
-        }
+        }*/
+
         public Gebruiker GetGebruiker(string Email)
         {
-            GebruikerDTO dto= Container.GetGebruiker(Email);
+            GebruikerDTO dto = Container.GetGebruiker(Email);
             return new Gebruiker(dto);
         }
-        public List<Gebruiker> GetGebruikerFromTeam(long TeamID)
+        public List<Gebruiker> GetGebruikerFromTeam(int TeamID)
         {
             List<Gebruiker> list = new List<Gebruiker>();
             foreach (GebruikerDTO Item in Container.GetGebruikerFromTeam(TeamID))
@@ -39,6 +40,22 @@ namespace BusnLogic.Containers
                 list.Add(new Gebruiker(Item));
             }
             return list;
+        }
+
+        public void CreateGebruikerAccount(Gebruiker gebruiker, string wachtwoord)
+        {
+            GebruikerDTO dto = gebruiker.GetDTO();
+            Container.CreateGebruikerAccount(dto, wachtwoord);
+        }
+
+        public Gebruiker FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord)
+        {
+            GebruikerDTO dto = Container.FindByEmailAndPassWordkGebruiker(Email, wachtwoord);
+            if (dto == null)
+            {
+                return null;
+            }
+            return new Gebruiker(dto);
         }
     }
 }

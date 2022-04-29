@@ -4,14 +4,14 @@ namespace BasketBallASPNET.Models
 {
     public class SpelerVM
     {
-        public long ID;
+        public int? ID;
         public string FirstName;
         public string LastName;
         public string Geslacht;
         public DateTime GeboorteDatum;
         public string Email;
 
-        public SpelerVM(long id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, string wachtwoord, string email)
+        public SpelerVM(int? id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, string wachtwoord, string email)
         {
             this.ID = id;
             this.FirstName = firstName;

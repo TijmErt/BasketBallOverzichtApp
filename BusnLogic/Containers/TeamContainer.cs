@@ -15,9 +15,13 @@ namespace BusnLogic
             this.container = containerTemp;
         }
 
-        public Team FindByID(long id)
+        public Team FindByID(int id)
         {
             TeamDTO dto = container.FindByID(id);
+            if(dto == null)
+            {
+                return null;
+            }
             return new Team(dto);
         }
 
@@ -31,7 +35,7 @@ namespace BusnLogic
             return list;
         }
 
-        public List<Team> GetAllTeamsFromClub(long clubID)
+        public List<Team> GetAllTeamsFromClub(int clubID)
         {
             List<Team> list = new List<Team>();
             foreach (TeamDTO item in container.GetAllTeamsFromClub(clubID))

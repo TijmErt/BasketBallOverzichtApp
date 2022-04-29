@@ -10,14 +10,14 @@ namespace BusnLogic.Entity
 {
     public class Gebruiker
     {
-        public long ID;
+        public int? ID;
         public string FirstName;
         public string LastName;
         public string Geslacht;
         public DateTime GeboorteDatum;
         public string Email;
 
-        public Gebruiker(long id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, string wachtwoord, string email)
+        public Gebruiker(string firstName, string lastName, DateTime geboorteDatum, string geslacht, string email, int? id = null)
         {
             this.ID = id;
             this.FirstName = firstName;
@@ -34,6 +34,16 @@ namespace BusnLogic.Entity
             this.GeboorteDatum = tempDTO.GeboorteDatum;
             this.Geslacht = tempDTO.Geslacht;
             this.Email = tempDTO.Email;
+        }
+
+        public GebruikerDTO GetDTO()
+        {
+            return new GebruikerDTO(FirstName, LastName, GeboorteDatum, Geslacht, Email, ID);
+        }
+
+        public string GetFullName()
+        {
+            return FirstName + " " + LastName;
         }
     }
 }

@@ -2,12 +2,12 @@
 {
     public class TeamVM
     {
-        public long ID;
+        public int ID;
         public string Name;
 
-        public TeamVM(long iD, string name)
+        public TeamVM(int id, string name)
         {
-            ID = iD;
+            ID = id;
             Name = name;
         }
         public TeamVM()

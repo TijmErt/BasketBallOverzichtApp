@@ -15,9 +15,13 @@ namespace BusnLogic
             this.container = containerTemp;
         }
 
-        public Club FindByID(long id)
+        public Club FindByID(int id)
         {
             ClubDTO dto = container.FindByID(id);
+            if(dto == null)
+            {
+                return null;
+            }
             return new Club(dto);
         }
 

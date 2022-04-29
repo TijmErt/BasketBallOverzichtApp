@@ -8,7 +8,7 @@ namespace InterfaceLib
 {
     public interface IClubContainer
     {
-        public ClubDTO FindByID(long id);
+        public ClubDTO FindByID(int id);
         public List<ClubDTO> GetAll();
     }
 }

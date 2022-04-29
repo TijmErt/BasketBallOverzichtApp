@@ -8,24 +8,15 @@ namespace InterfaceLib.DTO
 {
     public class GebruikerDTO
     {
-        public long ID;
+        public int? ID;
         public string FirstName;
         public string LastName;
         public string Geslacht;
         public DateTime GeboorteDatum;
         public string Email;
 
-        public GebruikerDTO(long id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, string wachtwoord, string email)
-        {
-            this.ID = id;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.GeboorteDatum = geboorteDatum;
-            this.Geslacht = geslacht;
-            this.Email = email;
 
-        }
-        public GebruikerDTO(long id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, string email)
+        public GebruikerDTO(string firstName, string lastName, DateTime geboorteDatum, string geslacht, string email, int? id = null)
         {
             this.ID = id;
             this.FirstName = firstName;
