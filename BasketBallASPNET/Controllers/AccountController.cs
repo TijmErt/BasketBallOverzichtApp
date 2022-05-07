@@ -51,7 +51,7 @@ namespace BasketBallASPNET.Controllers
                 HttpContext.Session.SetString("Name", Ingelogde.GetFullName());
                 HttpContext.Session.SetInt32("ID", Ingelogde.ID.Value);
             }
-            return View();
+            return Redirect("/");
         }
     }
 }

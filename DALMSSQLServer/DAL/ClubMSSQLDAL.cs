@@ -48,7 +48,7 @@ namespace DALMSSQLServer
             {
                 list.Add(new ClubDTO(reader.GetInt32("ID"), reader.GetString("ClubName")));
             }
-
+            databaseConnection.Close();
             return list;
         }
     }
