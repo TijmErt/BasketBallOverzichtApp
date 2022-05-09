@@ -32,9 +32,14 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult Register(RegisterVM vm)
         {
-            Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 1, null, vm.ClubID);
-            container.CreateGebruikerAccount(g, vm.Wachtwoord);
-            return View();
+            if(vm.Wachtwoord == vm.BevestigWachtwoord)
+            {
+                Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 1, null, vm.ClubID);
+                container.CreateGebruikerAccount(g, vm.Wachtwoord);
+                return View();
+            }
+            return Content("wachtwoord komt niet overeen");
+            
         }
 
         [HttpPost]

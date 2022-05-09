@@ -14,7 +14,7 @@ namespace DALMSSQLServer
             string sql = "INSERT INTO Team(TeamName, LeeftijdsCategorieën_ID, Club_ID) Values(" +
                 "@Name," +
                 "@LeeftijdsCategorieID," +
-                "@clubID,";
+                "@clubID)";
 
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@Name", dto.Name);

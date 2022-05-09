@@ -6,9 +6,9 @@ namespace BusnLogic
     {
         public int? ID;
         public string Name;
-        public int LeeftijdsCategorieID;
+        public int? LeeftijdsCategorieID;
 
-        public Team(string name, int leeftijdsCategorieID, int? id = null)
+        public Team(string name, int? leeftijdsCategorieID, int? id = null)
         {
             ID = id;
             Name = name;

@@ -1,13 +1,14 @@
-﻿@model List<TeamVM>
+﻿@model TeamCreateAndViewVM
 @{
     ViewData["Title"] = "Index";
 }
+@using Microsoft.AspNetCore.Http
 
-<h1>VerkoperTest</h1>
+<h1>@Context.Session.GetString("Name")</h1>
 Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in komen
 <br />
 
-@foreach (TeamVM vm in Model)
+@foreach (TeamVM vm in Model.Teams)
 {
     <a asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a>
     <br />
@@ -16,7 +17,8 @@ Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in 
 <form asp-action="Index" method="POST">
     <div>
         <input id="Name" type="text" asp-for="Name" class=" form-control" placeholder="Voer Team naam in">
-        <select name="Team" id="LeeftijdsCategorieID" placeholder="Kies je LeeftijdsCategorie">
+
+        <select name="LeeftijdsCategorieID" id="LeeftijdsCategorieID">
             <option value=1>10</option>
             <option value=2>12</option>
             <option value=3>14</option>

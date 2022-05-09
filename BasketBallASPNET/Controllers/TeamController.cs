@@ -11,19 +11,20 @@ namespace BasketBallASPNET.Controllers
     {
         private TeamContainer TMcontainer = new TeamContainer(new TeamMSSQLDAL());
         private GebruikerContainer GBcontainter = new GebruikerContainer(new GebruikerMSSQLDAL());
-        private int ClubID;
+        
 
         [HttpGet]
         public IActionResult Index(int clubID)
         {
-            ClubID = clubID;
+            HttpContext.Session.SetInt32("TempClubID", clubID);
             List<Team> Lt = TMcontainer.GetAllTeamsFromClub(clubID);
             List<TeamVM> Lvm = new List<TeamVM>();
             foreach(Team T in Lt)
             {
                 Lvm.Add(new TeamVM(T));
             }
-            return View(Lvm);
+            TeamCreateAndViewVM vm = new TeamCreateAndViewVM(Lvm);
+            return View(vm);
         }
 
         [HttpGet]
@@ -35,15 +36,16 @@ namespace BasketBallASPNET.Controllers
             {
                 Lvm.Add(new SpelerVM(c));
             }
+            
             return View(Lvm);
         }
 
         [HttpPost]
-        public IActionResult Index(TeamVM vm)
+        public IActionResult Index(TeamCreateAndViewVM vm)
         {
             Team team = new Team(vm.Name, vm.LeeftijdsCategorieID);
-            TMcontainer.CreateTeam(team, ClubID);
-            return View(ClubID);
+            TMcontainer.CreateTeam(team, HttpContext.Session.GetInt32("TempClubID").Value);
+            return View();
         }
 
     }

@@ -119,13 +119,15 @@ namespace DALMSSQLServer
         public void CreateGebruikerAccount(GebruikerDTO dto, string wachtwoord)
         {
             SqlCommand cmd;
-            string sql = "INSERT INTO Gebruiker(FirstName, LastName, Email, PassWord, BirthDate, Geslacht) Values(" +
+            string sql = "INSERT INTO Gebruiker(FirstName, LastName, Email, PassWord, BirthDate, Geslacht, Club_ID, Role_ID) Values(" +
                 "@Firstname," +
                 "@LastName," +
                 "@Email," +
                 "@wachtwoord," +
                 "@BirthDate," +
-                "@Geslacht)";
+                "@Geslacht, " +
+                "@ClubID, " +
+                "@RoleID)";
 
             cmd = new SqlCommand(sql, databaseConnection);
 
@@ -136,6 +138,8 @@ namespace DALMSSQLServer
             cmd.Parameters.AddWithValue("@Email", dto.Email);
             cmd.Parameters.AddWithValue("@BirthDate", dto.GeboorteDatum);
             cmd.Parameters.AddWithValue("@Geslacht", dto.Geslacht);
+            cmd.Parameters.AddWithValue("@ClubID", dto.ClubID);
+            cmd.Parameters.AddWithValue("@RoleID", dto.RoleID);
             cmd.Parameters.AddWithValue("@wachtwoord", hash);
 
             databaseConnection.Open();

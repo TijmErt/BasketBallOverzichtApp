@@ -10,9 +10,9 @@ namespace InterfaceLib
     {
         public int? ID;
         public string Name;
-        public int LeeftijdsCategorieID;
+        public int? LeeftijdsCategorieID;
 
-        public TeamDTO( string name, int leeftijdsCategorieID, int? id = null)
+        public TeamDTO( string name, int? leeftijdsCategorieID, int? id = null)
         {
             ID = id;
             Name = name;

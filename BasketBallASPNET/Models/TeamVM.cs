@@ -4,9 +4,9 @@ namespace BasketBallASPNET.Models
 {
     public class TeamVM
     {
-        public int? ID;
-        public string Name;
-        public int LeeftijdsCategorieID;
+        public int? ID { get; set; }
+        public string Name { get; set; }
+        public int? LeeftijdsCategorieID { get; set; }
 
         public TeamVM(string name, int leeftijdsCategorieID, int? id = null)
         {
