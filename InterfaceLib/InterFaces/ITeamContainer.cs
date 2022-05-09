@@ -8,5 +8,7 @@
 
         public List<TeamDTO> GetAllTeamsFromClub(int clubID);
 
+        public void CreateTeam(TeamDTO dto, int ClubID);
+
     }
 }

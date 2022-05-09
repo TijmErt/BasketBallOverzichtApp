@@ -32,7 +32,7 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult Register(RegisterVM vm)
         {
-            Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email);
+            Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 1, null, vm.ClubID);
             container.CreateGebruikerAccount(g, vm.Wachtwoord);
             return View();
         }
@@ -50,6 +50,7 @@ namespace BasketBallASPNET.Controllers
                 HttpContext.Session.SetString("Email", Ingelogde.Email);
                 HttpContext.Session.SetString("Name", Ingelogde.GetFullName());
                 HttpContext.Session.SetInt32("ID", Ingelogde.ID.Value);
+                HttpContext.Session.SetInt32("RoleID", Ingelogde.RoleID);
             }
             return Redirect("/");
         }

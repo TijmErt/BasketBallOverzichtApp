@@ -10,8 +10,10 @@ namespace BasketBallASPNET.Models
         public string Geslacht;
         public DateTime GeboorteDatum;
         public string Email;
+        public int? TeamID;
+        public int? ClubID;
 
-        public SpelerVM(int? id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, string wachtwoord, string email)
+        public SpelerVM(int? id, string firstName, string lastName, DateTime geboorteDatum, string geslacht, int? teamID, int? clubID, string email)
         {
             this.ID = id;
             this.FirstName = firstName;
@@ -19,6 +21,8 @@ namespace BasketBallASPNET.Models
             this.GeboorteDatum = geboorteDatum;
             this.Geslacht = geslacht;
             this.Email = email;
+            this.TeamID = teamID;
+            this.ClubID = clubID;
         }
         public SpelerVM(Gebruiker Temp)
         {
@@ -28,6 +32,8 @@ namespace BasketBallASPNET.Models
             this.Geslacht = Temp.Geslacht;
             this.GeboorteDatum = Temp.GeboorteDatum;
             this.Email = Temp.Email;
+            this.TeamID = Temp.TeamID;
+            this.ClubID = Temp.ClubID;
         }
         public SpelerVM()
         {

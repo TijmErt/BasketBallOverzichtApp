@@ -16,13 +16,14 @@ namespace BasketBallASPNET.Models
         public string Wachtwoord{ get; set; }
 
         public string BevestigWachtwoord{ get; set; }
+        public int ClubID;
 
         public RegisterVM()
         {
 
         }
 
-        public RegisterVM(string firstName, string lastName, string geslacht, DateTime geboorteDatum, string email, string wachtwoord, string bevestigWachtwoord)
+        public RegisterVM(string firstName, string lastName, string geslacht, DateTime geboorteDatum, string email, int clubID, string wachtwoord, string bevestigWachtwoord)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -31,6 +32,7 @@ namespace BasketBallASPNET.Models
             Email = email;
             Wachtwoord = wachtwoord;
             BevestigWachtwoord = bevestigWachtwoord;
+            ClubID = clubID;
         }
     }
 }

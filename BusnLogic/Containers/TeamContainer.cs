@@ -44,5 +44,10 @@ namespace BusnLogic
             }
             return list;
         }
+        public void CreateTeam(Team temp, int ClubID)
+        {
+            TeamDTO dto = temp.GetDTO();
+            container.CreateTeam(dto, ClubID);
+        }
     }
 }

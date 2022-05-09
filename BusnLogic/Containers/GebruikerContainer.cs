@@ -18,15 +18,6 @@ namespace BusnLogic.Containers
             Container = container;
         }
 
-        /* public Gebruiker controleerOfGebruikerBestaat(string gebruikersnaam, string wachtwoord)
-        {
-            bool check;
-
-            check = Container.CheckGebruiker(gebruikersnaam, wachtwoord);
-
-            return check;
-        }*/
-
         public Gebruiker GetGebruiker(string Email)
         {
             GebruikerDTO dto = Container.GetGebruiker(Email);

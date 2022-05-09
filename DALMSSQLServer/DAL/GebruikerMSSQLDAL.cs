@@ -37,6 +37,9 @@ namespace DALMSSQLServer
                         reader.GetDateTime("BirthDate"),
                         reader.GetString("Geslacht"),
                         reader.GetString("Email"),
+                        reader.GetInt32("Role_ID"),
+                        reader.GetInt32("Team_ID"),
+                        reader.GetInt32("Club_ID"),
                         reader.GetInt32("ID"));
                     databaseConnection.Close();
                     return temp;
@@ -68,6 +71,9 @@ namespace DALMSSQLServer
                     reader.GetDateTime("BirthDate"),
                     reader.GetString("Geslacht"),
                     reader.GetString("Email"),
+                    reader.GetInt32("Role_ID"),
+                    reader.GetInt32("Team_ID"),
+                    reader.GetInt32("Club_ID"),
                     reader.GetInt32("ID"));
                 databaseConnection.Close();
                 return temp;
@@ -84,8 +90,6 @@ namespace DALMSSQLServer
             cmd.Parameters.AddWithValue("@TeamID", TeamID);
 
             databaseConnection.Open();
-
-            databaseConnection.Open();
             reader = cmd.ExecuteReader();
 
             List<GebruikerDTO> list = new List<GebruikerDTO>();
@@ -100,6 +104,9 @@ namespace DALMSSQLServer
                     reader.GetDateTime("BirthDate"),
                     reader.GetString("Geslacht"),
                     reader.GetString("Email"),
+                    reader.GetInt32("Role_ID"),
+                    reader.GetInt32("Team_ID"),
+                    reader.GetInt32("Club_ID"),
                     reader.GetInt32("ID")
                     )
                     );

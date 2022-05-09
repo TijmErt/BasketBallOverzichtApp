@@ -5,14 +5,33 @@
 }
 
 <h1>Detail</h1>
-hier komt een specifieke team <br />
+hier komt een specifieke team
+<br />
 <ul class="list-group">
 
-    @foreach(SpelerVM vm in Model)
-{
-    <li class="list-group-item col-sm-2">@vm.FirstName </li> 
-}
+    @foreach (SpelerVM vm in Model)
+    {
+        <li class="list-group-item col-sm-2">@vm.FirstName </li>
+    }
 </ul>
 
+<div>
+    <select name="Spelers" id="ID" placeholder="Kies een Speler">
+        @foreach (SpelerVM vm in Model)
+        {
+            @if (vm.TeamID == null)
+            {
+                <option value=@vm.ID> @vm.FirstName @vm.LastName</option>
+            }
 
-<a href="##" onClick="history.go(-1); return false;">Go back</a>  
+        }
+
+    </select>
+    <button type="submit" class="btn btn-primary btn-lg">
+        Create &nbsp;
+        <span class="glyphicon glyphicon-save"></span>
+    </button>
+</div>
+
+
+<a href="##" onClick="history.go(-1); return false;">Go back</a>
