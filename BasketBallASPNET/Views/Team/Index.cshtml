@@ -10,13 +10,18 @@ Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in 
 
 @foreach (TeamVM vm in Model.Teams)
 {
-    <a asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a>
+    <div class="form-control">
+        <a asp-action=Detail asp-route-TeamID=@vm.ID >@vm.Name</a>
+        <form asp-action=Delete asp-route-teamID=@vm.ID class="d-flex justify-content-end" method="POST">
+            <button type="submit" class="btn btn-danger btn-sm">Delete Team</button>
+        </form>
+    </div>
     <br />
 }
 <br />
 <form asp-action="Index" method="POST">
     <div>
-        <input id="Name" type="text" asp-for="Name" class=" form-control" placeholder="Voer Team naam in">
+        <input id="Name" type="text" asp-for="Name" class="form-control" placeholder="Voer Team naam in">
 
         <select name="LeeftijdsCategorieID" id="LeeftijdsCategorieID">
             <option value=1>10</option>

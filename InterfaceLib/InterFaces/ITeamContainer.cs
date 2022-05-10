@@ -10,5 +10,7 @@
 
         public void CreateTeam(TeamDTO dto, int ClubID);
 
+        public void DeleteTeam(int teamID);
+
     }
 }

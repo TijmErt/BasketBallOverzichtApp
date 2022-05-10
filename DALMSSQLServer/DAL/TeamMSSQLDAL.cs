@@ -27,6 +27,20 @@ namespace DALMSSQLServer
             databaseConnection.Close();
         }
 
+        public void DeleteTeam(int teamID)
+        {
+            SqlCommand cmd;
+            string sql = "DELETE FROM Team WHERE ID = @teamID";
+
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@teamID", teamID);
+
+            databaseConnection.Open();
+
+            cmd.ExecuteNonQuery();
+            databaseConnection.Close();
+        }
+
         public TeamDTO FindByID(int id)
         {
             SqlDataReader reader;
