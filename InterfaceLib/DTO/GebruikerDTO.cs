@@ -14,9 +14,12 @@ namespace InterfaceLib.DTO
         public string Geslacht;
         public DateTime GeboorteDatum;
         public string Email;
+        public int RoleID;
+        public int? TeamID;
+        public int? ClubID;
 
 
-        public GebruikerDTO(string firstName, string lastName, DateTime geboorteDatum, string geslacht, string email, int? id = null)
+        public GebruikerDTO(string firstName, string lastName, DateTime geboorteDatum, string geslacht,  string email, int roleID, int? teamID, int? clubID, int? id = null)
         {
             this.ID = id;
             this.FirstName = firstName;
@@ -24,6 +27,9 @@ namespace InterfaceLib.DTO
             this.GeboorteDatum = geboorteDatum;
             this.Geslacht = geslacht;
             this.Email = email;
+            this.RoleID = roleID;
+            this.TeamID = teamID;
+            this.ClubID = clubID;
         }
     }
 }

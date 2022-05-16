@@ -8,5 +8,11 @@
 
         public List<TeamDTO> GetAllTeamsFromClub(int clubID);
 
+        public void CreateTeam(TeamDTO dto, int ClubID);
+
+        public void DeleteTeam(int teamID);
+
+        public bool CheckClubTeamLink(int TeamID, int ClubID);
+
     }
 }

@@ -18,7 +18,7 @@ namespace DALMSSQLServer
             SqlDataReader reader;
             SqlCommand cmd;
 
-            string sql = "SELECT ID, ClubName FROM Club WHERE ID =";
+            string sql = "SELECT ID, ClubName FROM Club WHERE ID = @clubID";
             cmd = new SqlCommand(sql, databaseConnection);
             databaseConnection.Open();
             cmd.Parameters.AddWithValue("@clubID", clubID);

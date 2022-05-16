@@ -44,5 +44,20 @@ namespace BusnLogic
             }
             return list;
         }
+        public void CreateTeam(Team temp, int ClubID)
+        {
+            TeamDTO dto = temp.GetDTO();
+            container.CreateTeam(dto, ClubID);
+        }
+
+        public void DeleteTeam(int TeamID)
+        {
+            container.DeleteTeam(TeamID);
+        }
+
+        public bool CheckClubTeamLink(int TeamID, int ClubID)
+        {
+            return container.CheckClubTeamLink(TeamID, ClubID);
+        }
     }
 }

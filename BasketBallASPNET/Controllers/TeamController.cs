@@ -12,28 +12,72 @@ namespace BasketBallASPNET.Controllers
         private TeamContainer TMcontainer = new TeamContainer(new TeamMSSQLDAL());
         private GebruikerContainer GBcontainter = new GebruikerContainer(new GebruikerMSSQLDAL());
 
+        [HttpGet]
         public IActionResult Index(int clubID)
         {
+            HttpContext.Session.SetInt32("TempClubID", clubID);
             List<Team> Lt = TMcontainer.GetAllTeamsFromClub(clubID);
             List<TeamVM> Lvm = new List<TeamVM>();
-            foreach(Team T in Lt)
+            foreach (Team T in Lt)
             {
-                Lvm.Add(new TeamVM(T.ID, T.Name));
+                Lvm.Add(new TeamVM(T));
             }
-            return View(Lvm);
+            TeamCreateAndViewVM vm = new TeamCreateAndViewVM(Lvm);
+            return View(vm);
         }
 
+        [HttpPost]
+        public IActionResult CreateTeam(TeamCreateAndViewVM vm)
+        {
+            Team team = new Team(vm.Name, vm.LeeftijdsCategorieID);
+            int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+            TMcontainer.CreateTeam(team, ClubID);
+            return RedirectToAction("Index", new{ clubID = ClubID });
+        }
 
+        [HttpPost]
+        public IActionResult DeleteTeam(int teamID)
+        {
+            TMcontainer.DeleteTeam(teamID);
+            RedirectToAction("","");
+            return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+
+        }
+
+        [HttpGet]
         public IActionResult Detail(int TeamID)
         {
-            List<Gebruiker> Lc = GBcontainter.GetGebruikerFromTeam(TeamID);
-            List<SpelerVM> Lvm = new List<SpelerVM>();
-            foreach (Gebruiker c in Lc)
+            int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+            if(TMcontainer.CheckClubTeamLink(TeamID, ClubID) == true)
             {
-                Lvm.Add(new SpelerVM(c));
+                HttpContext.Session.SetInt32("TempTeamID", TeamID);
+                List<Gebruiker> Lc = GBcontainter.GetAllFromClub(ClubID);
+                List<SpelerVM> Lvm = new List<SpelerVM>();
+                foreach (Gebruiker c in Lc)
+                {
+                    Lvm.Add(new SpelerVM(c));
+                }
+
+                return View(Lvm);
             }
-            return View(Lvm);
+            return RedirectToAction("Index", new { ClubID} );
+
         }
- 
+
+        [HttpPost]
+        public IActionResult InsertPlayerToTeam(int SpelerID)
+        {
+            int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
+            GBcontainter.InsertGebruikerInToTeam(SpelerID, teamID);
+            return RedirectToAction("Detail", new { TeamID = teamID });
+        }
+        [HttpPost]
+        public IActionResult RemoveSpelerFromTeam(int SpelerID)
+        {
+            int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
+            GBcontainter.RemoveSpelerFromTeam(SpelerID);
+            return RedirectToAction("Detail", new { TeamID = teamID });
+        }
+
     }
 }

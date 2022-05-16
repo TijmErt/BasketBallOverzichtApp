@@ -1,14 +1,48 @@
-﻿@model List<TeamVM> 
+﻿@model TeamCreateAndViewVM
 @{
     ViewData["Title"] = "Index";
 }
+@using Microsoft.AspNetCore.Http
 
-<h1>VerkoperTest</h1>
-Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in komen <br />
+<h1>@Context.Session.GetString("Name")</h1>
+Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in komen
+<br />
+<div class="container-fluid">
+    @foreach (TeamVM vm in Model.Teams)
+    {
+        <div class="form-control">
+            <a asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a>
+        </div>
+        @if (3 != Context.Session.GetInt32("RoleID"))
+        {
+            <form asp-action=DeleteTeam asp-route-teamID=@vm.ID class="d-flex justify-content-end" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm">Delete Team</button>
+            </form>
+        }
 
-@foreach(TeamVM vm in Model)
-{
-    <a asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a> <br />
-}
-<br/>
-<a href="##" onClick="history.go(-1); return false;">Go back</a>  
+        <br />
+    }
+    <br />
+    @if (3 != Context.Session.GetInt32("RoleID"))
+    {
+        <form asp-action="CreateTeam" method="POST" >
+            <div class="container p-5 " style="background-color:lightgray;">
+                <input id="Name" type="text" asp-for="Name" class="form-control" placeholder="Voer Team naam in">
+
+                <select name="LeeftijdsCategorieID" id="LeeftijdsCategorieID">
+                    <option value=1>10</option>
+                    <option value=2>12</option>
+                    <option value=3>14</option>
+                    <option value=4>16</option>
+                    <option value=5>18</option>
+                    <option value=6>20</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-md" >
+                    Create &nbsp;
+                    <span class="glyphicon glyphicon-save"></span>
+                </button>
+            </div>
+        </form>
+    }
+    <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
+</div>

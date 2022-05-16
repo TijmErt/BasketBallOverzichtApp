@@ -37,6 +37,9 @@ namespace DALMSSQLServer
                         reader.GetDateTime("BirthDate"),
                         reader.GetString("Geslacht"),
                         reader.GetString("Email"),
+                        reader.GetInt32("Role_ID"),
+                        reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                        reader.GetInt32("Club_ID"),
                         reader.GetInt32("ID"));
                     databaseConnection.Close();
                     return temp;
@@ -68,6 +71,9 @@ namespace DALMSSQLServer
                     reader.GetDateTime("BirthDate"),
                     reader.GetString("Geslacht"),
                     reader.GetString("Email"),
+                    reader.GetInt32("Role_ID"),
+                    reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                    reader.GetInt32("Club_ID"),
                     reader.GetInt32("ID"));
                 databaseConnection.Close();
                 return temp;
@@ -84,6 +90,99 @@ namespace DALMSSQLServer
             cmd.Parameters.AddWithValue("@TeamID", TeamID);
 
             databaseConnection.Open();
+            reader = cmd.ExecuteReader();
+
+            List<GebruikerDTO> list = new List<GebruikerDTO>();
+            while (reader.Read())
+            {
+                list.Add(
+
+                    new GebruikerDTO(
+
+                    reader.GetString("FirstName"),
+                    reader.GetString("LastName"),
+                    reader.GetDateTime("BirthDate"),
+                    reader.GetString("Geslacht"),
+                    reader.GetString("Email"),
+                    reader.GetInt32("Role_ID"),
+                    reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                    reader.GetInt32("Club_ID"),
+                    reader.GetInt32("ID")
+                    )
+                    );
+            }
+            databaseConnection.Close();
+            return list;
+
+
+        }
+        public void CreateGebruikerAccount(GebruikerDTO dto, string wachtwoord)
+        {
+            SqlCommand cmd;
+            string sql = "INSERT INTO Gebruiker(FirstName, LastName, Email, PassWord, BirthDate, Geslacht, Club_ID, Role_ID) Values(" +
+                "@Firstname," +
+                "@LastName," +
+                "@Email," +
+                "@wachtwoord," +
+                "@BirthDate," +
+                "@Geslacht, " +
+                "@ClubID, " +
+                "@RoleID)";
+
+            cmd = new SqlCommand(sql, databaseConnection);
+
+            string hash = BCrypt.Net.BCrypt.EnhancedHashPassword(wachtwoord, 13);
+
+            cmd.Parameters.AddWithValue("@Firstname", dto.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", dto.LastName);
+            cmd.Parameters.AddWithValue("@Email", dto.Email);
+            cmd.Parameters.AddWithValue("@BirthDate", dto.GeboorteDatum);
+            cmd.Parameters.AddWithValue("@Geslacht", dto.Geslacht);
+            cmd.Parameters.AddWithValue("@ClubID", dto.ClubID);
+            cmd.Parameters.AddWithValue("@RoleID", dto.RoleID);
+            cmd.Parameters.AddWithValue("@wachtwoord", hash);
+
+            databaseConnection.Open();
+
+            cmd.ExecuteNonQuery();
+            databaseConnection.Close();
+        }
+
+        public void InsertGebruikerInToTeam(int SpelerID, int TeamID)
+        {
+            SqlCommand cmd;
+            string sql = "UPDATE Gebruiker SET Team_ID = @TeamID WHERE ID = @SpelerID";
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@SpelerID", SpelerID);
+            cmd.Parameters.AddWithValue("@TeamID", TeamID);
+
+            databaseConnection.Open();
+            cmd.ExecuteNonQuery();
+            databaseConnection.Close();
+        }
+        public void RemoveSpelerFromTeam(int SpelerID)
+        {
+            string wasteint = null;
+            SqlCommand cmd;
+            string sql = "UPDATE Gebruiker SET Team_ID = null WHERE ID = @SpelerID";
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@SpelerID", SpelerID);
+            //cmd.Parameters.AddWithValue("@TeamID", string.IsNullOrEmpty(wasteint) ? (object)DBNull.Value : wasteint);
+            //todo
+
+            databaseConnection.Open();
+            cmd.ExecuteNonQuery();
+            databaseConnection.Close();
+        }
+
+        public List<GebruikerDTO> GetAllFromClub(int ClubID)
+        {
+            SqlDataReader reader;
+            SqlCommand cmd;
+
+            string sql = "SELECT g.* FROM Gebruiker g WHERE g.Club_ID = @ClubID";
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@ClubID", ClubID);
 
             databaseConnection.Open();
             reader = cmd.ExecuteReader();
@@ -100,41 +199,14 @@ namespace DALMSSQLServer
                     reader.GetDateTime("BirthDate"),
                     reader.GetString("Geslacht"),
                     reader.GetString("Email"),
+                    reader.GetInt32("Role_ID"),
+                    reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                    reader.GetInt32("Club_ID"),
                     reader.GetInt32("ID")
-                    )
-                    );
+                    ));
             }
             databaseConnection.Close();
             return list;
-
-
-        }
-        public void CreateGebruikerAccount(GebruikerDTO dto, string wachtwoord)
-        {
-            SqlCommand cmd;
-            string sql = "INSERT INTO Gebruiker(FirstName, LastName, Email, PassWord, BirthDate, Geslacht) Values(" +
-                "@Firstname," +
-                "@LastName," +
-                "@Email," +
-                "@wachtwoord," +
-                "@BirthDate," +
-                "@Geslacht)";
-
-            cmd = new SqlCommand(sql, databaseConnection);
-
-            string hash = BCrypt.Net.BCrypt.EnhancedHashPassword(wachtwoord, 13);
-
-            cmd.Parameters.AddWithValue("@Firstname", dto.FirstName);
-            cmd.Parameters.AddWithValue("@LastName", dto.LastName);
-            cmd.Parameters.AddWithValue("@Email", dto.Email);
-            cmd.Parameters.AddWithValue("@BirthDate", dto.GeboorteDatum);
-            cmd.Parameters.AddWithValue("@Geslacht", dto.Geslacht);
-            cmd.Parameters.AddWithValue("@wachtwoord", hash);
-
-            databaseConnection.Open();
-
-            cmd.ExecuteNonQuery();
-            databaseConnection.Close();
         }
 
 
