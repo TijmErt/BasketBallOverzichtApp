@@ -8,6 +8,23 @@ namespace DALMSSQLServer
     {
         private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
 
+        public bool CheckClubTeamLink(int TeamID, int ClubID)
+        {
+            SqlDataReader reader;
+            SqlCommand cmd;
+            string sql = "SELECT * FROM Team WHERE ID = @TeamID AND Club_ID = @ClubID";
+
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@TeamID", TeamID);
+            cmd.Parameters.AddWithValue("@ClubID",ClubID);
+
+            databaseConnection.Open();
+            reader= cmd.ExecuteReader();
+            bool check = reader.HasRows;
+            databaseConnection.Close();
+            return check;
+        }
+
         public void CreateTeam(TeamDTO dto, int ClubID)
         {
             SqlCommand cmd;
@@ -59,6 +76,7 @@ namespace DALMSSQLServer
                 return dto;
 
             }
+            databaseConnection.Close();
             return null;
 
 

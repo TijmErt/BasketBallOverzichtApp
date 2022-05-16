@@ -54,5 +54,10 @@ namespace BusnLogic
         {
             container.DeleteTeam(TeamID);
         }
+
+        public bool CheckClubTeamLink(int TeamID, int ClubID)
+        {
+            return container.CheckClubTeamLink(TeamID, ClubID);
+        }
     }
 }

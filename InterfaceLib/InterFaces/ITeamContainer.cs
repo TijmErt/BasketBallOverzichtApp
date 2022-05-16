@@ -12,5 +12,7 @@
 
         public void DeleteTeam(int teamID);
 
+        public bool CheckClubTeamLink(int TeamID, int ClubID);
+
     }
 }

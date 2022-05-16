@@ -26,36 +26,57 @@ namespace BasketBallASPNET.Controllers
             return View(vm);
         }
 
+        [HttpPost]
+        public IActionResult CreateTeam(TeamCreateAndViewVM vm)
+        {
+            Team team = new Team(vm.Name, vm.LeeftijdsCategorieID);
+            int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+            TMcontainer.CreateTeam(team, ClubID);
+            return RedirectToAction("Index", new{ clubID = ClubID });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTeam(int teamID)
+        {
+            TMcontainer.DeleteTeam(teamID);
+            RedirectToAction("","");
+            return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+
+        }
+
         [HttpGet]
         public IActionResult Detail(int TeamID)
         {
-            HttpContext.Session.SetInt32("TempTeamID", TeamID);
-            List<Gebruiker> Lc = GBcontainter.GetGebruikerFromTeam(TeamID);
-            List<SpelerVM> Lvm = new List<SpelerVM>();
-            foreach (Gebruiker c in Lc)
+            int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+            if(TMcontainer.CheckClubTeamLink(TeamID, ClubID) == true)
             {
-                Lvm.Add(new SpelerVM(c));
+                HttpContext.Session.SetInt32("TempTeamID", TeamID);
+                List<Gebruiker> Lc = GBcontainter.GetAllFromClub(ClubID);
+                List<SpelerVM> Lvm = new List<SpelerVM>();
+                foreach (Gebruiker c in Lc)
+                {
+                    Lvm.Add(new SpelerVM(c));
+                }
+
+                return View(Lvm);
             }
+            return RedirectToAction("Index", new { ClubID} );
 
-            return View(Lvm);
         }
 
         [HttpPost]
-        public IActionResult Index(TeamCreateAndViewVM vm)
+        public IActionResult InsertPlayerToTeam(int SpelerID)
         {
-            Team team = new Team(vm.Name, vm.LeeftijdsCategorieID);
-            int clubID = HttpContext.Session.GetInt32("TempClubID").Value;
-            TMcontainer.CreateTeam(team, clubID);
-            return Redirect("Club");
+            int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
+            GBcontainter.InsertGebruikerInToTeam(SpelerID, teamID);
+            return RedirectToAction("Detail", new { TeamID = teamID });
         }
-
         [HttpPost]
-        public IActionResult Delete(int teamID)
+        public IActionResult RemoveSpelerFromTeam(int SpelerID)
         {
-            TMcontainer.DeleteTeam(teamID);
-
-            return Redirect("/Club");
-
+            int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
+            GBcontainter.RemoveSpelerFromTeam(SpelerID);
+            return RedirectToAction("Detail", new { TeamID = teamID });
         }
 
     }

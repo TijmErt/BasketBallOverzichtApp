@@ -7,31 +7,48 @@
 <h1>Detail</h1>
 hier komt een specifieke team
 <br />
-<ul class="list-group">
+<div class="container-fluid">
+    <ul class="list-group">
 
-    @foreach (SpelerVM vm in Model)
-    {
-        <li class="list-group-item col-sm-2">@vm.FirstName </li>
-    }
-</ul>
-
-<div>
-    <select name="Spelers" id="ID" placeholder="Kies een Speler">
         @foreach (SpelerVM vm in Model)
         {
-            @if (vm.TeamID == null)
+            @if (vm.TeamID == Context.Session.GetInt32("TempTeamID"))
             {
-                <option value=@vm.ID> @vm.FirstName @vm.LastName</option>
+
+                <li class="list-group-item col-sm-2">@vm.FirstName </li>
+
+                @if (3 != Context.Session.GetInt32("RoleID"))
+                {
+                    <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove Speler</button>
+                    </form>
+                }
             }
 
         }
-
-    </select>
-    <button type="submit" class="btn btn-primary btn-lg">
-        Create &nbsp;
-        <span class="glyphicon glyphicon-save"></span>
-    </button>
+    </ul>
 </div>
 
 
-<a href="##" onClick="history.go(-1); return false;">Go back</a>
+<form asp-action="InsertPlayerToTeam" method="POST">
+    <div>
+        <select name="SpelerID" id="SpelerID" placeholder="Kies een Speler">
+            @foreach (SpelerVM vm in Model)
+            {
+                @if (vm.TeamID == null)
+                {
+                    <option value=@vm.ID> @vm.FirstName @vm.LastName</option>
+                }
+
+            }
+
+        </select>
+        <button type="submit" class="btn btn-success btn-sm">
+            Add Speler &nbsp;
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+    </div>
+</form>
+
+<br />
+<button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>

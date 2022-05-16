@@ -4,9 +4,12 @@
 }
 
 <h1>ClubList</h1>
-@foreach(ClubVM vm in Model)
+@foreach (ClubVM vm in Model)
 {
-    <a asp-controller="Team" asp-route-clubID=@vm.ID >@vm.Name</a> <br />
+    <div >
+        <button type="button"onclick="location.href='@Url.Action("Index", "Team", new{ clubID = vm.ID})'">@vm.Name</button>
+    </div>
+    <br />
 }
 <br />
-<a href="##" onClick="history.go(-1); return false;">Go back</a>  
+<button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>

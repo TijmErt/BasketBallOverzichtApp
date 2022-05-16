@@ -7,10 +7,15 @@
 <head>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<div class="form-group col-sm-3 " style="color: black;">
-    <a asp-action="login"class=" form-control "> Login</a>
+<div class="form-group col-sm-3" style="color: black;">
+    <a asp-action="Login"class=" form-control "> Login</a>
 </div>
 <div class="form-group col-sm-3 " style="color: black;">
     <a asp-action="Register" class=" form-control "> Registreren</a>
 </div>
+<div class="form-group col-sm-3 " style="color: black;">
+    <a asp-action="Logout" class=" form-control "> Logout</a>
+</div>
+
+<button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
 

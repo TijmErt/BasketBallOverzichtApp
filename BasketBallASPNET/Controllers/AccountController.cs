@@ -29,26 +29,41 @@ namespace BasketBallASPNET.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Register(RegisterVM vm)
+        [HttpGet]
+        public IActionResult Logout()
         {
-            if(vm.Wachtwoord == vm.BevestigWachtwoord)
-            {
-                Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 1, null, vm.ClubID);
-                container.CreateGebruikerAccount(g, vm.Wachtwoord);
-                return View();
-            }
-            return Content("wachtwoord komt niet overeen");
-            
+            HttpContext.Session.Clear();
+            return Redirect("/");
         }
 
         [HttpPost]
-        public IActionResult Login(InlogVM vm)
+        public IActionResult RegisterCreate(RegisterVM vm)
+        {
+            if(vm.Wachtwoord == vm.BevestigWachtwoord)
+            {
+                Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID);
+                container.CreateGebruikerAccount(g, vm.Wachtwoord);
+                ViewData["Success"] = "Account gecreëerd";
+                return View();
+            }
+            else
+            {
+                ViewData["Error"] = "Wachtwoord komt niet overheen";
+            }
+
+            return RedirectToAction("Register", "Account");
+
+
+        }
+
+        [HttpPost]
+        public IActionResult LoginAction(InlogVM vm)
         {
             Gebruiker Ingelogde = container.FindByEmailAndPassWordkGebruiker(vm.Email, vm.Wachtwoord);
             if (Ingelogde == null)
             {
-                return Content("Gebruiksnaam en/of wachtwoord is verkeerd");
+                ViewData["Error"] = "Inloggegevens niet correct";
+                return View();
             }
             else
             {
@@ -59,5 +74,7 @@ namespace BasketBallASPNET.Controllers
             }
             return Redirect("/");
         }
+
+
     }
 }
