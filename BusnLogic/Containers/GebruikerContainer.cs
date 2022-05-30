@@ -43,6 +43,11 @@ namespace BusnLogic.Containers
             return list;
 
         }
+        /// <summary>
+        /// Hier mee haal je alle leden van een specifieke club op.
+        /// </summary>
+        /// <param name="ClubID">hier moet de ID van de club in komen</param>
+        /// <returns></returns>
         public List<Gebruiker> GetAllFromClub(int ClubID)
         {
             List<Gebruiker> list = new List<Gebruiker>();
@@ -53,6 +58,11 @@ namespace BusnLogic.Containers
             return list;
         }
 
+        /// <summary>
+        /// Hier mee wordt er een account voor een gebruiker gemaakt in de database
+        /// </summary>
+        /// <param name="dto">geef hier een variable mee van het type gebruikerDTO</param>
+        /// <param name="wachtwoord" >Geef hier de een string mee voor het wachtwoord van de gebruiker</param>
         public void CreateGebruikerAccount(Gebruiker gebruiker, string wachtwoord)
         {
             GebruikerDTO dto = gebruiker.GetDTO();
@@ -76,7 +86,7 @@ namespace BusnLogic.Containers
 
         public void RemoveSpelerFromTeam(int SpelerID)
         {
-            Container.RemoveSpelerFromTeam(SpelerID);
+            Container.RemoveGebruikerFromTeam(SpelerID);
         }
     }
 }
