@@ -11,7 +11,7 @@ namespace BusnLogic.Containers
 {
     public class GebruikerContainer
     {
-        IGebruikerContainer Container;
+        private readonly IGebruikerContainer Container;
 
         public GebruikerContainer(IGebruikerContainer container)
         {
@@ -37,7 +37,7 @@ namespace BusnLogic.Containers
         /// <returns>Het geeft een lijst van Gebruikers die in de gegeven team zitten</returns>
         public List<Gebruiker> GetGebruikerFromTeam(int TeamID)
         {
-            List<Gebruiker> list = new List<Gebruiker>();
+            List<Gebruiker> list = new();
             foreach (GebruikerDTO Item in Container.GetGebruikerFromTeam(TeamID))
             {
                 list.Add(new Gebruiker(Item));
@@ -52,7 +52,7 @@ namespace BusnLogic.Containers
         /// <returns>Het geeft een lijst van gebruikers terug die in de gegeven club zitten</returns>
         public List<Gebruiker> GetAllGebruikersFromClub(int ClubID)
         {
-            List<Gebruiker> list = new List<Gebruiker>();
+            List<Gebruiker> list = new();
             foreach (GebruikerDTO Item in Container.GetAllGebruikersFromClub(ClubID))
             {
                 list.Add(new Gebruiker(Item));

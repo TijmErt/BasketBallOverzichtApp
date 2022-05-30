@@ -9,7 +9,7 @@ namespace BusnLogic
 {
     public class TeamContainer  
     {
-        private ITeamContainer container;
+        private readonly ITeamContainer container;
         public TeamContainer(ITeamContainer containerTemp)
         {
             this.container = containerTemp;
@@ -37,7 +37,7 @@ namespace BusnLogic
         /// <returns>geeft een lijst van teams terug</returns>
         public List<Team> GetAllTeams()
         {
-            List<Team> list = new List<Team>();
+            List<Team> list = new();
             foreach (TeamDTO item in container.GetAllTeams())
             {
                 list.Add(new Team(item));
@@ -52,7 +52,7 @@ namespace BusnLogic
         /// <returns>Geeft een lijst van Teams terug</returns>
         public List<Team> GetAllTeamsFromClub(int ClubID)
         {
-            List<Team> list = new List<Team>();
+            List<Team> list = new();
             foreach (TeamDTO item in container.GetAllTeamsFromClub(ClubID))
             {
                 list.Add(new Team(item));

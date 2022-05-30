@@ -9,27 +9,27 @@ namespace BasketBallASPNET.Controllers
 {
     public class TeamController : Controller
     {
-        private TeamContainer TMcontainer = new TeamContainer(new TeamMSSQLDAL());
-        private GebruikerContainer GBcontainter = new GebruikerContainer(new GebruikerMSSQLDAL());
+        private readonly TeamContainer TMcontainer = new(new TeamMSSQLDAL());
+        private readonly GebruikerContainer GBcontainter = new(new GebruikerMSSQLDAL());
 
         [HttpGet]
         public IActionResult Index(int clubID)
         {
             HttpContext.Session.SetInt32("TempClubID", clubID);
             List<Team> Lt = TMcontainer.GetAllTeamsFromClub(clubID);
-            List<TeamVM> Lvm = new List<TeamVM>();
+            List<TeamVM> Lvm = new();
             foreach (Team T in Lt)
             {
                 Lvm.Add(new TeamVM(T));
             }
-            TeamCreateAndViewVM vm = new TeamCreateAndViewVM(Lvm);
+            TeamCreateAndViewVM vm = new(Lvm);
             return View(vm);
         }
 
         [HttpPost]
         public IActionResult CreateTeam(TeamCreateAndViewVM vm)
         {
-            Team team = new Team(vm.Name, vm.LeeftijdsCategorieID);
+            Team team = new(vm.Name, vm.LeeftijdsCategorieID);
             int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
             TMcontainer.CreateTeam(team, ClubID);
             return RedirectToAction("Index", new{ clubID = ClubID });
@@ -52,7 +52,7 @@ namespace BasketBallASPNET.Controllers
             {
                 HttpContext.Session.SetInt32("TempTeamID", TeamID);
                 List<Gebruiker> Lc = GBcontainter.GetAllGebruikersFromClub(ClubID);
-                List<SpelerVM> Lvm = new List<SpelerVM>();
+                List<SpelerVM> Lvm = new();
                 foreach (Gebruiker c in Lc)
                 {
                     Lvm.Add(new SpelerVM(c));

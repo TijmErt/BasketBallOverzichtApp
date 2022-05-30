@@ -11,7 +11,7 @@ namespace DALMSSQLServer
 {
     public class ClubMSSQLDAL : IClubContainer
     {
-        private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
+        private static readonly SqlConnection databaseConnection = new("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
 
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace DALMSSQLServer
             reader.Read();
             if (reader.HasRows)
             {
-                ClubDTO dto = new ClubDTO(reader.GetInt32("ID"), reader.GetString("ClubName"));
+                ClubDTO dto = new(reader.GetInt32("ID"), reader.GetString("ClubName"));
                 databaseConnection.Close();
                 return dto;
             }
@@ -53,7 +53,7 @@ namespace DALMSSQLServer
             cmd = new SqlCommand(sql, databaseConnection);
             databaseConnection.Open();
             reader = cmd.ExecuteReader();
-            List<ClubDTO> list = new List<ClubDTO>();
+            List<ClubDTO> list = new();
             while (reader.Read())
             {
                 list.Add(new ClubDTO(reader.GetInt32("ID"), reader.GetString("ClubName")));

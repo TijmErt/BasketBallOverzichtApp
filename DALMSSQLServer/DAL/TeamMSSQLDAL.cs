@@ -6,7 +6,7 @@ namespace DALMSSQLServer
 {
     public class TeamMSSQLDAL : ITeamContainer
     {
-        private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
+        private static readonly SqlConnection databaseConnection = new ("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
 
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace DALMSSQLServer
             reader.Read();
             if (reader.HasRows)
             {
-                TeamDTO dto = new TeamDTO(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID"));
+                TeamDTO dto = new (reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID"));
                 databaseConnection.Close();
                 return dto;
 
@@ -118,11 +118,11 @@ namespace DALMSSQLServer
 
             reader = cmd.ExecuteReader();
 
-            List<TeamDTO> list = new List<TeamDTO>();
+            List<TeamDTO> list = new();
 
             while (reader.Read())
             {
-                list.Add(new TeamDTO(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID")));
+                list.Add(new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID")));
             }
             databaseConnection.Close();
 
@@ -145,10 +145,10 @@ namespace DALMSSQLServer
             cmd.Parameters.AddWithValue("@ClubID", ClubID);
             reader = cmd.ExecuteReader();
 
-            List<TeamDTO> list = new List<TeamDTO>();
+            List<TeamDTO> list = new ();
             while (reader.Read())
             {
-                list.Add(new TeamDTO(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID")));
+                list.Add(new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID")));
             }
             databaseConnection.Close();
             return list;

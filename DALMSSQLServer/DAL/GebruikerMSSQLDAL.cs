@@ -13,7 +13,7 @@ namespace DALMSSQLServer
 {
     public class GebruikerMSSQLDAL : IGebruikerContainer
     {
-        private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
+        private static readonly SqlConnection databaseConnection = new("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
 
         /// <summary>
         /// Hier word er met een account ingelogd door te kijken of er een email is die overeen komt met het wachtwoord
@@ -36,7 +36,7 @@ namespace DALMSSQLServer
             {
                 if (BCrypt.Net.BCrypt.EnhancedVerify(wachtwoord, reader.GetString("PassWord")))
                 {
-                    GebruikerDTO temp = new GebruikerDTO(
+                    GebruikerDTO temp = new(
 
                         reader.GetString("FirstName"),
                         reader.GetString("lastName"),
@@ -76,7 +76,7 @@ namespace DALMSSQLServer
             reader.Read();
             if (reader.HasRows)
             {
-                GebruikerDTO temp = new GebruikerDTO(
+                GebruikerDTO temp = new(
 
                     reader.GetString("FirstName"),
                     reader.GetString("lastName"),
@@ -110,7 +110,7 @@ namespace DALMSSQLServer
             databaseConnection.Open();
             reader = cmd.ExecuteReader();
 
-            List<GebruikerDTO> list = new List<GebruikerDTO>();
+            List<GebruikerDTO> list = new();
             while (reader.Read())
             {
                 list.Add(
@@ -226,7 +226,7 @@ namespace DALMSSQLServer
             databaseConnection.Open();
             reader = cmd.ExecuteReader();
 
-            List<GebruikerDTO> list = new List<GebruikerDTO>();
+            List<GebruikerDTO> list = new ();
             while (reader.Read())
             {
                 list.Add(

@@ -9,7 +9,7 @@ namespace BasketBallASPNET.Controllers
 {
     public class AccountController : Controller
     {
-        private GebruikerContainer container = new GebruikerContainer(new GebruikerMSSQLDAL());
+        private readonly GebruikerContainer container = new (new GebruikerMSSQLDAL());
 
         [HttpGet]
         public IActionResult Index()
@@ -41,7 +41,7 @@ namespace BasketBallASPNET.Controllers
         {
             if(vm.Wachtwoord == vm.BevestigWachtwoord)
             {
-                Gebruiker g = new Gebruiker(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID);
+                Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID);
                 container.CreateGebruikerAccount(g, vm.Wachtwoord);
                 ViewData["Success"] = "Account gecreëerd";
                 return View();
