@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="id">je geeft hier de team id mee</param>
         /// <returns>Geeft een TeamDTO terug</returns>
-        public TeamDTO FindByID(int id);
+        public TeamDTO GetTeamDataByID(int id);
 
         /// <summary>
         /// je haalt hier alle teams op die er bestaan

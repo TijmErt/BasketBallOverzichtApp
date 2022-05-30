@@ -51,7 +51,7 @@ namespace BasketBallASPNET.Controllers
             if(TMcontainer.CheckClubTeamLink(TeamID, ClubID) == true)
             {
                 HttpContext.Session.SetInt32("TempTeamID", TeamID);
-                List<Gebruiker> Lc = GBcontainter.GetAllFromClub(ClubID);
+                List<Gebruiker> Lc = GBcontainter.GetAllGebruikersFromClub(ClubID);
                 List<SpelerVM> Lvm = new List<SpelerVM>();
                 foreach (Gebruiker c in Lc)
                 {

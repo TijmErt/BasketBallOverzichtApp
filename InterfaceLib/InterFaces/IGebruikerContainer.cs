@@ -23,14 +23,14 @@ namespace InterfaceLib.InterFaces
         /// <param name="Email"></param>
         /// <returns>er word een gerbuikerDTO terug gegegeven</returns>
         /// <exception cref="Exception"></exception>
-        public GebruikerDTO GetGebruiker(string Email);
+        public GebruikerDTO GetGebruikerByEmail(string Email);
 
         /// <summary>
         /// Hier mee haal je alle leden van een specifieke club op.
         /// </summary>
         /// <param name="ClubID">hier moet de ID van de club in komen</param>
         /// <returns>Het geeft een lijst van gebruikers terug die in de gegeven club zitten</returns>
-        public List<GebruikerDTO> GetAllFromClub(int ClubID);
+        public List<GebruikerDTO> GetAllGebruikersFromClub(int ClubID);
 
         /// <summary>
         /// Hier mee wordt er een account voor een gebruiker gemaakt in de database

@@ -13,10 +13,6 @@ namespace BusnLogic.Containers
     {
         IGebruikerContainer Container;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="container"></param>
         public GebruikerContainer(IGebruikerContainer container)
         {
             Container = container;
@@ -30,7 +26,7 @@ namespace BusnLogic.Containers
         /// <exception cref="Exception"></exception>
         public Gebruiker GetGebruiker(string Email)
         {
-            GebruikerDTO dto = Container.GetGebruiker(Email);
+            GebruikerDTO dto = Container.GetGebruikerByEmail(Email);
             return new Gebruiker(dto);
         }
 
@@ -54,10 +50,10 @@ namespace BusnLogic.Containers
         /// </summary>
         /// <param name="ClubID">hier moet de ID van de club in komen</param>
         /// <returns>Het geeft een lijst van gebruikers terug die in de gegeven club zitten</returns>
-        public List<Gebruiker> GetAllFromClub(int ClubID)
+        public List<Gebruiker> GetAllGebruikersFromClub(int ClubID)
         {
             List<Gebruiker> list = new List<Gebruiker>();
-            foreach (GebruikerDTO Item in Container.GetAllFromClub(ClubID))
+            foreach (GebruikerDTO Item in Container.GetAllGebruikersFromClub(ClubID))
             {
                 list.Add(new Gebruiker(Item));
             }
@@ -67,7 +63,7 @@ namespace BusnLogic.Containers
         /// <summary>
         /// Hier mee wordt er een account voor een gebruiker gemaakt in de database
         /// </summary>
-        /// <param name="gebruiker">geef hier een variable mee van het type gebruikerDTO</param>
+        /// <param name="gebruiker">geef hier een variable mee van het type gebruiker</param>
         /// <param name="wachtwoord">Geef hier de een string mee voor het wachtwoord van de gebruiker</param>
         public void CreateGebruikerAccount(Gebruiker gebruiker, string wachtwoord)
         {
@@ -80,7 +76,7 @@ namespace BusnLogic.Containers
         /// </summary>
         /// <param name="Email">Hier word de email van de gebruiker ingevoerd</param>
         /// <param name="wachtwoord">Hier word het wachtwoord van de gebruiker ingevoerd</param>
-        /// <returns>Het geeft en GebruikerDTO terug</returns>
+        /// <returns>Het geeft en Gebruiker terug</returns>
         public Gebruiker FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord)
         {
             GebruikerDTO dto = Container.FindByEmailAndPassWordkGebruiker(Email, wachtwoord);

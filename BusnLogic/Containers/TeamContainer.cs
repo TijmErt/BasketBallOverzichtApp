@@ -19,10 +19,10 @@ namespace BusnLogic
         /// Hier kun je de team gegevens krijgen met het teamID
         /// </summary>
         /// <param name="id">je geeft hier de team id mee</param>
-        /// <returns>Geeft een TeamDTO terug</returns>
-        public Team FindByID(int id)
+        /// <returns>Geeft een Team terug</returns>
+        public Team GetTeamDataByID(int id)
         {
-            TeamDTO dto = container.FindByID(id);
+            TeamDTO dto = container.GetTeamDataByID(id);
             if(dto == null)
             {
                 return null;
