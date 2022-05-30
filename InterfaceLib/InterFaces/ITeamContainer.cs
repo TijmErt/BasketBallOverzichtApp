@@ -18,9 +18,9 @@
         /// <summary>
         /// Hier haal je alle teams van een club op
         /// </summary>
-        /// <param name="clubID">je geeft hier de club ID mee</param>
+        /// <param name="ClubID">je geeft hier de club ID mee</param>
         /// <returns>Geeft een lijst van Teams terug</returns>
-        public List<TeamDTO> GetAllTeamsFromClub(int clubID);
+        public List<TeamDTO> GetAllTeamsFromClub(int ClubID);
 
         /// <summary>
         /// Hier creeër je een team voor je club

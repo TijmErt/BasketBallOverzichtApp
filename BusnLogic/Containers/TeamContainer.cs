@@ -48,12 +48,12 @@ namespace BusnLogic
         /// <summary>
         /// Hier haal je alle teams van een club op
         /// </summary>
-        /// <param name="clubID">je geeft hier de club ID mee</param>
+        /// <param name="ClubID">je geeft hier de club ID mee</param>
         /// <returns>Geeft een lijst van Teams terug</returns>
-        public List<Team> GetAllTeamsFromClub(int clubID)
+        public List<Team> GetAllTeamsFromClub(int ClubID)
         {
             List<Team> list = new List<Team>();
-            foreach (TeamDTO item in container.GetAllTeamsFromClub(clubID))
+            foreach (TeamDTO item in container.GetAllTeamsFromClub(ClubID))
             {
                 list.Add(new Team(item));
             }

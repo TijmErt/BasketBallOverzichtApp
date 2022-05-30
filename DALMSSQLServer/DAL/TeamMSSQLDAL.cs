@@ -132,9 +132,9 @@ namespace DALMSSQLServer
         /// <summary>
         /// Hier haal je alle teams van een club op
         /// </summary>
-        /// <param name="clubID">je geeft hier de club ID mee</param>
+        /// <param name="ClubID">je geeft hier de club ID mee</param>
         /// <returns>Geeft een lijst van Teams terug</returns>
-        public List<TeamDTO> GetAllTeamsFromClub(int clubID)
+        public List<TeamDTO> GetAllTeamsFromClub(int ClubID)
         {
             SqlDataReader reader;
             SqlCommand cmd;
@@ -142,7 +142,7 @@ namespace DALMSSQLServer
             string sql = "SELECT * FROM Team T JOIN Club C ON t.Club_ID = C.ID AND T.Club_ID = @ClubID";
             cmd = new SqlCommand(sql, databaseConnection);
             databaseConnection.Open();
-            cmd.Parameters.AddWithValue("@ClubID", clubID);
+            cmd.Parameters.AddWithValue("@ClubID", ClubID);
             reader = cmd.ExecuteReader();
 
             List<TeamDTO> list = new List<TeamDTO>();
