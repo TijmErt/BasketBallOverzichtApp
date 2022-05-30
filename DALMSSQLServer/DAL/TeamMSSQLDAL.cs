@@ -59,14 +59,14 @@ namespace DALMSSQLServer
         /// <summary>
         /// Hier verwijder je een team 
         /// </summary>
-        /// <param name="teamID">je geeft hier de team id mee van het team dat verwijderd wordt</param>
-        public void DeleteTeam(int teamID)
+        /// <param name="TeamID">je geeft hier de team id mee van het team dat verwijderd wordt</param>
+        public void DeleteTeam(int TeamID)
         {
             SqlCommand cmd;
             string sql = "DELETE FROM Team WHERE ID = @teamID";
 
             cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@teamID", teamID);
+            cmd.Parameters.AddWithValue("@teamID", TeamID);
 
             databaseConnection.Open();
 
@@ -78,7 +78,7 @@ namespace DALMSSQLServer
         /// Hier kun je de team gegevens krijgen met het teamID
         /// </summary>
         /// <param name="id">je geeft hier de team id mee</param>
-        /// <returns></returns>
+        /// <returns>Geeft een TeamDTO terug</returns>
         public TeamDTO FindByID(int id)
         {
             SqlDataReader reader;
