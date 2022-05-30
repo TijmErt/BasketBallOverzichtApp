@@ -14,10 +14,14 @@ namespace BusnLogic
         {
             this.container = containerTemp;
         }
-
-        public Club? FindByID(int id)
+        /// <summary>
+        /// Je haalt hier mee gegevens op van de meegegven club ID
+        /// </summary>
+        /// <param name="ClubID">Je voert hier je club ID in</param>
+        /// <returns>Het geeft een Club terug</returns>
+        public Club? GetClubDataFromID(int ClubID)
         {
-            ClubDTO dto = container.FindByID(id);
+            ClubDTO dto = container.GetClubDataFromID(ClubID);
             if(dto == null)
             {
                 return null;
@@ -25,6 +29,10 @@ namespace BusnLogic
             return new Club(dto);
         }
 
+        /// <summary>
+        /// Hier haal je alle clubs op die er bestaan
+        /// </summary>
+        /// <returns>Het geeft een lijst van Club's terug</returns>
         public List<Club> GetAll()
         {
             List<Club> list = new List<Club>();
