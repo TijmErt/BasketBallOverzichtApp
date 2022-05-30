@@ -14,7 +14,13 @@ namespace DALMSSQLServer
     public class GebruikerMSSQLDAL : IGebruikerContainer
     {
         private static SqlConnection databaseConnection = new SqlConnection("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
-
+        
+        /// <summary>
+        /// Hier word er met een account ingelogd door te kijken of er een email is die overeen komt met het wachtwoord
+        /// </summary>
+        /// <param name="Email">Hier word de email van de gebruiker ingevoerd</param>
+        /// <param name="wachtwoord">Hier word het wachtwoord van de gebruiker ingevoerd</param>
+        /// <returns></returns>
         public GebruikerDTO FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord)
         {
             SqlCommand cmd;
