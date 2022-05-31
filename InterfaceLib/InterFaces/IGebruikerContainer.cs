@@ -15,7 +15,7 @@ namespace InterfaceLib.InterFaces
         /// <param name="Email">Hier word de email van de gebruiker ingevoerd</param>
         /// <param name="wachtwoord">Hier word het wachtwoord van de gebruiker ingevoerd</param>
         /// <returns>Het geeft en GebruikerDTO terug</returns>
-        public GebruikerDTO FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord);
+        public GebruikerDTO FindGebruikerByEmailAndPassWord(string Email, string wachtwoord);
 
         /// <summary>
         /// Hier word een gerbuiker terug gegeven als je een email mee geeft

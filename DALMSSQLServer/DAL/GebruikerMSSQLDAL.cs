@@ -21,7 +21,7 @@ namespace DALMSSQLServer
         /// <param name="Email">Hier word de email van de gebruiker ingevoerd</param>
         /// <param name="wachtwoord">Hier word het wachtwoord van de gebruiker ingevoerd</param>
         /// <returns>Het geeft en GebruikerDTO terug</returns>
-        public GebruikerDTO FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord)
+        public GebruikerDTO FindGebruikerByEmailAndPassWord(string Email, string wachtwoord)
         {
             SqlCommand cmd;
             SqlDataReader reader;

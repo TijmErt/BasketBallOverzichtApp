@@ -59,7 +59,7 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult LoginAction(InlogVM vm)
         {
-            Gebruiker Ingelogde = container.FindByEmailAndPassWordkGebruiker(vm.Email, vm.Wachtwoord);
+            Gebruiker Ingelogde = container.FindGebruikerByEmailAndPassWord(vm.Email, vm.Wachtwoord);
             if (Ingelogde == null)
             {
                 ViewData["Error"] = "Inloggegevens niet correct";

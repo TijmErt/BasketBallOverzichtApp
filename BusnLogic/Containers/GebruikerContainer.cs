@@ -77,9 +77,9 @@ namespace BusnLogic.Containers
         /// <param name="Email">Hier word de email van de gebruiker ingevoerd</param>
         /// <param name="wachtwoord">Hier word het wachtwoord van de gebruiker ingevoerd</param>
         /// <returns>Het geeft en Gebruiker terug</returns>
-        public Gebruiker FindByEmailAndPassWordkGebruiker(string Email, string wachtwoord)
+        public Gebruiker FindGebruikerByEmailAndPassWord(string Email, string wachtwoord)
         {
-            GebruikerDTO dto = Container.FindByEmailAndPassWordkGebruiker(Email, wachtwoord);
+            GebruikerDTO dto = Container.FindGebruikerByEmailAndPassWord(Email, wachtwoord);
             if (dto == null)
             {
                 return null;
