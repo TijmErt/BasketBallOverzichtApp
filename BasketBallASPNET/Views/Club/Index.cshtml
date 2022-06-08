@@ -6,8 +6,8 @@
 <h1>ClubList</h1>
 @foreach (ClubVM vm in Model)
 {
-    <div >
-        <button type="button"onclick="location.href='@Url.Action("Index", "Team", new{ clubID = vm.ID})'">@vm.Name</button>
+    <div>
+        <button type="button" onclick="location.href='@Url.Action("Index", "Team", new{ clubID = vm.ID})'">@vm.Name</button>
     </div>
     <br />
 }

@@ -39,7 +39,6 @@ namespace BasketBallASPNET.Controllers
         public IActionResult DeleteTeam(int teamID)
         {
             TMcontainer.DeleteTeam(teamID);
-            RedirectToAction("","");
             return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
 
         }

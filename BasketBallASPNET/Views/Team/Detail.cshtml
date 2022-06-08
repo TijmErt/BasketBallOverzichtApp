@@ -20,7 +20,7 @@ hier komt een specifieke team
                 @if (3 != Context.Session.GetInt32("RoleID"))
                 {
                     <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST">
-                        <button type="submit" class="btn btn-danger btn-sm">Remove Speler</button>
+                        <button type="submit"  class="btn btn-danger btn-sm">Remove Speler</button>
                     </form>
                 }
             }
@@ -29,26 +29,27 @@ hier komt een specifieke team
     </ul>
 </div>
 
-
-<form asp-action="InsertPlayerToTeam" method="POST">
-    <div>
-        <select name="SpelerID" id="SpelerID" placeholder="Kies een Speler">
-            @foreach (SpelerVM vm in Model)
-            {
-                @if (vm.TeamID == null)
+@if (3 != Context.Session.GetInt32("RoleID"))
+{
+    <form asp-action="InsertPlayerToTeam" method="POST">
+        <div>
+            <select name="SpelerID" id="SpelerID" placeholder="Kies een Speler">
+                @foreach (SpelerVM vm in Model)
                 {
-                    <option value=@vm.ID> @vm.FirstName @vm.LastName</option>
+                    @if (vm.TeamID == null)
+                    {
+                        <option value=@vm.ID> @vm.FirstName @vm.LastName</option>
+                    }
+
                 }
 
-            }
-
-        </select>
-        <button type="submit" class="btn btn-success btn-sm">
-            Add Speler &nbsp;
-            <span class="glyphicon glyphicon-ok"></span>
-        </button>
-    </div>
-</form>
-
+            </select>
+            <button type="submit" class="btn btn-success btn-sm">
+                Add Speler &nbsp;
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+        </div>
+    </form>
+}
 <br />
 <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>

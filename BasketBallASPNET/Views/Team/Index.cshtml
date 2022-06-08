@@ -13,7 +13,7 @@ Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in 
         <div class="form-control">
             <a asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a>
         </div>
-        @if (3 != Context.Session.GetInt32("RoleID"))
+        @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
         {
             <form asp-action=DeleteTeam asp-route-teamID=@vm.ID class="d-flex justify-content-end" method="POST">
                 <button type="submit" class="btn btn-danger btn-sm">Delete Team</button>
@@ -23,7 +23,7 @@ Denk je nou echt dat dit gaat werken voor je makker veel geluk het programma in 
         <br />
     }
     <br />
-    @if (3 != Context.Session.GetInt32("RoleID"))
+    @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
     {
         <form asp-action="CreateTeam" method="POST" >
             <div class="container p-5 " style="background-color:lightgray;">
