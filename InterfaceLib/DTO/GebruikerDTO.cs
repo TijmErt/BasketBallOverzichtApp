@@ -19,7 +19,8 @@ namespace InterfaceLib.DTO
         public int? ClubID;
 
 
-        public GebruikerDTO(string firstName, string lastName, DateTime geboorteDatum, string geslacht,  string email, int roleID, int? teamID, int? clubID, int? id = null)
+        public GebruikerDTO(string firstName, string lastName, DateTime geboorteDatum, string geslacht,
+                            string email, int roleID, int? teamID, int? clubID, int? id = null)
         {
             this.ID = id;
             this.FirstName = firstName;

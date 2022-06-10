@@ -8,23 +8,27 @@ namespace InterfaceLib.DTO
 {
     public class WedstrijdDTO
     {
+        public int? ID;
+
         public int thuisClubID;
 
         public int uitClubID;
-                
+
         public int thuisTeamID;
 
         public int uitTeamID;
 
         public DateTime speelDatum;
 
-        public WedstrijdDTO(int thuisClubID, int uitClubID, int thuisTeamID, int uitTeamID, DateTime speelDatum)
+        public WedstrijdDTO(int thuisClubID, int uitClubID, int thuisTeamID,
+                            int uitTeamID, DateTime speelDatum, int? ID = null)
         {
             this.thuisClubID = thuisClubID;
             this.uitClubID = uitClubID;
             this.thuisTeamID = thuisTeamID;
             this.uitTeamID = uitTeamID;
             this.speelDatum = speelDatum;
+            this.ID = ID;
         }
     }
 }

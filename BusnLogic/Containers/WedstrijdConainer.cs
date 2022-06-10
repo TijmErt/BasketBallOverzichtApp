@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BusnLogic.Containers
 {
-    public class WedstrijdenConainer
+    public class WedstrijdConainer
     {
         private readonly IWedstrijdContainer container;
 
-        public WedstrijdenConainer(IWedstrijdContainer container)
+        public WedstrijdConainer(IWedstrijdContainer container)
         {
             this.container = container;
 

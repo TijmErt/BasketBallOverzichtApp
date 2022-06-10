@@ -9,21 +9,29 @@ namespace BasketBallASPNET.Controllers
 {
     public class TeamController : Controller
     {
-        private readonly TeamContainer TMcontainer = new(new TeamMSSQLDAL());
-        private readonly GebruikerContainer GBcontainter = new(new GebruikerMSSQLDAL());
+        private readonly TeamContainer TeamContainer = new(new TeamMSSQLDAL());
+        private readonly GebruikerContainer GebruikerContainter = new(new GebruikerMSSQLDAL());
 
         [HttpGet]
         public IActionResult Index(int clubID)
         {
-            HttpContext.Session.SetInt32("TempClubID", clubID);
-            List<Team> Lt = TMcontainer.GetAllTeamsFromClub(clubID);
-            List<TeamVM> Lvm = new();
-            foreach (Team T in Lt)
+            if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                Lvm.Add(new TeamVM(T));
+                HttpContext.Session.SetInt32("TempClubID", clubID);
+                List<Team> Lt = TeamContainer.GetAllTeamsFromClub(clubID);
+                List<TeamVM> Lvm = new();
+                foreach (Team T in Lt)
+                {
+                    Lvm.Add(new TeamVM(T));
+                }
+                TeamCreateAndViewVM vm = new(Lvm);
+                return View(vm);
             }
-            TeamCreateAndViewVM vm = new(Lvm);
-            return View(vm);
+            else
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            
         }
 
         [HttpPost]
@@ -31,14 +39,14 @@ namespace BasketBallASPNET.Controllers
         {
             Team team = new(vm.Name, vm.LeeftijdsCategorieID);
             int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
-            TMcontainer.CreateTeam(team, ClubID);
+            TeamContainer.CreateTeam(team, ClubID);
             return RedirectToAction("Index", new{ clubID = ClubID });
         }
 
         [HttpPost]
         public IActionResult DeleteTeam(int teamID)
         {
-            TMcontainer.DeleteTeam(teamID);
+            TeamContainer.DeleteTeam(teamID);
             return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
 
         }
@@ -46,35 +54,43 @@ namespace BasketBallASPNET.Controllers
         [HttpGet]
         public IActionResult Detail(int TeamID)
         {
-            int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
-            if(TMcontainer.CheckClubTeamLink(TeamID, ClubID) == true)
+            if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                HttpContext.Session.SetInt32("TempTeamID", TeamID);
-                List<Gebruiker> Lc = GBcontainter.GetAllGebruikersFromClub(ClubID);
-                List<SpelerVM> Lvm = new();
-                foreach (Gebruiker c in Lc)
+                int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+                if (TeamContainer.CheckClubTeamLink(TeamID, ClubID) == true)
                 {
-                    Lvm.Add(new SpelerVM(c));
+                    HttpContext.Session.SetInt32("TempTeamID", TeamID);
+                    List<Gebruiker> Lc = GebruikerContainter.GetAllGebruikersFromClub(ClubID);
+                    List<SpelerVM> Lvm = new();
+                    foreach (Gebruiker c in Lc)
+                    {
+                        Lvm.Add(new SpelerVM(c));
+                    }
+
+                    return View(Lvm);
                 }
+                return RedirectToAction("Index", new { ClubID });
 
-                return View(Lvm);
             }
-            return RedirectToAction("Index", new { ClubID} );
-
+            else
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            
         }
 
         [HttpPost]
         public IActionResult InsertPlayerToTeam(int SpelerID)
         {
             int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
-            GBcontainter.InsertGebruikerInToTeam(SpelerID, teamID);
+            GebruikerContainter.InsertGebruikerInToTeam(SpelerID, teamID);
             return RedirectToAction("Detail", new { TeamID = teamID });
         }
         [HttpPost]
         public IActionResult RemoveSpelerFromTeam(int SpelerID)
         {
             int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
-            GBcontainter.RemoveSpelerFromTeam(SpelerID);
+            GebruikerContainter.RemoveSpelerFromTeam(SpelerID);
             return RedirectToAction("Detail", new { TeamID = teamID });
         }
 

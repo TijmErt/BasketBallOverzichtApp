@@ -9,7 +9,7 @@ namespace BasketBallASPNET.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly GebruikerContainer container = new (new GebruikerMSSQLDAL());
+        private readonly GebruikerContainer GebruikerContainer = new (new GebruikerMSSQLDAL());
 
         [HttpGet]
         public IActionResult Index()
@@ -42,16 +42,16 @@ namespace BasketBallASPNET.Controllers
             if(vm.Wachtwoord == vm.BevestigWachtwoord)
             {
                 Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID);
-                container.CreateGebruikerAccount(g, vm.Wachtwoord);
+                GebruikerContainer.CreateGebruikerAccount(g, vm.Wachtwoord);
                 ViewData["Success"] = "Account gecreëerd";
-                return View();
+                return RedirectToAction("Login", "Account");
             }
             else
             {
                 ViewData["Error"] = "Wachtwoord komt niet overheen";
             }
 
-            return RedirectToAction("Register", "Account");
+            return RedirectToAction("Login", "Account");
 
 
         }
@@ -59,7 +59,7 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult LoginAction(InlogVM vm)
         {
-            Gebruiker Ingelogde = container.FindGebruikerByEmailAndPassWord(vm.Email, vm.Wachtwoord);
+            Gebruiker Ingelogde = GebruikerContainer.FindGebruikerByEmailAndPassWord(vm.Email, vm.Wachtwoord);
             if (Ingelogde == null)
             {
                 ViewData["Error"] = "Inloggegevens niet correct";
@@ -72,6 +72,7 @@ namespace BasketBallASPNET.Controllers
                 HttpContext.Session.SetInt32("ID", Ingelogde.ID.Value);
                 HttpContext.Session.SetInt32("RoleID", Ingelogde.RoleID);
                 HttpContext.Session.SetInt32("ClubID", Ingelogde.ClubID.Value);
+                HttpContext.Session.SetInt32("LoggedIn", 1);
             }
             return Redirect("/");
         }

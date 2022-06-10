@@ -15,12 +15,27 @@ namespace BasketBallASPNET.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if(HttpContext.Session.GetInt32("LoggedIn") == 1)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            if (HttpContext.Session.GetInt32("LoggedIn") == 1)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Account");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
