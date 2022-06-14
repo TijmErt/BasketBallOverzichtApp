@@ -12,6 +12,11 @@ namespace InterfaceLib.InterFaces
 
         public List<WedstrijdDTO> GetAllFromTeam(int TeamID);
 
+        public WedstrijdDTO GetWedstrijdByID(int WedstrijdID);
+        public void AddSpelerToeWedstrijd(int SpelerID, int WedstrijdID);
+
+        public void UpdatePresentie(int SpelerID, int WedstrijdID, bool Presentie);
+
         public void CreateWedstrijd(WedstrijdDTO dto);
 
     }

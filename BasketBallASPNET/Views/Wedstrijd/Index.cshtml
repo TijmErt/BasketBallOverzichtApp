@@ -1,7 +1,22 @@
-﻿
+﻿@model List<WedstrijdVM>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<h1>Jouw Wedstrijden</h1>
+<body style="background-color:powderblue;">
+    <div style="background-color:#ff0000;">
+        @foreach (WedstrijdVM vm in Model)
+        {
+            <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID 
+                display: block; style="color: #ffffff; text-decoration: none; ">
+                <div class="container" style="background-color:#38cf7e">
+                    <p>
+                        @vm.thuisClubID.Name VS @vm.uitClubID.Name <br>
+                        &nbsp;&nbsp;@vm.speelDatum
+                    </p>
+                </div>
+            </a>
+        }
+    </div>
+</body>

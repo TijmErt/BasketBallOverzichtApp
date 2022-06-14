@@ -1,4 +1,6 @@
-﻿using InterfaceLib.InterFaces;
+﻿using BusnLogic.Entity;
+using InterfaceLib.DTO;
+using InterfaceLib.InterFaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,38 @@ namespace BusnLogic.Containers
         {
             this.container = container;
 
+        }
+
+        public List<Wedstrijd> GetAllFromTeam(int TeamID)
+        {
+            List<WedstrijdDTO> dto = container.GetAllFromTeam(TeamID);
+            List<Wedstrijd> wedstrijden = new List<Wedstrijd>();
+            foreach (WedstrijdDTO temp in dto)
+            {
+                wedstrijden.Add(new Wedstrijd(temp));
+            }
+            return wedstrijden;
+        }
+
+
+        public Wedstrijd GetWedstrijdByID(int WedstrijdID)
+        {
+            Wedstrijd wedstrijd = new(container.GetWedstrijdByID(WedstrijdID));
+            return wedstrijd;
+        }
+        public void AddSpelerToeWedstrijd(int SpelerID, int WedstrijdID)
+        {
+            container.AddSpelerToeWedstrijd(SpelerID, WedstrijdID);
+        }
+
+        public void UpdatePresentie(int SpelerID, int WedstrijdID, bool Presentie)
+        {
+            container.UpdatePresentie(SpelerID, WedstrijdID, Presentie);
+        }
+
+        public void CreateWedstrijd(Wedstrijd temp)
+        {
+            container.CreateWedstrijd(temp.GetDTO());
         }
     }
 }

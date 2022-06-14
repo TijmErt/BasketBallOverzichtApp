@@ -1,0 +1,30 @@
+﻿@model WedstrijdInzienVM
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<body>
+    <div>
+        <p>
+            @Model.wedstrijd.thuisClub.Name VS @Model.wedstrijd.uitClub <br />
+            @Model.wedstrijd.speelDatum
+        </p>
+    </div>
+    <div class="d-flex justify-content-between">
+        @foreach (SpelerVM vm in Model.ThuisTeam)
+        {
+            <div class="">
+                @vm.FirstName
+            </div>
+        }
+        @foreach (SpelerVM vm in Model.UitTeam)
+        {
+            <div class="">
+                @vm.FirstName
+            </div>
+        }
+    </div>
+
+
+</body>
+

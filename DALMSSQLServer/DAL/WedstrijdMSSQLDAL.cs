@@ -9,13 +9,27 @@ namespace DALMSSQLServer.DAL
     {
         private static readonly SqlConnection databaseConnection = new("Server=mssqlstud.fhict.local;Database=dbi486333_basketbal;User Id=dbi486333_basketbal;Password=Basketbal");
 
+        public void AddSpelerToeWedstrijd(int SpelerID, int WedstrijdID)
+        {
+            SqlCommand cmd;
+            string sql = @"INSERT INTO WedstrijdGebruiker(Wedstrijd_ID, Gebruiker_ID, Presentie) 
+                           VALUES(@WedstrijdID,@SpelerID,1)";
+
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@SpelerID", SpelerID);
+            cmd.Parameters.AddWithValue("@WedstrijdID", WedstrijdID);
+
+            databaseConnection.Open();
+
+            cmd.ExecuteNonQuery();
+            databaseConnection.Close();
+        }
+
         public void CreateWedstrijd(WedstrijdDTO dto)
         {
             SqlCommand cmd;
-            string sql = "INSERT INTO Team(TeamName, LeeftijdsCategorieën_ID, Club_ID) Values(" +
-                "@Name," +
-                "@LeeftijdsCategorieID," +
-                "@clubID)";
+            string sql = @"INSERT INTO Wedstrijd(ThuisClubID, UitClubID, ThuisTeamID, UitTeamID, DatumTijd) 
+                           VALUES(@ThuisClubID, @UitClubID, @ThuisTeamID,@UitTeamID , @SpeelDatum)";
 
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@ThuisClubID", dto.thuisClubID);
@@ -49,11 +63,34 @@ namespace DALMSSQLServer.DAL
                     reader.GetInt32("UitClubID"),
                     reader.GetInt32("ThuisTeamID"),
                     reader.GetInt32("UitTeamID"),
-                    reader.GetDateTime("SpeelDatum")
+                    reader.GetDateTime("DatumTijd")
                     ));
             }
             databaseConnection.Close();
             return list;
+        }
+
+        public WedstrijdDTO GetWedstrijdByID(int WedstrijdID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdatePresentie(int SpelerID, int WedstrijdID,bool Presentie)
+        {
+            SqlCommand cmd;
+            string sql = @"UPDATE WedstrijdGebruiker 
+                           SET Presentie = @Presentie 
+                           WHERE Wedstrijd_ID = @WedstrijdID AND Gebruiker_ID = @SpelerID";
+
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@SpelerID", SpelerID);
+            cmd.Parameters.AddWithValue("@WedstrijdID", WedstrijdID);
+            cmd.Parameters.AddWithValue("@Presentie", Presentie);
+
+            databaseConnection.Open();
+
+            cmd.ExecuteNonQuery();
+            databaseConnection.Close();
         }
     }
 }
