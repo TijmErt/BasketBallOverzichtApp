@@ -46,6 +46,11 @@ namespace BusnLogic.Containers
             container.UpdatePresentie(SpelerID, WedstrijdID, Presentie);
         }
 
+        public bool GetPresentie(int SpelerID, int WedstrijdID)
+        {
+            return container.GetPersentie(SpelerID, WedstrijdID);
+        }
+
         public void CreateWedstrijd(Wedstrijd temp)
         {
             container.CreateWedstrijd(temp.GetDTO());

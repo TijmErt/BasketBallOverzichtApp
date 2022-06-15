@@ -67,7 +67,7 @@ namespace BasketBallASPNET.Controllers
                         Lvm.Add(new SpelerVM(c));
                     }
 
-                    return View(Lvm);
+                    return base.View(Lvm);
                 }
                 return RedirectToAction("Index", new { ClubID });
 

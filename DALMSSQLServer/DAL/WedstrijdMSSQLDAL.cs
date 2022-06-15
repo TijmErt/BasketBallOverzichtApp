@@ -63,16 +63,54 @@ namespace DALMSSQLServer.DAL
                     reader.GetInt32("UitClubID"),
                     reader.GetInt32("ThuisTeamID"),
                     reader.GetInt32("UitTeamID"),
-                    reader.GetDateTime("DatumTijd")
+                    reader.GetDateTime("DatumTijd"),
+                    reader.GetInt32("ID")
                     ));
             }
             databaseConnection.Close();
             return list;
         }
 
+        public bool GetPersentie(int SpelerID, int WedstrijdID)
+        {
+            SqlDataReader reader;
+            SqlCommand cmd;
+
+            string sql = @"SELECT Presentie FROM WedstrijdGebruiker 
+                           WHERE Gebruiker_ID = @SpelerID AND Wedstrijd_ID = @WedstrijdID";
+            cmd = new SqlCommand(sql, databaseConnection);
+            databaseConnection.Open();
+            cmd.Parameters.AddWithValue("@SpelerID", SpelerID);
+            cmd.Parameters.AddWithValue("@WedstrijdID", WedstrijdID);
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            bool presentie = reader.GetBoolean("Presentie");
+            databaseConnection.Close();
+            return presentie;
+        }
+
         public WedstrijdDTO GetWedstrijdByID(int WedstrijdID)
         {
-            throw new NotImplementedException();
+            SqlDataReader reader;
+            SqlCommand cmd;
+
+            string sql = @"SELECT * FROM Wedstrijd
+                           WHERE ID = @WedstrijdID";
+            cmd = new SqlCommand(sql, databaseConnection);
+            databaseConnection.Open();
+            cmd.Parameters.AddWithValue("@WedstrijdID", WedstrijdID);
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            WedstrijdDTO wedstrijd = new WedstrijdDTO( 
+                                    reader.GetInt32("ThuisClubID"),
+                                    reader.GetInt32("UitClubID"),
+                                    reader.GetInt32("ThuisTeamID"),
+                                    reader.GetInt32("UitTeamID"),
+                                    reader.GetDateTime("DatumTijd"));
+            databaseConnection.Close();
+            return wedstrijd;
         }
 
         public void UpdatePresentie(int SpelerID, int WedstrijdID,bool Presentie)
@@ -92,5 +130,7 @@ namespace DALMSSQLServer.DAL
             cmd.ExecuteNonQuery();
             databaseConnection.Close();
         }
+
+
     }
 }

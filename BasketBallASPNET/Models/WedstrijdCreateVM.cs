@@ -2,27 +2,19 @@
 {
     public class WedstrijdCreateVM
     {
-        public int? ID { get; set; }
-
-        public int? thuisClubID { get; set; }
-
-        public int? uitClubID { get; set; }
-
-        public int? thuisTeamID { get; set; }
-
-        public int? uitTeamID { get; set; }
-
+        public ClubVM? ThuisCLub { get; set; }
+        public ClubVM? UitCLub { get; set; }
+        public List<ClubVM>? Clubs { get; set; }
+        public List<TeamVM>? Teams { get; set; }
         public DateTime? speelDatum { get; set; }
 
-        public WedstrijdCreateVM(int thuisClubID, int uitClubID, int thuisTeamID,
-                        int uitTeamID, DateTime speelDatum, int? ID = null)
+        public WedstrijdCreateVM(ClubVM? thuisCLub, ClubVM? uitCLub, List<ClubVM>? clubs, List<TeamVM>? teams, DateTime? speelDatum)
         {
-            this.thuisClubID = thuisClubID;
-            this.uitClubID = uitClubID;
-            this.thuisTeamID = thuisTeamID;
-            this.uitTeamID = uitTeamID;
+            ThuisCLub = thuisCLub;
+            UitCLub = uitCLub;
+            Clubs = clubs;
+            Teams = teams;
             this.speelDatum = speelDatum;
-            this.ID = ID;
         }
 
         public WedstrijdCreateVM()

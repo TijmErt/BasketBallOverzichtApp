@@ -98,7 +98,7 @@ namespace DALMSSQLServer
         /// </summary>
         /// <param name="TeamID">Geef hier het ID van de Team mee</param>
         /// <returns>Het geeft een lijst van Gebruikers die in de gegeven team zitten</returns>
-        public List<GebruikerDTO> GetGebruikerFromTeam(int TeamID)
+        public List<GebruikerDTO> GetGebruikersFromTeam(int TeamID)
         {
             SqlDataReader reader;
             SqlCommand cmd;

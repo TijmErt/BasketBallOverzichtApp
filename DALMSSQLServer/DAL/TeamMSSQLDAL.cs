@@ -92,7 +92,7 @@ namespace DALMSSQLServer
             reader.Read();
             if (reader.HasRows)
             {
-                TeamDTO dto = new (reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID"));
+                TeamDTO dto = new (reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"),reader.GetInt32("Clu"), reader.GetInt32("ID"));
                 databaseConnection.Close();
                 return dto;
 

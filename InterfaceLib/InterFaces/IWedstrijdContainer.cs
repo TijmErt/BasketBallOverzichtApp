@@ -17,6 +17,8 @@ namespace InterfaceLib.InterFaces
 
         public void UpdatePresentie(int SpelerID, int WedstrijdID, bool Presentie);
 
+        public bool GetPersentie(int SpelerID, int WedstrijdID);
+
         public void CreateWedstrijd(WedstrijdDTO dto);
 
     }

@@ -35,10 +35,10 @@ namespace BusnLogic.Containers
         /// </summary>
         /// <param name="TeamID">Geef hier het ID van de Team mee</param>
         /// <returns>Het geeft een lijst van Gebruikers die in de gegeven team zitten</returns>
-        public List<Gebruiker> GetGebruikerFromTeam(int TeamID)
+        public List<Gebruiker> GetGebruikersFromTeam(int TeamID)
         {
             List<Gebruiker> list = new();
-            foreach (GebruikerDTO Item in Container.GetGebruikerFromTeam(TeamID))
+            foreach (GebruikerDTO Item in Container.GetGebruikersFromTeam(TeamID))
             {
                 list.Add(new Gebruiker(Item));
             }

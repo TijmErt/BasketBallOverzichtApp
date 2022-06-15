@@ -12,11 +12,15 @@
                 display: block; style="color: #ffffff; text-decoration: none; ">
                 <div class="container" style="background-color:#38cf7e">
                     <p>
-                        @vm.thuisClubID.Name VS @vm.uitClubID.Name <br>
+                        @vm.thuisClub.Name VS @vm.uitClub.Name <br>
                         &nbsp;&nbsp;@vm.speelDatum
                     </p>
                 </div>
             </a>
         }
+    </div>
+
+    <div>
+        <a asp-controller="Wedstrijd" asp-action="Create"> Wedstrijd Inplannen</a>
     </div>
 </body>
