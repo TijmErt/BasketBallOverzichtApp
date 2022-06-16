@@ -11,25 +11,24 @@ namespace BusnLogic.Entity
     {
         public int? ID;
 
-        public int thuisClubID;
+        public int? thuisClubID;
 
-        public int uitClubID;
+        public int? uitClubID;
 
-        public int thuisTeamID;
+        public int? thuisTeamID;
 
-        public int uitTeamID;
+        public int? uitTeamID;
 
-        public DateTime speelDatum;
+        public DateTime? speelDatum;
 
-        public Wedstrijd(int thuisClubID, int uitClubID, int thuisTeamID,
-                        int uitTeamID, DateTime speelDatum, int? ID = null)
+        public Wedstrijd( int? thuisClubID, int? uitClubID, int? thuisTeamID, int? uitTeamID, DateTime? speelDatum, int? iD = null)
         {
+            ID = iD;
             this.thuisClubID = thuisClubID;
             this.uitClubID = uitClubID;
             this.thuisTeamID = thuisTeamID;
             this.uitTeamID = uitTeamID;
             this.speelDatum = speelDatum;
-            this.ID = ID;
         }
 
         public Wedstrijd(WedstrijdDTO TempDTO)

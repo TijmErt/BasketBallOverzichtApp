@@ -51,6 +51,7 @@ namespace DALMSSQLServer.DAL
 
             string sql = "SELECT * FROM Wedstrijd WHERE UitTeamID = @TeamID OR ThuisTeamID = @TeamID";
             cmd = new SqlCommand(sql, databaseConnection);
+            databaseConnection.Close();
             databaseConnection.Open();
             cmd.Parameters.AddWithValue("@TeamID", TeamID);
             reader = cmd.ExecuteReader();

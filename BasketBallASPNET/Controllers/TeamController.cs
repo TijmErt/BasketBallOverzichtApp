@@ -37,8 +37,8 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult CreateTeam(TeamCreateAndViewVM vm)
         {
-            Team team = new(vm.Name, vm.LeeftijdsCategorieID);
             int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+            Team team = new(vm.Name, vm.LeeftijdsCategorieID, ClubID);
             TeamContainer.CreateTeam(team, ClubID);
             return RedirectToAction("Index", new{ clubID = ClubID });
         }

@@ -3,25 +3,41 @@
     ViewData["Title"] = "Create";
 }
 <script>
-function myFunction() {
-  // Declare variables
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById('thuisClubID');
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("myUL");
-  li = ul.getElementsByTagName('li');
+    function ThuisTeamFilter(temp)
+    {
 
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    txtValue = a.textContent || a.innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
+        const teamIDlst = document.querySelectorAll(".ThuisTeamIDList");
+        const tempType = temp;
+        let placeholder = tempType.getAttribute("data-ClubID");
+        for (let i = 0; i < teamIDlst.length; i++){
+            if(teamIDlst[i].getAttribute("data-TeamClubID").toString() == placeholder.toString())
+            {
+                teamIDlst[i].style.display = "block";
+            }
+            else
+            {
+                teamIDlst[i].style.display = "none";
+            }
+        }
     }
-  }
-}
+    function UitTeamFilter(temp)
+    {
+
+        const teamIDlst = document.querySelectorAll(".UitTeamIDList");
+        const tempType = temp;
+        let placeholder = tempType.getAttribute("data-ClubID");
+        for (let i = 0; i < teamIDlst.length; i++){
+            if(teamIDlst[i].getAttribute("data-TeamClubID").toString() == placeholder.toString())
+            {
+                teamIDlst[i].style.display = "block";
+            }
+            else
+            {
+                teamIDlst[i].style.display = "none";
+            }
+        }
+    }
+
 </script>
 
 <body>
@@ -32,18 +48,18 @@ function myFunction() {
     <br>
     <div class="d-flex justify-content-between">
         <div>
-            <select name="thuisClubID" id="thuisClubID">
+            <select name="thuisClubID" asp-for=ThuisCLubID id="thuisClubID">
                 @foreach (ClubVM cvm in Model.Clubs)
                 {
-                    <option value=@cvm.ID>@cvm.Name</option>
+                    <option onclick="ThuisTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
                 }
 
 
             </select>
-            <select name="thuisTeamID" id="thuisTeamID">
+            <select name="thuisTeamID" asp-for=ThuisTeamID id="thuisTeamID">
                 @foreach (TeamVM tvm in Model.Teams)
                 {
-                    <option value=@tvm.ID>@tvm.Name</option>
+                    <option class="ThuisTeamIDList" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
                 }
 
 
@@ -51,22 +67,28 @@ function myFunction() {
 
         </div>
         <div>
-            <select name="uitClubID" id="uitClubID">
+            <select name="uitClubID" asp-for=UitCLubID id="uitClubID">
                 @foreach (ClubVM cvm in Model.Clubs)
                 {
-                    <option value=@cvm.ID>@cvm.Name</option>
+                    <option onclick="UitTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
                 }
 
             </select>
-            <select name="uitTeamID" id="uitTeamID">
+            <select name="uitTeamID" asp-for=UiTeamID id="uitTeamID">
                 @foreach (TeamVM tvm in Model.Teams)
                 {
-                    <option value=@tvm.ID>@tvm.Name</option>
+                    <option class="UitTeamIDList" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
                 }
 
             </select>
 
         </div>
     </div>
+
+    <button type="submit" class="btn btn-primary btn-md">
+        Create &nbsp;
+        <span class="glyphicon glyphicon-save"></span>
+    </button>
+
 </body>
 

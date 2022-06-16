@@ -14,15 +14,14 @@
 
         public DateTime? speelDatum { get; set; }
 
-        public WedstrijdVM(ClubVM thuisClubID, ClubVM uitClubID, int thuisTeamID,
-                        int uitTeamID, DateTime speelDatum, int? ID = null)
+        public WedstrijdVM( ClubVM? thuisClub, ClubVM? uitClub, int? thuisTeamID, int? uitTeamID, DateTime? speelDatum, int? iD= null)
         {
-            this.thuisClub = thuisClubID;
-            this.uitClub = uitClubID;
+            ID = iD;
+            this.thuisClub = thuisClub;
+            this.uitClub = uitClub;
             this.thuisTeamID = thuisTeamID;
             this.uitTeamID = uitTeamID;
             this.speelDatum = speelDatum;
-            this.ID = ID;
         }
 
         public WedstrijdVM()

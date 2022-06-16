@@ -90,6 +90,7 @@ namespace DALMSSQLServer
                 databaseConnection.Close();
                 return temp;
             }
+            databaseConnection.Close();
             throw new Exception("bestaat niet");
         }
 

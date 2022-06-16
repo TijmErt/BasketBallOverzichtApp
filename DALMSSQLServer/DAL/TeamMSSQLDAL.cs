@@ -92,7 +92,7 @@ namespace DALMSSQLServer
             reader.Read();
             if (reader.HasRows)
             {
-                TeamDTO dto = new (reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"),reader.GetInt32("Clu"), reader.GetInt32("ID"));
+                TeamDTO dto = new (reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"),reader.GetInt32("Club_ID"), reader.GetInt32("ID"));
                 databaseConnection.Close();
                 return dto;
 
@@ -122,7 +122,7 @@ namespace DALMSSQLServer
 
             while (reader.Read())
             {
-                list.Add(new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID")));
+                list.Add(new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("Club_ID"), reader.GetInt32("ID")));
             }
             databaseConnection.Close();
 
@@ -148,7 +148,7 @@ namespace DALMSSQLServer
             List<TeamDTO> list = new ();
             while (reader.Read())
             {
-                list.Add(new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("ID")));
+                list.Add(new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("Club_ID"), reader.GetInt32("ID")));
             }
             databaseConnection.Close();
             return list;

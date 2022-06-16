@@ -22,10 +22,10 @@ namespace BasketBallASPNET.Controllers
                 List<WedstrijdVM> vm = new List<WedstrijdVM>();
                 foreach (Wedstrijd temp in wedstrijden)
                 {
-                    Club ThuisClub = cc.GetClubDataFromID(temp.thuisClubID);
+                    Club ThuisClub = cc.GetClubDataFromID(temp.thuisClubID.Value);
                     ClubVM ThuisClubVM = new(ThuisClub.ID, ThuisClub.Name);
 
-                    Club UitClub = cc.GetClubDataFromID(temp.uitClubID);
+                    Club UitClub = cc.GetClubDataFromID(temp.uitClubID.Value);
                     ClubVM UitClubVM = new(UitClub.ID, UitClub.Name);
 
                     vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID  ));
@@ -44,16 +44,16 @@ namespace BasketBallASPNET.Controllers
             if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
                 Wedstrijd wedstrijd = wc.GetWedstrijdByID(WedstrijdID);
-                Club thuisClub = cc.GetClubDataFromID(wedstrijd.thuisClubID);
-                Club UitClub = cc.GetClubDataFromID(wedstrijd.uitClubID);
+                Club thuisClub = cc.GetClubDataFromID(wedstrijd.thuisClubID.Value);
+                Club UitClub = cc.GetClubDataFromID(wedstrijd.uitClubID.Value);
 
                 ClubVM ThuisClubVM = new ClubVM(thuisClub.ID, thuisClub.Name);
                 ClubVM UitClubVM = new ClubVM(UitClub.ID, UitClub.Name);
 
                 WedstrijdVM WVM = new WedstrijdVM(ThuisClubVM, UitClubVM, wedstrijd.thuisTeamID, wedstrijd.uitTeamID, wedstrijd.speelDatum, wedstrijd.ID);
 
-                List<Gebruiker> ThuisSpelers = gc.GetGebruikersFromTeam(wedstrijd.thuisTeamID);
-                List<Gebruiker> UitSpelers = gc.GetGebruikersFromTeam(wedstrijd.uitTeamID);
+                List<Gebruiker> ThuisSpelers = gc.GetGebruikersFromTeam(wedstrijd.thuisTeamID.Value);
+                List<Gebruiker> UitSpelers = gc.GetGebruikersFromTeam(wedstrijd.uitTeamID.Value);
                 List<SpelerVM> ThuisSpelersVM = new List<SpelerVM>();
                 List<SpelerVM> UitSpelersVM = new List<SpelerVM>();
 
@@ -67,9 +67,18 @@ namespace BasketBallASPNET.Controllers
                     UitSpelersVM.Add(new SpelerVM(g));
                 }
 
-                bool presentie = wc.GetPresentie(HttpContext.Session.GetInt32("ID").Value, WedstrijdID);
+                WedstrijdInzienVM vm;
+                try
+                {
+                    bool presentie = wc.GetPresentie(HttpContext.Session.GetInt32("ID").Value, WedstrijdID);
+                     vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, presentie);
+                }
+                catch(Exception)
+                {
+                     vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, false);
+                }
 
-                WedstrijdInzienVM vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, presentie);
+                
                 return View(vm);
             }
             else
@@ -78,10 +87,10 @@ namespace BasketBallASPNET.Controllers
             };
         }
 
+
+        [HttpGet]
         public IActionResult Create()
         {
-            Club thuisClub = cc.GetClubDataFromID(HttpContext.Session.GetInt32("ClubID").Value);
-            ClubVM ThuisClubVM = new(thuisClub.ID, thuisClub.Name);
             List<Club> AllClubs = cc.GetAll();
             List<ClubVM> AllClubsVM = new List<ClubVM>();
             foreach(Club club in AllClubs)
@@ -95,8 +104,16 @@ namespace BasketBallASPNET.Controllers
                 AllTeamVM.Add(new TeamVM(team));
             }
 
-            WedstrijdCreateVM WedstrijdCVM = new WedstrijdCreateVM(ThuisClubVM, null, AllClubsVM, AllTeamVM, null);
+            WedstrijdCreateVM WedstrijdCVM = new WedstrijdCreateVM( AllClubsVM, AllTeamVM);
             return View(WedstrijdCVM);
+        }
+
+        [HttpPost]
+        public IActionResult Create(WedstrijdCreateVM vm)
+        {
+            wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UiTeamID, vm.speelDatum));
+
+            return RedirectToAction("Index", "Wedstrijd");
         }
     }
 }
