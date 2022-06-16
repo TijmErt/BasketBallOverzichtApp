@@ -13,7 +13,7 @@ namespace DALMSSQLServer.DAL
         {
             SqlCommand cmd;
             string sql = @"INSERT INTO WedstrijdGebruiker(Wedstrijd_ID, Gebruiker_ID, Presentie) 
-                           VALUES(@WedstrijdID,@SpelerID,1)";
+                           VALUES(@WedstrijdID,@SpelerID,0)";
 
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@SpelerID", SpelerID);
@@ -25,10 +25,12 @@ namespace DALMSSQLServer.DAL
             databaseConnection.Close();
         }
 
-        public void CreateWedstrijd(WedstrijdDTO dto)
+        public int CreateWedstrijd(WedstrijdDTO dto)
         {
+            SqlDataReader reader;
             SqlCommand cmd;
             string sql = @"INSERT INTO Wedstrijd(ThuisClubID, UitClubID, ThuisTeamID, UitTeamID, DatumTijd) 
+                           OUTPUT inserted.ID AS WedstrijdID
                            VALUES(@ThuisClubID, @UitClubID, @ThuisTeamID,@UitTeamID , @SpeelDatum)";
 
             cmd = new SqlCommand(sql, databaseConnection);
@@ -40,8 +42,16 @@ namespace DALMSSQLServer.DAL
 
             databaseConnection.Open();
 
-            cmd.ExecuteNonQuery();
+            reader = cmd.ExecuteReader();
+            int WedstrijdID = 0;
+            List<int> IDs = new List<int>();
+            while (reader.Read())
+            {
+                WedstrijdID = reader.GetInt32("WedstrijdID");
+
+            }
             databaseConnection.Close();
+            return WedstrijdID;
         }
 
         public List<WedstrijdDTO> GetAllFromTeam(int TeamID)

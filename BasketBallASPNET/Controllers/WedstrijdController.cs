@@ -71,7 +71,7 @@ namespace BasketBallASPNET.Controllers
                 try
                 {
                     bool presentie = wc.GetPresentie(HttpContext.Session.GetInt32("ID").Value, WedstrijdID);
-                     vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, presentie);
+                    vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, presentie);
                 }
                 catch(Exception)
                 {
@@ -119,8 +119,12 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult Create(WedstrijdCreateVM vm)
         {
-            wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UiTeamID, vm.speelDatum));
-
+            int WedstrijdID =wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UitTeamID, vm.speelDatum));
+            List<int> WedstrijdSpelers = gc.GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(vm.ThuisTeamID.Value, vm.UitTeamID.Value); 
+            foreach(int i in WedstrijdSpelers)
+            {
+                wc.AddSpelerToeWedstrijd(i, WedstrijdID);
+            }
             return RedirectToAction("Index", "Wedstrijd");
         }
     }

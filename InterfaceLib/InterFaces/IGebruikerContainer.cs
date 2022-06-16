@@ -58,5 +58,7 @@ namespace InterfaceLib.InterFaces
         /// </summary>
         /// <param name="GebruikerID">Geef hier de ID mee van de speler die er uit moet</param>
         public void RemoveGebruikerFromTeam(int GebruikerID);
+
+        public List<int> GetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam);
     }
 }

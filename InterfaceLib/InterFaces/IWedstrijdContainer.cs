@@ -19,7 +19,7 @@ namespace InterfaceLib.InterFaces
 
         public bool GetPersentie(int SpelerID, int WedstrijdID);
 
-        public void CreateWedstrijd(WedstrijdDTO dto);
+        public int CreateWedstrijd(WedstrijdDTO dto);
 
     }
 }

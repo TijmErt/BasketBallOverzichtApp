@@ -105,5 +105,10 @@ namespace BusnLogic.Containers
         {
             Container.RemoveGebruikerFromTeam(GebruikerID);
         }
+
+        public List<int> GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam)
+        {
+            return Container.GetGebruikerIDFromWedstrijdTeams(ThuisTeam, UitTeam);
+        }
     }
 }

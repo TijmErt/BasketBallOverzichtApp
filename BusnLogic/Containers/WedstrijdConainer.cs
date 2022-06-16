@@ -51,9 +51,9 @@ namespace BusnLogic.Containers
             return container.GetPersentie(SpelerID, WedstrijdID);
         }
 
-        public void CreateWedstrijd(Wedstrijd temp)
+        public int CreateWedstrijd(Wedstrijd temp)
         {
-            container.CreateWedstrijd(temp.GetDTO());
+            return container.CreateWedstrijd(temp.GetDTO());
         }
     }
 }

@@ -5,7 +5,7 @@
         public int? ThuisCLubID { get; set; }
         public int? UitCLubID { get; set; }
         public int? ThuisTeamID { get; set; }
-        public int? UiTeamID { get; set; }
+        public int? UitTeamID { get; set; }
         public List<ClubVM>? Clubs { get; set; }
         public List<TeamVM>? Teams { get; set; }
         public DateTime? speelDatum { get; set; }

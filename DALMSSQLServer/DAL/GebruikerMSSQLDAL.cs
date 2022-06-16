@@ -249,6 +249,26 @@ namespace DALMSSQLServer
             return list;
         }
 
+        public List<int> GetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam)
+        {
+            SqlDataReader reader;
+            SqlCommand cmd;
 
+            string sql = "SELECT ID FROM Gebruiker WHERE Team_ID = @ThuisTeamID OR Team_ID = @UitTeamID ";
+            cmd = new SqlCommand(sql, databaseConnection);
+            cmd.Parameters.AddWithValue("@ThuisTeamID", ThuisTeam);
+            cmd.Parameters.AddWithValue("@UitTeamID", UitTeam);
+
+            databaseConnection.Open();
+            reader = cmd.ExecuteReader();
+
+            List<int> list = new();
+            while (reader.Read())
+            {
+                list.Add(reader.GetInt32("ID"));
+            }
+            databaseConnection.Close();
+            return list;
+        }
     }
 }
