@@ -3,7 +3,8 @@
     ViewData["Title"] = "Create";
 }
 <script>
-    function ThuisTeamFilter(temp)
+
+function ThuisTeamFilter(temp)
     {
 
         const teamIDlst = document.querySelectorAll(".ThuisTeamIDList");
@@ -20,7 +21,7 @@
             }
         }
     }
-    function UitTeamFilter(temp)
+function UitTeamFilter(temp)
     {
 
         const teamIDlst = document.querySelectorAll(".UitTeamIDList");
@@ -40,7 +41,7 @@
 
 </script>
 
-<body>
+<body >
     <input id="speelDatum" type="datetime-local" asp-for="speelDatum"
            class=" form-control" placeholder="Voer geboortedatum in"
            pattern="^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$"
@@ -51,7 +52,7 @@
             <select name="thuisClubID" asp-for=ThuisCLubID id="thuisClubID">
                 @foreach (ClubVM cvm in Model.Clubs)
                 {
-                    <option onclick="ThuisTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
+                    <option onload="ThuisTeamFilter(this)" onclick="ThuisTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
                 }
 
 
@@ -70,7 +71,7 @@
             <select name="uitClubID" asp-for=UitCLubID id="uitClubID">
                 @foreach (ClubVM cvm in Model.Clubs)
                 {
-                    <option onclick="UitTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
+                    <option onload="UitTeamFilter(this)" onclick="UitTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
                 }
 
             </select>

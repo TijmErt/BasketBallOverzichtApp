@@ -91,21 +91,29 @@ namespace BasketBallASPNET.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            List<Club> AllClubs = cc.GetAll();
-            List<ClubVM> AllClubsVM = new List<ClubVM>();
-            foreach(Club club in AllClubs)
-            {
-                AllClubsVM.Add(new ClubVM(club.ID, club.Name));
-            }
-            List<Team> AllTeams = tc.GetAllTeams();
-            List<TeamVM> AllTeamVM = new List<TeamVM>();
-            foreach(Team team in AllTeams)
-            {
-                AllTeamVM.Add(new TeamVM(team));
-            }
 
-            WedstrijdCreateVM WedstrijdCVM = new WedstrijdCreateVM( AllClubsVM, AllTeamVM);
-            return View(WedstrijdCVM);
+            if (HttpContext.Session.GetInt32("LoggedIn") == 1)
+            {
+                List<Club> AllClubs = cc.GetAll();
+                List<ClubVM> AllClubsVM = new List<ClubVM>();
+                foreach (Club club in AllClubs)
+                {
+                    AllClubsVM.Add(new ClubVM(club.ID, club.Name));
+                }
+                List<Team> AllTeams = tc.GetAllTeams();
+                List<TeamVM> AllTeamVM = new List<TeamVM>();
+                foreach (Team team in AllTeams)
+                {
+                    AllTeamVM.Add(new TeamVM(team));
+                }
+
+                WedstrijdCreateVM WedstrijdCVM = new WedstrijdCreateVM(AllClubsVM, AllTeamVM);
+                return View(WedstrijdCVM);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Account");
+            }
         }
 
         [HttpPost]
