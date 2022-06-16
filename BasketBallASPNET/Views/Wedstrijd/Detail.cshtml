@@ -11,20 +11,30 @@
         </p>
     </div>
     <div class="d-flex justify-content-between">
-        @foreach (SpelerVM vm in Model.ThuisTeam)
-        {
-            <div class="">
-                @vm.FirstName
-            </div>
-            <br />
-        }
-        @foreach (SpelerVM vm in Model.UitTeam)
-        {
-            <div class="">
-                @vm.FirstName
-            </div>
-            <br />
-        }
+        <div>
+            <ul>
+                @foreach (SpelerVM vm in Model.ThuisTeam)
+                {
+                    <li class="">
+                        @vm.FirstName
+                    </li>
+                }
+            </ul>
+        </div>
+        <div>
+            <ul>
+                @foreach (SpelerVM vm in Model.UitTeam)
+                {
+                    <li class="">
+                        @vm.FirstName
+                    </li>
+
+                }
+            </ul>
+        </div>
+
+
+
     </div>
 
 

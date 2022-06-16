@@ -31,7 +31,7 @@ namespace BasketBallASPNET.Controllers
             {
                 return RedirectToAction("Index", "Account");
             }
-            
+
         }
 
         [HttpPost]
@@ -40,7 +40,7 @@ namespace BasketBallASPNET.Controllers
             int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
             Team team = new(vm.Name, vm.LeeftijdsCategorieID, ClubID);
             TeamContainer.CreateTeam(team, ClubID);
-            return RedirectToAction("Index", new{ clubID = ClubID });
+            return RedirectToAction("Index", new { clubID = ClubID });
         }
 
         [HttpPost]
@@ -76,7 +76,7 @@ namespace BasketBallASPNET.Controllers
             {
                 return RedirectToAction("Index", "Account");
             }
-            
+
         }
 
         [HttpPost]
