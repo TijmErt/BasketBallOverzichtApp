@@ -139,7 +139,7 @@ namespace DALMSSQLServer
             SqlDataReader reader;
             SqlCommand cmd;
 
-            string sql = "SELECT * FROM Team T JOIN Club C ON t.Club_ID = C.ID AND T.Club_ID = @ClubID";
+            string sql = "SELECT * FROM Team T WHERE Club_ID = @ClubID";
             cmd = new SqlCommand(sql, databaseConnection);
             databaseConnection.Open();
             cmd.Parameters.AddWithValue("@ClubID", ClubID);

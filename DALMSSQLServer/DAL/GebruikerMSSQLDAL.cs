@@ -104,7 +104,7 @@ namespace DALMSSQLServer
             SqlDataReader reader;
             SqlCommand cmd;
 
-            string sql = "SELECT g.* FROM Gebruiker g JOIN Team t ON g.Team_ID = t.ID AND g.Team_ID = @TeamID";
+            string sql = "SELECT g.* FROM Gebruiker g WHERE Team_ID = @TeamID";
             cmd = new SqlCommand(sql, databaseConnection);
             cmd.Parameters.AddWithValue("@TeamID", TeamID);
 
