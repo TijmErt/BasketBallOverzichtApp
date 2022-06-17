@@ -2,6 +2,7 @@
 using BusnLogic;
 using BusnLogic.Containers;
 using BusnLogic.Entity;
+using DALException;
 using DALMSSQLServer;
 using DALMSSQLServer.DAL;
 using Microsoft.AspNetCore.Mvc;
@@ -18,19 +19,32 @@ namespace BasketBallASPNET.Controllers
         {
             if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                List<Wedstrijd> wedstrijden = wc.GetAllFromTeam(HttpContext.Session.GetInt32("TeamID").Value);
-                List<WedstrijdVM> vm = new List<WedstrijdVM>();
-                foreach (Wedstrijd temp in wedstrijden)
+                try
                 {
-                    Club ThuisClub = cc.GetClubDataFromID(temp.thuisClubID.Value);
-                    ClubVM ThuisClubVM = new(ThuisClub.ID, ThuisClub.Name);
+                    List<Wedstrijd> wedstrijden = wc.GetAllFromTeam(HttpContext.Session.GetInt32("TeamID").Value);
+                    List<WedstrijdVM> vm = new List<WedstrijdVM>();
+                    foreach (Wedstrijd temp in wedstrijden)
+                    {
+                        Club ThuisClub = cc.GetClubDataFromID(temp.thuisClubID.Value);
+                        ClubVM ThuisClubVM = new(ThuisClub.ID, ThuisClub.Name);
 
-                    Club UitClub = cc.GetClubDataFromID(temp.uitClubID.Value);
-                    ClubVM UitClubVM = new(UitClub.ID, UitClub.Name);
+                        Club UitClub = cc.GetClubDataFromID(temp.uitClubID.Value);
+                        ClubVM UitClubVM = new(UitClub.ID, UitClub.Name);
 
-                    vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID  ));
+                        vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID));
+                    }
+                    return View(vm);
                 }
-                return View(vm);
+
+                catch (TemporaryExceptionDAL ex)
+                {
+                    ViewBag.Error = ex.Message + " PLS try again later";
+                    return Redirect("/");
+                }
+                catch (PermanentExceptionDAL ex)
+                {
+                    return Content(ex.Message);
+                }
             }
             else
             {
@@ -43,43 +57,56 @@ namespace BasketBallASPNET.Controllers
         {
             if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                Wedstrijd wedstrijd = wc.GetWedstrijdByID(WedstrijdID);
-                Club thuisClub = cc.GetClubDataFromID(wedstrijd.thuisClubID.Value);
-                Club UitClub = cc.GetClubDataFromID(wedstrijd.uitClubID.Value);
-
-                ClubVM ThuisClubVM = new ClubVM(thuisClub.ID, thuisClub.Name);
-                ClubVM UitClubVM = new ClubVM(UitClub.ID, UitClub.Name);
-
-                WedstrijdVM WVM = new WedstrijdVM(ThuisClubVM, UitClubVM, wedstrijd.thuisTeamID, wedstrijd.uitTeamID, wedstrijd.speelDatum, wedstrijd.ID);
-
-                List<Gebruiker> ThuisSpelers = gc.GetGebruikersFromTeam(wedstrijd.thuisTeamID.Value);
-                List<Gebruiker> UitSpelers = gc.GetGebruikersFromTeam(wedstrijd.uitTeamID.Value);
-                List<SpelerVM> ThuisSpelersVM = new List<SpelerVM>();
-                List<SpelerVM> UitSpelersVM = new List<SpelerVM>();
-
-                foreach (Gebruiker g in ThuisSpelers)
-                {
-                    ThuisSpelersVM.Add(new SpelerVM(g));
-                }
-
-                foreach (Gebruiker g in UitSpelers)
-                {
-                    UitSpelersVM.Add(new SpelerVM(g));
-                }
-
-                WedstrijdInzienVM vm;
                 try
                 {
-                    bool presentie = wc.GetPresentie(HttpContext.Session.GetInt32("ID").Value, WedstrijdID);
-                    vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, presentie);
-                }
-                catch(Exception)
-                {
-                     vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, false);
-                }
 
-                
-                return View(vm);
+                    Wedstrijd wedstrijd = wc.GetWedstrijdByID(WedstrijdID);
+                    Club thuisClub = cc.GetClubDataFromID(wedstrijd.thuisClubID.Value);
+                    Club UitClub = cc.GetClubDataFromID(wedstrijd.uitClubID.Value);
+
+                    ClubVM ThuisClubVM = new ClubVM(thuisClub.ID, thuisClub.Name);
+                    ClubVM UitClubVM = new ClubVM(UitClub.ID, UitClub.Name);
+
+                    WedstrijdVM WVM = new WedstrijdVM(ThuisClubVM, UitClubVM, wedstrijd.thuisTeamID, wedstrijd.uitTeamID, wedstrijd.speelDatum, wedstrijd.ID);
+
+                    List<Gebruiker> ThuisSpelers = gc.GetGebruikersFromTeam(wedstrijd.thuisTeamID.Value);
+                    List<Gebruiker> UitSpelers = gc.GetGebruikersFromTeam(wedstrijd.uitTeamID.Value);
+                    List<SpelerVM> ThuisSpelersVM = new List<SpelerVM>();
+                    List<SpelerVM> UitSpelersVM = new List<SpelerVM>();
+
+                    foreach (Gebruiker g in ThuisSpelers)
+                    {
+                        ThuisSpelersVM.Add(new SpelerVM(g));
+                    }
+
+                    foreach (Gebruiker g in UitSpelers)
+                    {
+                        UitSpelersVM.Add(new SpelerVM(g));
+                    }
+
+                    WedstrijdInzienVM vm;
+                    try
+                    {
+                        bool presentie = wc.GetPresentie(HttpContext.Session.GetInt32("ID").Value, WedstrijdID);
+                        vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, presentie);
+                    }
+                    catch (Exception)
+                    {
+                        vm = new WedstrijdInzienVM(WVM, ThuisSpelersVM, UitSpelersVM, false);
+                    }
+
+
+                    return View(vm);
+                }
+                catch (TemporaryExceptionDAL ex)
+                {
+                    ViewBag.Error = ex.Message + " PLS try again later";
+                    return RedirectToAction("Index");
+                }
+                catch (PermanentExceptionDAL ex)
+                {
+                    return Content(ex.Message);
+                }
             }
             else
             {
@@ -91,24 +118,35 @@ namespace BasketBallASPNET.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-
             if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                List<Club> AllClubs = cc.GetAll();
-                List<ClubVM> AllClubsVM = new List<ClubVM>();
-                foreach (Club club in AllClubs)
+                try
                 {
-                    AllClubsVM.Add(new ClubVM(club.ID, club.Name));
-                }
-                List<Team> AllTeams = tc.GetAllTeams();
-                List<TeamVM> AllTeamVM = new List<TeamVM>();
-                foreach (Team team in AllTeams)
-                {
-                    AllTeamVM.Add(new TeamVM(team));
-                }
+                    List<Club> AllClubs = cc.GetAll();
+                    List<ClubVM> AllClubsVM = new List<ClubVM>();
+                    foreach (Club club in AllClubs)
+                    {
+                        AllClubsVM.Add(new ClubVM(club.ID, club.Name));
+                    }
+                    List<Team> AllTeams = tc.GetAllTeams();
+                    List<TeamVM> AllTeamVM = new List<TeamVM>();
+                    foreach (Team team in AllTeams)
+                    {
+                        AllTeamVM.Add(new TeamVM(team));
+                    }
 
-                WedstrijdCreateVM WedstrijdCVM = new WedstrijdCreateVM(AllClubsVM, AllTeamVM);
-                return View(WedstrijdCVM);
+                    WedstrijdCreateVM WedstrijdCVM = new WedstrijdCreateVM(AllClubsVM, AllTeamVM);
+                    return View(WedstrijdCVM);
+                }
+                catch (TemporaryExceptionDAL ex)
+                {
+                    ViewBag.Error = ex.Message + " PLS try again later";
+                    return RedirectToAction("Index");
+                }
+                catch (PermanentExceptionDAL ex)
+                {
+                    return Content(ex.Message);
+                }
             }
             else
             {
@@ -119,13 +157,25 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult Create(WedstrijdCreateVM vm)
         {
-            int WedstrijdID =wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UitTeamID, vm.speelDatum));
-            List<int> WedstrijdSpelers = gc.GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(vm.ThuisTeamID.Value, vm.UitTeamID.Value); 
-            foreach(int i in WedstrijdSpelers)
+            try
             {
-                wc.AddSpelerToeWedstrijd(i, WedstrijdID);
+                int WedstrijdID = wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UitTeamID, vm.speelDatum));
+                List<int> WedstrijdSpelers = gc.GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(vm.ThuisTeamID.Value, vm.UitTeamID.Value);
+                foreach (int i in WedstrijdSpelers)
+                {
+                    wc.AddSpelerToeWedstrijd(i, WedstrijdID);
+                }
+                return RedirectToAction("Index", "Wedstrijd");
             }
-            return RedirectToAction("Index", "Wedstrijd");
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return Redirect("/");
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
         }
     }
 }

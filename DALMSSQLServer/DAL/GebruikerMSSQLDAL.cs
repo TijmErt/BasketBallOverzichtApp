@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
+using DALException;
 
 namespace DALMSSQLServer
 {
@@ -23,18 +24,83 @@ namespace DALMSSQLServer
         /// <returns>Het geeft en GebruikerDTO terug</returns>
         public GebruikerDTO FindGebruikerByEmailAndPassWord(string Email, string wachtwoord)
         {
-            SqlCommand cmd;
-            SqlDataReader reader;
-            string sql = "SELECT * FROM Gebruiker WHERE Email = @Email ";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            databaseConnection.Open();
-
-            reader = cmd.ExecuteReader();
-
-            if (reader.Read())
+            try
             {
-                if (BCrypt.Net.BCrypt.EnhancedVerify(wachtwoord, reader.GetString("PassWord")))
+                SqlCommand cmd;
+                SqlDataReader reader;
+                string sql = "SELECT * FROM Gebruiker WHERE Email = @Email ";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@Email", Email);
+                databaseConnection.Open();
+
+                reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    if (BCrypt.Net.BCrypt.EnhancedVerify(wachtwoord, reader.GetString("PassWord")))
+                    {
+                        GebruikerDTO temp = new(
+
+                            reader.GetString("FirstName"),
+                            reader.GetString("lastName"),
+                            reader.GetDateTime("BirthDate"),
+                            reader.GetString("Geslacht"),
+                            reader.GetString("Email"),
+                            reader.GetInt32("Role_ID"),
+                            reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                            reader.GetInt32("Club_ID"),
+                            reader.GetInt32("ID"));
+                        databaseConnection.Close();
+                        return temp;
+                    }
+                }
+                databaseConnection.Close();
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
+        }
+
+        /// <summary>
+        /// Hier word een gerbuiker terug gegeven als je een email mee geeft
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns>er word een gerbuikerDTO terug gegegeven</returns>
+        /// <exception cref="Exception"></exception>
+        public GebruikerDTO GetGebruikerByEmail(string Email)
+        {
+            try
+            {
+                SqlDataReader reader;
+                SqlCommand cmd;
+
+                string sql = "SELECT * FROM Gebruiker WHERE Email = @Email ";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@Email", Email);
+                databaseConnection.Open();
+
+                reader = cmd.ExecuteReader();
+
+                reader.Read();
+                if (reader.HasRows)
                 {
                     GebruikerDTO temp = new(
 
@@ -50,48 +116,29 @@ namespace DALMSSQLServer
                     databaseConnection.Close();
                     return temp;
                 }
-            }
-            databaseConnection.Close();
-            return null;
-        }
-
-        /// <summary>
-        /// Hier word een gerbuiker terug gegeven als je een email mee geeft
-        /// </summary>
-        /// <param name="Email"></param>
-        /// <returns>er word een gerbuikerDTO terug gegegeven</returns>
-        /// <exception cref="Exception"></exception>
-        public GebruikerDTO GetGebruikerByEmail(string Email)
-        {
-            SqlDataReader reader;
-            SqlCommand cmd;
-
-            string sql = "SELECT * FROM Gebruiker WHERE Email = @Email ";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            databaseConnection.Open();
-
-            reader = cmd.ExecuteReader();
-
-            reader.Read();
-            if (reader.HasRows)
-            {
-                GebruikerDTO temp = new(
-
-                    reader.GetString("FirstName"),
-                    reader.GetString("lastName"),
-                    reader.GetDateTime("BirthDate"),
-                    reader.GetString("Geslacht"),
-                    reader.GetString("Email"),
-                    reader.GetInt32("Role_ID"),
-                    reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
-                    reader.GetInt32("Club_ID"),
-                    reader.GetInt32("ID"));
                 databaseConnection.Close();
-                return temp;
+                return null;
             }
-            databaseConnection.Close();
-            throw new Exception("bestaat niet");
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
         }
 
         /// <summary>
@@ -101,38 +148,60 @@ namespace DALMSSQLServer
         /// <returns>Het geeft een lijst van Gebruikers die in de gegeven team zitten</returns>
         public List<GebruikerDTO> GetGebruikersFromTeam(int TeamID)
         {
-            SqlDataReader reader;
-            SqlCommand cmd;
-
-            string sql = "SELECT g.* FROM Gebruiker g WHERE Team_ID = @TeamID";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@TeamID", TeamID);
-
-            databaseConnection.Open();
-            reader = cmd.ExecuteReader();
-
-            List<GebruikerDTO> list = new();
-            while (reader.Read())
+            try
             {
-                list.Add(
+                SqlDataReader reader;
+                SqlCommand cmd;
 
-                    new GebruikerDTO(
+                string sql = "SELECT g.* FROM Gebruiker g WHERE Team_ID = @TeamID";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@TeamID", TeamID);
 
-                    reader.GetString("FirstName"),
-                    reader.GetString("LastName"),
-                    reader.GetDateTime("BirthDate"),
-                    reader.GetString("Geslacht"),
-                    reader.GetString("Email"),
-                    reader.GetInt32("Role_ID"),
-                    reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
-                    reader.GetInt32("Club_ID"),
-                    reader.GetInt32("ID")
-                    )
-                    );
+                databaseConnection.Open();
+                reader = cmd.ExecuteReader();
+
+                List<GebruikerDTO> list = new();
+                while (reader.Read())
+                {
+                    list.Add(
+
+                        new GebruikerDTO(
+
+                        reader.GetString("FirstName"),
+                        reader.GetString("LastName"),
+                        reader.GetDateTime("BirthDate"),
+                        reader.GetString("Geslacht"),
+                        reader.GetString("Email"),
+                        reader.GetInt32("Role_ID"),
+                        reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                        reader.GetInt32("Club_ID"),
+                        reader.GetInt32("ID")
+                        )
+                        );
+                }
+                databaseConnection.Close();
+                return list;
             }
-            databaseConnection.Close();
-            return list;
-
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
 
         }
 
@@ -143,34 +212,57 @@ namespace DALMSSQLServer
         /// <param name="wachtwoord">Geef hier de een string mee voor het wachtwoord van de gebruiker</param>
         public void CreateGebruikerAccount(GebruikerDTO dto, string wachtwoord)
         {
-            SqlCommand cmd;
-            string sql = "INSERT INTO Gebruiker(FirstName, LastName, Email, PassWord, BirthDate, Geslacht, Club_ID, Role_ID) Values(" +
-                "@Firstname," +
-                "@LastName," +
-                "@Email," +
-                "@wachtwoord," +
-                "@BirthDate," +
-                "@Geslacht, " +
-                "@ClubID, " +
-                "@RoleID)";
+            try
+            {
+                SqlCommand cmd;
+                string sql = "INSERT INTO Gebruiker(FirstName, LastName, Email, PassWord, BirthDate, Geslacht, Club_ID, Role_ID) Values(" +
+                    "@Firstname," +
+                    "@LastName," +
+                    "@Email," +
+                    "@wachtwoord," +
+                    "@BirthDate," +
+                    "@Geslacht, " +
+                    "@ClubID, " +
+                    "@RoleID)";
 
-            cmd = new SqlCommand(sql, databaseConnection);
+                cmd = new SqlCommand(sql, databaseConnection);
 
-            string hash = BCrypt.Net.BCrypt.EnhancedHashPassword(wachtwoord, 13);
+                string hash = BCrypt.Net.BCrypt.EnhancedHashPassword(wachtwoord, 13);
 
-            cmd.Parameters.AddWithValue("@Firstname", dto.FirstName);
-            cmd.Parameters.AddWithValue("@LastName", dto.LastName);
-            cmd.Parameters.AddWithValue("@Email", dto.Email);
-            cmd.Parameters.AddWithValue("@BirthDate", dto.GeboorteDatum);
-            cmd.Parameters.AddWithValue("@Geslacht", dto.Geslacht);
-            cmd.Parameters.AddWithValue("@ClubID", dto.ClubID);
-            cmd.Parameters.AddWithValue("@RoleID", dto.RoleID);
-            cmd.Parameters.AddWithValue("@wachtwoord", hash);
+                cmd.Parameters.AddWithValue("@Firstname", dto.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", dto.LastName);
+                cmd.Parameters.AddWithValue("@Email", dto.Email);
+                cmd.Parameters.AddWithValue("@BirthDate", dto.GeboorteDatum);
+                cmd.Parameters.AddWithValue("@Geslacht", dto.Geslacht);
+                cmd.Parameters.AddWithValue("@ClubID", dto.ClubID);
+                cmd.Parameters.AddWithValue("@RoleID", dto.RoleID);
+                cmd.Parameters.AddWithValue("@wachtwoord", hash);
 
-            databaseConnection.Open();
+                databaseConnection.Open();
 
-            cmd.ExecuteNonQuery();
-            databaseConnection.Close();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
         }
 
         /// <summary>
@@ -178,17 +270,41 @@ namespace DALMSSQLServer
         /// </summary>
         /// <param name="GebruikerID">Geef hier de Gebruiker ID mee</param>
         /// <param name="TeamID">Geef hier de Team ID mee</param>
+
         public void InsertGebruikerInToTeam(int GebruikerID, int TeamID)
         {
-            SqlCommand cmd;
-            string sql = "UPDATE Gebruiker SET Team_ID = @TeamID WHERE ID = @SpelerID";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@SpelerID", GebruikerID);
-            cmd.Parameters.AddWithValue("@TeamID", TeamID);
+            try
+            {
+                SqlCommand cmd;
+                string sql = "UPDATE Gebruiker SET Team_ID = @TeamID WHERE ID = @SpelerID";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@SpelerID", GebruikerID);
+                cmd.Parameters.AddWithValue("@TeamID", TeamID);
 
-            databaseConnection.Open();
-            cmd.ExecuteNonQuery();
-            databaseConnection.Close();
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
         }
 
         /// <summary>
@@ -197,16 +313,37 @@ namespace DALMSSQLServer
         /// <param name="GebruikerID">Geef hier de ID mee van de speler die er uit moet</param>
         public void RemoveGebruikerFromTeam(int GebruikerID)
         {
-            SqlCommand cmd;
-            string sql = "UPDATE Gebruiker SET Team_ID = null WHERE ID = @SpelerID";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@SpelerID", GebruikerID);
-            //cmd.Parameters.AddWithValue("@TeamID", string.IsNullOrEmpty(wasteint) ? (object)DBNull.Value : wasteint);
-            //todo
+            try
+            {
+                SqlCommand cmd;
+                string sql = "UPDATE Gebruiker SET Team_ID = null WHERE ID = @SpelerID";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@SpelerID", GebruikerID);
 
-            databaseConnection.Open();
-            cmd.ExecuteNonQuery();
-            databaseConnection.Close();
+                databaseConnection.Open();
+                cmd.ExecuteNonQuery();
+                databaseConnection.Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
         }
 
 
@@ -217,58 +354,104 @@ namespace DALMSSQLServer
         /// <returns>Het geeft een lijst van gebruikers terug die in de gegeven club zitten</returns>
         public List<GebruikerDTO> GetAllGebruikersFromClub(int ClubID)
         {
-            SqlDataReader reader;
-            SqlCommand cmd;
-
-            string sql = "SELECT g.* FROM Gebruiker g WHERE g.Club_ID = @ClubID";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@ClubID", ClubID);
-
-            databaseConnection.Open();
-            reader = cmd.ExecuteReader();
-
-            List<GebruikerDTO> list = new ();
-            while (reader.Read())
+            try
             {
-                list.Add(
+                SqlDataReader reader;
+                SqlCommand cmd;
 
-                    new GebruikerDTO(
+                string sql = "SELECT g.* FROM Gebruiker g WHERE g.Club_ID = @ClubID";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@ClubID", ClubID);
 
-                    reader.GetString("FirstName"),
-                    reader.GetString("LastName"),
-                    reader.GetDateTime("BirthDate"),
-                    reader.GetString("Geslacht"),
-                    reader.GetString("Email"),
-                    reader.GetInt32("Role_ID"),
-                    reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
-                    reader.GetInt32("Club_ID"),
-                    reader.GetInt32("ID")
-                    ));
+                databaseConnection.Open();
+                reader = cmd.ExecuteReader();
+
+                List<GebruikerDTO> list = new();
+                while (reader.Read())
+                {
+                    list.Add(
+
+                        new GebruikerDTO(
+
+                        reader.GetString("FirstName"),
+                        reader.GetString("LastName"),
+                        reader.GetDateTime("BirthDate"),
+                        reader.GetString("Geslacht"),
+                        reader.GetString("Email"),
+                        reader.GetInt32("Role_ID"),
+                        reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                        reader.GetInt32("Club_ID"),
+                        reader.GetInt32("ID")
+                        ));
+                }
+                databaseConnection.Close();
+                return list;
             }
-            databaseConnection.Close();
-            return list;
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
         }
 
         public List<int> GetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam)
         {
-            SqlDataReader reader;
-            SqlCommand cmd;
-
-            string sql = "SELECT ID FROM Gebruiker WHERE Team_ID = @ThuisTeamID OR Team_ID = @UitTeamID ";
-            cmd = new SqlCommand(sql, databaseConnection);
-            cmd.Parameters.AddWithValue("@ThuisTeamID", ThuisTeam);
-            cmd.Parameters.AddWithValue("@UitTeamID", UitTeam);
-
-            databaseConnection.Open();
-            reader = cmd.ExecuteReader();
-
-            List<int> list = new();
-            while (reader.Read())
+            try
             {
-                list.Add(reader.GetInt32("ID"));
+                SqlDataReader reader;
+                SqlCommand cmd;
+
+                string sql = "SELECT ID FROM Gebruiker WHERE Team_ID = @ThuisTeamID OR Team_ID = @UitTeamID ";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@ThuisTeamID", ThuisTeam);
+                cmd.Parameters.AddWithValue("@UitTeamID", UitTeam);
+
+                databaseConnection.Open();
+                reader = cmd.ExecuteReader();
+
+                List<int> list = new();
+                while (reader.Read())
+                {
+                    list.Add(reader.GetInt32("ID"));
+                }
+                databaseConnection.Close();
+                return list;
             }
-            databaseConnection.Close();
-            return list;
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
         }
     }
 }

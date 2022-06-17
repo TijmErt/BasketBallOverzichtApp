@@ -4,6 +4,7 @@ using DALMSSQLServer;
 using BasketBallASPNET.Models;
 using BusnLogic.Containers;
 using BusnLogic.Entity;
+using DALException;
 
 namespace BasketBallASPNET.Controllers
 {
@@ -17,15 +18,27 @@ namespace BasketBallASPNET.Controllers
         {
             if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                HttpContext.Session.SetInt32("TempClubID", clubID);
-                List<Team> Lt = TeamContainer.GetAllTeamsFromClub(clubID);
-                List<TeamVM> Lvm = new();
-                foreach (Team T in Lt)
+                try
                 {
-                    Lvm.Add(new TeamVM(T));
+                    HttpContext.Session.SetInt32("TempClubID", clubID);
+                    List<Team> Lt = TeamContainer.GetAllTeamsFromClub(clubID);
+                    List<TeamVM> Lvm = new();
+                    foreach (Team T in Lt)
+                    {
+                        Lvm.Add(new TeamVM(T));
+                    }
+                    TeamCreateAndViewVM vm = new(Lvm);
+                    return View(vm);
                 }
-                TeamCreateAndViewVM vm = new(Lvm);
-                return View(vm);
+                catch (TemporaryExceptionDAL ex)
+                {
+                    ViewBag.Error = ex.Message + " PLS try again later";
+                    return Redirect("/");
+                }
+                catch (PermanentExceptionDAL ex)
+                {
+                    return Content(ex.Message);
+                }
             }
             else
             {
@@ -37,17 +50,41 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult CreateTeam(TeamCreateAndViewVM vm)
         {
-            int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
-            Team team = new(vm.Name, vm.LeeftijdsCategorieID, ClubID);
-            TeamContainer.CreateTeam(team, ClubID);
-            return RedirectToAction("Index", new { clubID = ClubID });
+            try
+            {
+                int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
+                Team team = new(vm.Name, vm.LeeftijdsCategorieID, ClubID);
+                TeamContainer.CreateTeam(team, ClubID);
+                return RedirectToAction("Index", new { clubID = ClubID });
+            }
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult DeleteTeam(int teamID)
         {
-            TeamContainer.DeleteTeam(teamID);
-            return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+            try
+            {
+                TeamContainer.DeleteTeam(teamID);
+                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+            }
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
 
         }
 
@@ -57,19 +94,31 @@ namespace BasketBallASPNET.Controllers
             if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
                 int ClubID = HttpContext.Session.GetInt32("TempClubID").Value;
-                if (TeamContainer.CheckClubTeamLink(TeamID, ClubID) == true)
+                try
                 {
-                    HttpContext.Session.SetInt32("TempTeamID", TeamID);
-                    List<Gebruiker> Lc = GebruikerContainter.GetAllGebruikersFromClub(ClubID);
-                    List<SpelerVM> Lvm = new();
-                    foreach (Gebruiker c in Lc)
+                    if (TeamContainer.CheckClubTeamLink(TeamID, ClubID) == true)
                     {
-                        Lvm.Add(new SpelerVM(c));
-                    }
+                        HttpContext.Session.SetInt32("TempTeamID", TeamID);
+                        List<Gebruiker> Lc = GebruikerContainter.GetAllGebruikersFromClub(ClubID);
+                        List<SpelerVM> Lvm = new();
+                        foreach (Gebruiker c in Lc)
+                        {
+                            Lvm.Add(new SpelerVM(c));
+                        }
 
-                    return base.View(Lvm);
+                        return base.View(Lvm);
+                    }
+                    return RedirectToAction("Index", new { ClubID });
                 }
-                return RedirectToAction("Index", new { ClubID });
+                catch (TemporaryExceptionDAL ex)
+                {
+                    ViewBag.Error = ex.Message + " PLS try again later";
+                    return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+                }
+                catch (PermanentExceptionDAL ex)
+                {
+                    return Content(ex.Message);
+                }
 
             }
             else
@@ -82,16 +131,40 @@ namespace BasketBallASPNET.Controllers
         [HttpPost]
         public IActionResult InsertPlayerToTeam(int SpelerID)
         {
-            int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
-            GebruikerContainter.InsertGebruikerInToTeam(SpelerID, teamID);
-            return RedirectToAction("Detail", new { TeamID = teamID });
+            try
+            {
+                int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
+                GebruikerContainter.InsertGebruikerInToTeam(SpelerID, teamID);
+                return RedirectToAction("Detail", new { TeamID = teamID });
+            }
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
         }
         [HttpPost]
         public IActionResult RemoveSpelerFromTeam(int SpelerID)
         {
-            int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
-            GebruikerContainter.RemoveSpelerFromTeam(SpelerID);
-            return RedirectToAction("Detail", new { TeamID = teamID });
+            try
+            {
+                int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
+                GebruikerContainter.RemoveSpelerFromTeam(SpelerID);
+                return RedirectToAction("Detail", new { TeamID = teamID });
+            }
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
     }
