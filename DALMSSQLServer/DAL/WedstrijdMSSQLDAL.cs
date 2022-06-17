@@ -82,7 +82,7 @@ namespace DALMSSQLServer.DAL
             return list;
         }
 
-        public bool GetPersentie(int SpelerID, int WedstrijdID)
+        public bool GetPresentie(int SpelerID, int WedstrijdID)
         {
             SqlDataReader reader;
             SqlCommand cmd;
