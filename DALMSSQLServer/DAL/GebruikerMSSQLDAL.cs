@@ -49,6 +49,7 @@ namespace DALMSSQLServer
                             reader.GetInt32("Role_ID"),
                             reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
                             reader.GetInt32("Club_ID"),
+                            reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
                             reader.GetInt32("ID"));
                         databaseConnection.Close();
                         return temp;
@@ -112,6 +113,7 @@ namespace DALMSSQLServer
                         reader.GetInt32("Role_ID"),
                         reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
                         reader.GetInt32("Club_ID"),
+                         reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
                         reader.GetInt32("ID"));
                     databaseConnection.Close();
                     return temp;
@@ -175,6 +177,7 @@ namespace DALMSSQLServer
                         reader.GetInt32("Role_ID"),
                         reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
                         reader.GetInt32("Club_ID"),
+                        reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
                         reader.GetInt32("ID")
                         )
                         );
@@ -271,15 +274,16 @@ namespace DALMSSQLServer
         /// <param name="GebruikerID">Geef hier de Gebruiker ID mee</param>
         /// <param name="TeamID">Geef hier de Team ID mee</param>
 
-        public void InsertGebruikerInToTeam(int GebruikerID, int TeamID)
+        public void InsertGebruikerInToTeam(int GebruikerID, int TeamID, int SpelerNummer)
         {
             try
             {
                 SqlCommand cmd;
-                string sql = "UPDATE Gebruiker SET Team_ID = @TeamID WHERE ID = @SpelerID";
+                string sql = "UPDATE Gebruiker SET Team_ID = @TeamID, PlayerNumber = @SpelerNummer WHERE ID = @SpelerID";
                 cmd = new SqlCommand(sql, databaseConnection);
                 cmd.Parameters.AddWithValue("@SpelerID", GebruikerID);
                 cmd.Parameters.AddWithValue("@TeamID", TeamID);
+                cmd.Parameters.AddWithValue("@SpelerNummer", SpelerNummer);
 
                 databaseConnection.Open();
                 cmd.ExecuteNonQuery();
@@ -380,6 +384,7 @@ namespace DALMSSQLServer
                         reader.GetString("Email"),
                         reader.GetInt32("Role_ID"),
                         reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                        reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
                         reader.GetInt32("Club_ID"),
                         reader.GetInt32("ID")
                         ));

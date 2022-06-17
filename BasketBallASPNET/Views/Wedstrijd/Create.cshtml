@@ -4,12 +4,12 @@
 }
 <script>
 
-function ThuisTeamFilter(temp)
+function ThuisTeamFilter(selected)
     {
 
         const teamIDlst = document.querySelectorAll(".ThuisTeamIDList");
-        const tempType = temp;
-        let placeholder = tempType.getAttribute("data-ClubID");
+        const selectedTemp = selected;
+        let placeholder = selectedTemp.getAttribute("data-ClubID");
         for (let i = 0; i < teamIDlst.length; i++){
             if(teamIDlst[i].getAttribute("data-TeamClubID").toString() == placeholder.toString())
             {
@@ -21,12 +21,12 @@ function ThuisTeamFilter(temp)
             }
         }
     }
-function UitTeamFilter(temp)
+function UitTeamFilter(selected)
     {
 
         const teamIDlst = document.querySelectorAll(".UitTeamIDList");
-        const tempType = temp;
-        let placeholder = tempType.getAttribute("data-ClubID");
+        const selectedTemp = selected;
+        let placeholder = selectedTemp.getAttribute("data-ClubID");
         for (let i = 0; i < teamIDlst.length; i++){
             if(teamIDlst[i].getAttribute("data-TeamClubID").toString() == placeholder.toString())
             {
@@ -38,6 +38,42 @@ function UitTeamFilter(temp)
             }
         }
     }
+
+function thuisTeamAgeFilter(selected)
+{
+    const UiTeamlist = document.querySelectorAll(".UiTeamIDList");
+    const SelectedTemp = selected
+    let SelectedLeedtijd = selected.getAttribute("data-LeeftijdClasse");
+    for(let i =0; i < UiTeamlist.length; i++)
+    {
+        if(UiTeamlist[i].getAttribute("data-LeeftijdClasse").toString() == SelectedLeedtijd.toString())
+        {
+            UiTeamlist[i].style.display = "block";
+        }
+        else
+        {
+            UiTeamlist[i].style.display =  "none";
+        }
+    }
+}
+
+function uitTeamAgeFilter(selected)
+{
+    const ThuisTeamlist = document.querySelectorAll(".ThuisTeamIDList");
+    const SelectedTemp = selected
+    let SelectedLeedtijd = selected.getAttribute("data-LeeftijdClasse");
+    for(let i =0; i < UiTeamlist.length; i++)
+    {
+        if(ThuisTeamlist[i].getAttribute("data-LeeftijdClasse").toString() == SelectedLeedtijd.toString())
+        {
+            ThuisTeamlist[i].style.display = "block";
+        }
+        else
+        {
+            UiTeamlist[i].style.display =  "none";
+        }
+    }
+}
 
 </script>
 
@@ -61,7 +97,7 @@ function UitTeamFilter(temp)
             <select name="thuisTeamID" asp-for=ThuisTeamID id="thuisTeamID">
                 @foreach (TeamVM tvm in Model.Teams)
                 {
-                    <option class="ThuisTeamIDList" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
+                    <option class="ThuisTeamIDList" onclick="thuisTeamAgeFilter(this)" data-LeeftijdClasse="@tvm.LeeftijdsCategorieID" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
                 }
 
 
@@ -79,7 +115,7 @@ function UitTeamFilter(temp)
             <select name="uitTeamID" asp-for=UitTeamID id="uitTeamID">
                 @foreach (TeamVM tvm in Model.Teams)
                 {
-                    <option class="UitTeamIDList" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
+                    <option class="UitTeamIDList" onclick="uitTeamAgeFilter(this)" data-LeeftijdClasse="@tvm.LeeftijdsCategorieID" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
                 }
 
             </select>

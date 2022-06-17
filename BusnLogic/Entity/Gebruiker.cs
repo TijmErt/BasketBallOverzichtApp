@@ -19,9 +19,10 @@ namespace BusnLogic.Entity
         public int RoleID;
         public int? TeamID;
         public int? ClubID;
+        public int? SpelerNummer;
 
         public Gebruiker(string firstName, string lastName, DateTime geboorteDatum, string geslacht,
-                         string email, int roleID, int? teamID, int? clubID, int? id = null)
+                         string email, int roleID, int? teamID, int? clubID,int? SpelerNummer, int? id = null)
         {
             this.ID = id;
             this.FirstName = firstName;
@@ -32,6 +33,7 @@ namespace BusnLogic.Entity
             this.RoleID = roleID;
             this.TeamID = teamID;
             this.ClubID = clubID;
+            this.SpelerNummer = SpelerNummer;
         }
         public Gebruiker(GebruikerDTO tempDTO)
         {
@@ -44,11 +46,12 @@ namespace BusnLogic.Entity
             this.TeamID = tempDTO.TeamID;
             this.RoleID = tempDTO.RoleID;
             this.ClubID = tempDTO.ClubID;
+            this.SpelerNummer = tempDTO.SpelerNummer;
         }
 
         public GebruikerDTO GetDTO()
         {
-            return new GebruikerDTO(FirstName, LastName, GeboorteDatum, Geslacht,  Email, RoleID, TeamID, ClubID, ID);
+            return new GebruikerDTO(FirstName, LastName, GeboorteDatum, Geslacht,  Email, RoleID, TeamID, ClubID, SpelerNummer, ID);
         }
 
         public string GetFullName()

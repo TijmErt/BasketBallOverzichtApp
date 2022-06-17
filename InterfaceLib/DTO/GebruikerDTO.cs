@@ -17,10 +17,11 @@ namespace InterfaceLib.DTO
         public int RoleID;
         public int? TeamID;
         public int? ClubID;
+        public int? SpelerNummer;
 
 
         public GebruikerDTO(string firstName, string lastName, DateTime geboorteDatum, string geslacht,
-                            string email, int roleID, int? teamID, int? clubID, int? id = null)
+                            string email, int roleID, int? teamID, int? clubID, int? SpelerNummer, int? id = null)
         {
             this.ID = id;
             this.FirstName = firstName;
@@ -31,6 +32,7 @@ namespace InterfaceLib.DTO
             this.RoleID = roleID;
             this.TeamID = teamID;
             this.ClubID = clubID;
+            this.SpelerNummer = SpelerNummer;
         }
     }
 }

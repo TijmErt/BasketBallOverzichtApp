@@ -92,9 +92,9 @@ namespace BusnLogic.Containers
         /// </summary>
         /// <param name="GebruikerID">Geef hier de Gebruiker ID mee</param>
         /// <param name="TeamID">Geef hier de Team ID mee</param>
-        public void InsertGebruikerInToTeam(int GebruikerID, int TeamID)
+        public void InsertGebruikerInToTeam(int GebruikerID, int TeamID, int SpelerNummer)
         {
-            Container.InsertGebruikerInToTeam(GebruikerID, TeamID);
+            Container.InsertGebruikerInToTeam(GebruikerID, TeamID, SpelerNummer);
         }
 
         /// <summary>

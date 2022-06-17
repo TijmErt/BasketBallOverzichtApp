@@ -129,12 +129,12 @@ namespace BasketBallASPNET.Controllers
         }
 
         [HttpPost]
-        public IActionResult InsertPlayerToTeam(int SpelerID)
+        public IActionResult InsertPlayerToTeam(int SpelerID, int SpelerNummer)
         {
             try
             {
                 int teamID = HttpContext.Session.GetInt32("TempTeamID").Value;
-                GebruikerContainter.InsertGebruikerInToTeam(SpelerID, teamID);
+                GebruikerContainter.InsertGebruikerInToTeam(SpelerID, teamID, SpelerNummer);
                 return RedirectToAction("Detail", new { TeamID = teamID });
             }
             catch (TemporaryExceptionDAL ex)

@@ -44,7 +44,7 @@ namespace BasketBallASPNET.Controllers
             {
                 if (vm.Wachtwoord == vm.BevestigWachtwoord)
                 {
-                    Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID);
+                    Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID, null);
                     GebruikerContainer.CreateGebruikerAccount(g, vm.Wachtwoord);
                     ViewData["Success"] = "Account gecreëerd";
                     return RedirectToAction("Login", "Account");
