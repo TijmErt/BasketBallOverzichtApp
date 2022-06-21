@@ -1,4 +1,10 @@
 ﻿using BasketBallASPNET.Models;
+using BusnLogic;
+using BusnLogic.Containers;
+using BusnLogic.Entity;
+using DALException;
+using DALMSSQLServer;
+using DALMSSQLServer.DAL;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,7 +13,8 @@ namespace BasketBallASPNET.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private readonly WedstrijdConainer wc = new WedstrijdConainer(new WedstrijdMSSQLDAL());
+        private readonly ClubContainer cc = new ClubContainer(new ClubMSSQLDAL());
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -15,9 +22,34 @@ namespace BasketBallASPNET.Controllers
 
         public IActionResult Index()
         {
-            if(HttpContext.Session.GetInt32("LoggedIn") == 1)
+            if (HttpContext.Session.GetInt32("LoggedIn") == 1)
             {
-                return View();
+                try
+                {
+                    List<Wedstrijd> wedstrijden = wc.GetAllFromTeam(HttpContext.Session.GetInt32("TeamID").Value);
+                    List<WedstrijdVM> vm = new List<WedstrijdVM>();
+                    foreach (Wedstrijd temp in wedstrijden)
+                    {
+                        Club ThuisClub = cc.GetClubDataFromID(temp.thuisClubID.Value);
+                        ClubVM ThuisClubVM = new(ThuisClub.ID, ThuisClub.Name);
+
+                        Club UitClub = cc.GetClubDataFromID(temp.uitClubID.Value);
+                        ClubVM UitClubVM = new(UitClub.ID, UitClub.Name);
+
+                        vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID));
+                    }
+                    return View(vm);
+                }
+
+                catch (TemporaryExceptionDAL ex)
+                {
+                    ViewBag.Error = ex.Message + " PLS try again later";
+                    return Redirect("/");
+                }
+                catch (PermanentExceptionDAL ex)
+                {
+                    return Content(ex.Message);
+                }
             }
             else
             {

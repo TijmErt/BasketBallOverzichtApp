@@ -1,12 +1,24 @@
-﻿@{
+﻿@model List<WedstrijdVM>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">JOUW WEDSTRIJDEN VIEW COMING SOON</h1>
+    <h1 class="display-4">Jouw Komende wedstrijden</h1>
     <p>
-        Hier komt een rij van toekomstige wedstrijden die de ingelogde gebruiker heeft.
-        <br />
-        Als de gebruiker niet is in gelogd moet hier ook iets staan zoals een overview van clubs of gewoon een instant redirect naar inloggen.
+        <div>
+            @foreach (WedstrijdVM vm in Model)
+            {
+                <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID
+               display: block; style="color: #ffffff; text-decoration: none; ">
+                    <div class="container" style="background-color:#38cf7e">
+                        <p>
+                            @vm.thuisClub.Name VS @vm.uitClub.Name <br>
+                            &nbsp;&nbsp;@vm.speelDatum
+                        </p>
+                    </div>
+                </a>
+            }
+        </div>
     </p>
 </div>

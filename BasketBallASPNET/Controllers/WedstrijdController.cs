@@ -59,7 +59,7 @@ namespace BasketBallASPNET.Controllers
             {
                 try
                 {
-
+                    HttpContext.Session.SetInt32("tempWedstrijdID", WedstrijdID);
                     Wedstrijd wedstrijd = wc.GetWedstrijdByID(WedstrijdID);
                     Club thuisClub = cc.GetClubDataFromID(wedstrijd.thuisClubID.Value);
                     Club UitClub = cc.GetClubDataFromID(wedstrijd.uitClubID.Value);
@@ -159,14 +159,43 @@ namespace BasketBallASPNET.Controllers
         {
             try
             {
-                int WedstrijdID = wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UitTeamID, vm.speelDatum));
-                List<int> WedstrijdSpelers = gc.GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(vm.ThuisTeamID.Value, vm.UitTeamID.Value);
-                foreach (int i in WedstrijdSpelers)
+                if (vm.ThuisTeamID != vm.UitTeamID || vm.UitCLubID != vm.ThuisCLubID)
                 {
-                    wc.AddSpelerToeWedstrijd(i, WedstrijdID);
+                    int WedstrijdID = wc.CreateWedstrijd(new Wedstrijd(vm.ThuisCLubID, vm.UitCLubID, vm.ThuisTeamID, vm.UitTeamID, vm.speelDatum));
+                    List<int> WedstrijdSpelers = gc.GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(vm.ThuisTeamID.Value, vm.UitTeamID.Value);
+                    foreach (int i in WedstrijdSpelers)
+                    {
+                        wc.AddSpelerToeWedstrijd(i, WedstrijdID);
+                    }
+                    return RedirectToAction("Index", "Wedstrijd");
                 }
-                return RedirectToAction("Index", "Wedstrijd");
+                else
+                {
+                    ViewBag.Error = "Teams of CLubs Mogen net hetzelfde zijn";
+                    return RedirectToAction("Create");
+                }
+
             }
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return Redirect("/");
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+
+
+        public IActionResult UpdatePresentie(bool presentie)
+        {
+            try
+            {
+                wc.UpdatePresentie(HttpContext.Session.GetInt32("ID").Value, HttpContext.Session.GetInt32("tempWedstrijdID").Value, presentie);
+                return Redirect("Index");
+            }
+
             catch (TemporaryExceptionDAL ex)
             {
                 ViewBag.Error = ex.Message + " PLS try again later";

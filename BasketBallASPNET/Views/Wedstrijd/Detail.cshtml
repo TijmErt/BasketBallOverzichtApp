@@ -9,7 +9,13 @@
             @Model.wedstrijd.thuisClub.Name VS @Model.wedstrijd.uitClub.Name <br />
             @Model.wedstrijd.speelDatum
         </p>
+
+        <form asp-action="UpdatePresentie" method="POST">
+            <button type="submit" class="btn btn-success btn-sm" id="presentie" name="presentie" value="true">Ik ben er</button>
+            <button type="submit" class="btn btn-danger btn-sm" id="presentie" name="presentie" value="false">Ik ben er Niet</button>
+        </form>
     </div>
+
     <div class="d-flex justify-content-between">
         <div>
             <ul>
@@ -37,6 +43,6 @@
 
     </div>
 
-
+    <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
 </body>
 
