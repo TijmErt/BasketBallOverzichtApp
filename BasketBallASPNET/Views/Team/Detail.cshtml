@@ -14,17 +14,16 @@ hier komt een specifieke team
         {
             @if (vm.TeamID == Context.Session.GetInt32("TempTeamID"))
             {
+                <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST">
+                    <li class="list-group-item col-sm-3" id"="SpelerArea">@vm.FirstName &nbsp &nbsp &nbsp SpelerNmr: @vm.SpelerNummer</li>
 
-                <li class="list-group-item col-sm-2">@vm.FirstName </li>
+                        @if (3 != Context.Session.GetInt32("RoleID"))
+                        {
 
-                @if (3 != Context.Session.GetInt32("RoleID"))
-                {
-                    <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST">
-                        <button type="submit"  class="btn btn-danger btn-sm">Remove Speler</button>
-                    </form>
-                }
+                        <button type="submit" class="btn btn-danger btn-sm" aria-describedby="SpelerArea">Remove Speler</button>
+                        }
+                </form>
             }
-
         }
     </ul>
 </div>
@@ -42,7 +41,7 @@ hier komt een specifieke team
                     }
                 }
             </select>
-            <input type="number" id="SpelerNummer" name="SpelerNummer" step="1">
+            <input type="number" id="SpelerNummer" name="SpelerNummer" step="1" min="1" required>
             <button type="submit" class="btn btn-success btn-sm">
                 Add Speler &nbsp;
                 <span class="glyphicon glyphicon-ok"></span>

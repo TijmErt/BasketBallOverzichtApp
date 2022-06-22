@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BasketBallASPNET.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm nav-pills navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md nav-pills py-3 navbar-toggleable-md border-bottom box-shadow mb-3 BasketballMainTheme">
 
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BasketBallASPNET</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BasketBall Bond</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -25,25 +26,21 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto flex-grow-1" >
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link " asp-area="" asp-controller="Club" asp-action="Index"> Clubs</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="Index"> Clubs</a>
+                            <a class="nav-link " asp-area="" asp-controller="Wedstrijd" asp-action="Index"> Wedstrijd</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Wedstrijd" asp-action="Index"> Wedstrijd</a>
-                        </li>
-                        <li class="nav-item ml-auto">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index"> Account</a>
+                        <li class="nav-item ">
+                            <a class="nav-link " asp-area="" asp-controller="Account" asp-action="Index"> Account</a>
                         </li>
 
                     </ul>

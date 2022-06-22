@@ -41,7 +41,7 @@ namespace DALMSSQLServer
                     return dto;
                 }
                 databaseConnection.Close();
-                throw null;
+                return null;
             }
             catch (InvalidOperationException ex)
             {

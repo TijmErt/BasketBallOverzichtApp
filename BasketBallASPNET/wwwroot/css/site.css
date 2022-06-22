@@ -25,3 +25,15 @@ footer {
     width: 100%;
     height: 60px;
 }
+
+.navbar a {
+    color: white;
+}
+.BasketballMainTheme {
+    background-color: midnightblue;
+    color:aliceblue;
+}
+.BasketballSecondaryTheme {
+    background-color: orangered;
+    color: aliceblue;
+}

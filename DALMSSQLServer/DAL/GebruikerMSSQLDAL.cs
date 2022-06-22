@@ -384,8 +384,8 @@ namespace DALMSSQLServer
                         reader.GetString("Email"),
                         reader.GetInt32("Role_ID"),
                         reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
-                        reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
                         reader.GetInt32("Club_ID"),
+                        reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
                         reader.GetInt32("ID")
                         ));
                 }

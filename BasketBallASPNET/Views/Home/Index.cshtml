@@ -4,16 +4,18 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Jouw Komende wedstrijden</h1>
+    <h1 class="display-2">Jouw Komende Wedstrijden</h1>
+
+    <br />
     <p>
         <div>
             @foreach (WedstrijdVM vm in Model)
             {
                 <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID
-               display: block; style="color: #ffffff; text-decoration: none; ">
-                    <div class="container" style="background-color:#38cf7e">
+                display: block; style="text-decoration: none;">
+                    <div class="col-sm-6 col offset-3 pt-2  BasketballSecondaryTheme">
                         <p>
-                            @vm.thuisClub.Name VS @vm.uitClub.Name <br>
+                            <h3><strong>@vm.thuisClub.Name VS @vm.uitClub.Name</strong></h3> <br>
                             &nbsp;&nbsp;@vm.speelDatum
                         </p>
                     </div>
