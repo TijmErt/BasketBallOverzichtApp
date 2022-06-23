@@ -33,7 +33,7 @@ namespace BasketBallASPNET.Controllers
                 catch (TemporaryExceptionDAL ex)
                 {
                     ViewBag.Error = ex.Message + " PLS try again later";
-                    return Redirect("/");
+                    return RedirectToAction("Error", "Home");
                 }
                 catch (PermanentExceptionDAL ex)
                 {
@@ -79,7 +79,7 @@ namespace BasketBallASPNET.Controllers
             catch (TemporaryExceptionDAL ex)
             {
                 ViewBag.Error = ex.Message + " PLS try again later";
-                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+                return RedirectToAction("Error", "Home");
             }
             catch (PermanentExceptionDAL ex)
             {
@@ -113,7 +113,7 @@ namespace BasketBallASPNET.Controllers
                 catch (TemporaryExceptionDAL ex)
                 {
                     ViewBag.Error = ex.Message + " PLS try again later";
-                    return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+                    return RedirectToAction("Error", "Home");
                 }
                 catch (PermanentExceptionDAL ex)
                 {
@@ -140,7 +140,7 @@ namespace BasketBallASPNET.Controllers
             catch (TemporaryExceptionDAL ex)
             {
                 ViewBag.Error = ex.Message + " PLS try again later";
-                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+                return RedirectToAction("Error", "Home");
             }
             catch (PermanentExceptionDAL ex)
             {
@@ -159,7 +159,7 @@ namespace BasketBallASPNET.Controllers
             catch (TemporaryExceptionDAL ex)
             {
                 ViewBag.Error = ex.Message + " PLS try again later";
-                return RedirectToAction("Index", new { clubID = HttpContext.Session.GetInt32("TempClubID").Value });
+                return RedirectToAction("Error", "Home");
             }
             catch (PermanentExceptionDAL ex)
             {

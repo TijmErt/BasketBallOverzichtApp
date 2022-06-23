@@ -3,26 +3,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Jouw Wedstrijden</h1>
-<body style="background-color:powderblue;">
-    <div style="background-color:#ff0000;">
-        @foreach (WedstrijdVM vm in Model)
+
+<body>
+    <div class="text-center">
+        <h1>Jouw Wedstrijden</h1>
+        @foreach (WedstrijdVM vm in Model.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList())
         {
-            <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID 
-                display: block; style="color: #ffffff; text-decoration: none; ">
-                <div class="container" style="background-color:#38cf7e">
+            <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID
+           display: block; style="text-decoration: none;">
+                <div class="col-sm-6 offset-3 pt-2 border border-3 border-dark rounded BasketballSecondaryTheme">
                     <p>
-                        @vm.thuisClub.Name VS @vm.uitClub.Name <br>
-                        &nbsp;&nbsp;@vm.speelDatum
+                        <h3><strong>@vm.thuisClub.Name VS @vm.uitClub.Name</strong></h3> <br>
+                        <p  class="text-center">@vm.speelDatum</p>
                     </p>
                 </div>
             </a>
+            <br />
         }
+        
     </div>
 
-    <div>
-        <a asp-controller="Wedstrijd" asp-action="Create"> Wedstrijd Inplannen</a>
-    </div>
-    <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
+
 
 </body>

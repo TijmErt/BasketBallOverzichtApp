@@ -26,7 +26,7 @@ namespace BasketBallASPNET.Controllers
                 catch (TemporaryExceptionDAL ex)
                 {
                     ViewBag.Error = ex.Message + " PLS try again later";
-                    return Redirect("/");
+                    return RedirectToAction("Error", "Home");
                 }
                 catch (PermanentExceptionDAL ex)
                 {

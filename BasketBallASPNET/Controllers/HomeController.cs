@@ -38,14 +38,14 @@ namespace BasketBallASPNET.Controllers
 
                         vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID));
                     }
-                    var vmr = vm.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList();
-                    return View(vmr);
+                     var vrm = vm.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList();
+                    return View(vrm.First());
                 }
 
                 catch (TemporaryExceptionDAL ex)
                 {
                     ViewBag.Error = ex.Message + " PLS try again later";
-                    return Redirect("/");
+                    return RedirectToAction("Error","Home");
                 }
                 catch (PermanentExceptionDAL ex)
                 {

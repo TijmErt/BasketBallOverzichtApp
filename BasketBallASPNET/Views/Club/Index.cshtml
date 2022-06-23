@@ -3,13 +3,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>ClubList</h1>
+<h1>Clubs van Nederland</h1>
+<br />
 @foreach (ClubVM vm in Model)
 {
-    <div>
-        <button type="button" onclick="location.href='@Url.Action("Index", "Team", new{ clubID = vm.ID})'">@vm.Name</button>
-    </div>
+    <a type="button" asp-route-clubID="@vm.ID" asp-action="Index" asp-controller="Team" display: block; style="text-decoration: none;">
+        <div class="list-group-item col-md-2 pt-3 text-center border border-3 border-dark rounded" style="background-color:orangered; color:aliceblue">
+            <h5><strong>@vm.Name</strong></h5>
+        </div>
+    </a>
     <br />
 }
-<br />
+
 <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
