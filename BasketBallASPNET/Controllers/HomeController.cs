@@ -38,8 +38,8 @@ namespace BasketBallASPNET.Controllers
 
                         vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID));
                     }
-                     var vrm = vm.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList();
-                    return View(vrm.First());
+                    
+                    return View(vm.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList());
                 }
 
                 catch (TemporaryExceptionDAL ex)

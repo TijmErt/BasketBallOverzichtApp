@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using BCrypt.Net;
 using BusnLogic.Entity;
 using DALException;
+using BusnLogic;
 
 namespace BasketBallASPNET.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly GebruikerContainer GebruikerContainer = new(new GebruikerMSSQLDAL());
+        private readonly GebruikerContainer gebruikerContainer = new(new GebruikerMSSQLDAL());
+        private readonly ClubContainer clubContainer = new(new ClubMSSQLDAL());
 
         [HttpGet]
         public IActionResult Index()
@@ -21,7 +23,15 @@ namespace BasketBallASPNET.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            List<Club> clubs = clubContainer.GetAll();
+            List<ClubVM> clubVMs = new();
+            foreach(Club club in clubs)
+            {
+                clubVMs.Add(new ClubVM(club.ID,club.Name));
+            }
+            RegisterVM registerVM = new();
+            registerVM.Clubs = clubVMs;
+            return View(registerVM);
         }
 
         [HttpGet]
@@ -45,7 +55,7 @@ namespace BasketBallASPNET.Controllers
                 if (vm.Wachtwoord == vm.BevestigWachtwoord)
                 {
                     Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID, null);
-                    GebruikerContainer.CreateGebruikerAccount(g, vm.Wachtwoord);
+                    gebruikerContainer.CreateGebruikerAccount(g, vm.Wachtwoord);
                     ViewData["Success"] = "Account gecreëerd";
                     return RedirectToAction("Login", "Account");
                 }
@@ -68,7 +78,7 @@ namespace BasketBallASPNET.Controllers
         {
             try
             {
-                Gebruiker Ingelogde = GebruikerContainer.FindGebruikerByEmailAndPassWord(vm.Email, vm.Wachtwoord);
+                Gebruiker Ingelogde = gebruikerContainer.FindGebruikerByEmailAndPassWord(vm.Email, vm.Wachtwoord);
                 if (Ingelogde == null)
                 {
                     ViewData["Error"] = "Inloggegevens niet correct";

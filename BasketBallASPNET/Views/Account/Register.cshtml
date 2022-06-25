@@ -19,48 +19,53 @@
         </div>
     }
 </div>
-<form asp-action="RegisterCreate" method="POST">
+<form asp-action="RegisterCreate" method="POST"  autocomplete="off">
     <div class="form-group" style="color: black;">
         <label class="sr-only" for="Email">Email</label>
         <input id="Email" type="email" asp-for="Email"
-               class="form-control" placeholder="Voer Email in" required >
+               class="form-control" placeholder="Voer Email in"  autocomplete="email" required >
         <br>
     </div>
     <div class="form-group" style="color: black;">
         <label class="sr-only" for="FirstName">Voornaam</label>
         <input id="FirstName" type="text" asp-for="FirstName"
-               class=" form-control" placeholder="Voer voornaam in" pattern="^(?!.*[0-9])(?!.*[!@("@")#$%^&*_=+-]).{4,}$" required><br>
+               class=" form-control" placeholder="Voer voornaam in"  autocomplete="off"
+               pattern="^(?!.*[0-9])(?!.*[!@("@")#$%^&*_=+-]).{4,}$" required><br>
     </div>
 
     <div class="form-group" style="color: black;">
         <label class="sr-only" for="LastName">Achternaam</label>
         <input id="LastName" type="text" asp-for="LastName"
-               class=" form-control" placeholder="Voer achternaam in" pattern="^(?!.*[0-9])(?!.*[!@("@")#$%^&*_=+-]).{4,}$" required><br>
+               class=" form-control" placeholder="Voer achternaam in"  autocomplete="off"
+               pattern="^(?!.*[0-9])(?!.*[!@("@")#$%^&*_=+-]).{4,}$" required><br>
     </div>
     <div class="form-group" style="color: black;">
         <select name="Geslacht" id="Geslacht" placeholder="Kies een Geslacht" required>
+            <option hidden disabled selected> -- Selecteer een Geslacht-- </option>
             <option value="Man">Man</option>
             <option value="Vrouw">Vrouw</option>
         </select>
         <select name="ClubID" id="ClubID" placeholder="Kies je club" required>
-            <option value="1">ELBC</option>
-            <option value="2">Red Barons</option>
-            <option value="3">Fontys Ber</option>
-            <option value="4">Aribo</option>
-            <option value="5">Lions</option>
+            <option hidden disabled selected> -- Selecteer een Club-- </option>
+            @foreach (ClubVM club in Model.Clubs)
+            {
+                <option value=@club.ID>@club.Name</option>
+            }
         </select>
     </div>
 
     <div class="form-group" style="color: black;">
         <label class="sr-only" for="Wachtwoord">Wachtwoord</label>
         <input id="Wachtwoord" type="password" asp-for="Wachtwoord"
-               class=" form-control" placeholder="Voer wachtwoord in" pattern="^(?!.*\s).{4,}$" required><br>
+               class=" form-control" placeholder="Voer wachtwoord in"  autocomplete="off"
+               pattern="^(?!.*\s).{4,}$" required><br>
     </div>
 
     <div class="form-group" style="color: black;">
         <label class="sr-only" for="BevestigWachtwoord">Bevestig wachtwoord</label>
         <input id="BevestigWachtwoord" type="password" asp-for="BevestigWachtwoord"
-               class=" form-control" placeholder="Voer wachtwoord nog een keer in" pattern="^(?!.*\s).{4,}$" required><br>
+               class=" form-control" placeholder="Voer wachtwoord nog een keer in"  autocomplete="off"
+               pattern="^(?!.*\s).{4,}$" required><br>
     </div>
 
     <div class="form-group" style="color: black;">

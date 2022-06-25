@@ -1,4 +1,4 @@
-﻿@model WedstrijdVM
+﻿@model List<WedstrijdVM>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,13 +6,23 @@
 <div class="text-center">
     <h1 class="display-2">Jouw Komende Wedstrijd</h1>
     <br />
-    <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@Model.ID display: block; style="text-decoration: none;">
-        <div class="col-sm-6 offset-3 pt-2 border border-3 border-dark rounded BasketballSecondaryTheme">
-            <p>
-                <h3><strong>@Model.thuisClub.Name VS @Model.uitClub.Name</strong></h3> <br>
-            <p class="text-center">@Model.speelDatum</p>
-            </p>
+    @if (Model.FirstOrDefault() != null)
+    {
+        <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@Model.FirstOrDefault().ID
+       display: block; style="text-decoration: none;">
+            <div class="col-sm-6 offset-3 pt-2 border border-3 border-dark rounded BasketballSecondaryTheme">
+                <p>
+                    <h3><strong>@Model.FirstOrDefault().thuisClub.Name VS @Model.FirstOrDefault().uitClub.Name</strong></h3> <br>
+                <p class="text-center">@Model.FirstOrDefault().speelDatum</p>
+                </p>
+            </div>
+        </a>
+    }
+    else
+    {
+        <div>
+            <h3>Er zijn geen komende wedstrijden meer</h3>
         </div>
-    </a>
+    }
 
 </div>

@@ -13,14 +13,15 @@
             for (let i = 0; i < teamIDlst.length; i++){
                 if(teamIDlst[i].getAttribute("data-TeamClubID").toString() == placeholder.toString())
                 {
-                    teamIDlst[i].style.display = "block";
+                    teamIDlst[i].removeAttribute("hidden");
                 }
                 else
                 {
-                    teamIDlst[i].style.display = "none";
+                    teamIDlst[i].setAttribute("hidden", "hidden");
                 }
             }
         }
+
     function UitTeamFilter(selected)
         {
 
@@ -30,105 +31,107 @@
             for (let i = 0; i < teamIDlst.length; i++){
                 if(teamIDlst[i].getAttribute("data-TeamClubID").toString() == placeholder.toString())
                 {
-                    teamIDlst[i].style.display = "block";
+                    teamIDlst[i].removeAttribute("hidden");
                 }
                 else
                 {
-                    teamIDlst[i].style.display = "none";
+                    teamIDlst[i].setAttribute("hidden", "hidden");
                 }
             }
         }
 
     function thuisTeamAgeFilter(selected)
-    {
-        const UiTeamlist = document.querySelectorAll(".UiTeamIDList");
-        const SelectedTemp = selected
-        let SelectedLeedtijd = selected.getAttribute("data-LeeftijdClasse");
-        for(let i =0; i < UiTeamlist.length; i++)
         {
-            if(UiTeamlist[i].getAttribute("data-LeeftijdClasse").toString() == SelectedLeedtijd.toString())
+            const UiTeamlist = document.querySelectorAll(".UiTeamIDList");
+            const SelectedTemp = selected
+            let SelectedLeedtijd = selected.getAttribute("data-LeeftijdClasse");
+            for(let i =0; i < UiTeamlist.length; i++)
             {
-                UiTeamlist[i].style.display = "block";
-            }
-            else
-            {
-                UiTeamlist[i].style.display =  "none";
+                if(UiTeamlist[i].getAttribute("data-LeeftijdClasse").toString() == SelectedLeedtijd.toString())
+                {
+                    UiTeamlist[i].removeAttribute("hidden");
+                }
+                else
+                {
+                    UiTeamlist[i].setAttribute("hidden", "hidden");
+                }
             }
         }
-    }
 
     function uitTeamAgeFilter(selected)
-    {
-        const ThuisTeamlist = document.querySelectorAll(".ThuisTeamIDList");
-        const SelectedTemp = selected
-        let SelectedLeedtijd = selected.getAttribute("data-LeeftijdClasse");
-        for(let i =0; i < UiTeamlist.length; i++)
         {
-            if(ThuisTeamlist[i].getAttribute("data-LeeftijdClasse").toString() == SelectedLeedtijd.toString())
+            const ThuisTeamlist = document.querySelectorAll(".ThuisTeamIDList");
+            const SelectedTemp = selected
+            let SelectedLeedtijd = selected.getAttribute("data-LeeftijdClasse");
+            for(let i =0; i < UiTeamlist.length; i++)
             {
-                ThuisTeamlist[i].style.display = "block";
-            }
-            else
-            {
-                UiTeamlist[i].style.display =  "none";
+                if(ThuisTeamlist[i].getAttribute("data-LeeftijdClasse").toString() == SelectedLeedtijd.toString())
+                {
+                    ThuisTeamlist[i].style.display = "block";
+                }
+                else
+                {
+                    UiTeamlist[i].style.display =  "none";
+                }
             }
         }
-    }
 
 </script>
 
 <body>
-    <form asp-action="Create" method="POST">
-        <div class="border border-3 mt-4 p-5 rounded" >
-            <input id="speelDatum" type="datetime-local" asp-for="speelDatum"
-                   class=" form-control" placeholder="Voer geboortedatum in"
-                   pattern="^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$"
-                   required>
-            <br>
-            <div class="d-flex justify-content-between">
-                <div>
-                    <select name="thuisClubID" asp-for=ThuisCLubID id="thuisClubID">
-                        @foreach (ClubVM cvm in Model.Clubs)
-                        {
-                            <option onload="ThuisTeamFilter(this)" onclick="ThuisTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
-                        }
+    <form class="border border-3 mt-4 p-5 rounded" asp-action="Create" method="POST">
+        <input id="speelDatum" type="datetime-local" asp-for="speelDatum"
+               class=" form-control" placeholder="Voer geboortedatum in"
+               pattern="^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$"
+               required>
+        <br>
+        <div class="d-flex justify-content-between">
+            <div>
+                <select name="thuisClubID" asp-for=ThuisCLubID id="thuisClubID">
+                    <option hidden disabled selected> -- Selecteer een Club -- </option>
+                    @foreach (ClubVM cvm in Model.Clubs)
+                    {
+                        <option onclick="ThuisTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
+                    }
 
 
-                    </select>
-                    <select name="thuisTeamID" asp-for=ThuisTeamID id="thuisTeamID">
-                        @foreach (TeamVM tvm in Model.Teams)
-                        {
-                            <option class="ThuisTeamIDList" onclick="thuisTeamAgeFilter(this)" data-LeeftijdClasse="@tvm.LeeftijdsCategorieID" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
-                        }
+                </select>
+                <select name="thuisTeamID" asp-for=ThuisTeamID id="thuisTeamID">
+                    <option hidden disabled selected> -- Selecteer een Team-- </option>
+                    @foreach (TeamVM tvm in Model.Teams)
+                    {
+                        <option hidden class="ThuisTeamIDList" onclick="thuisTeamAgeFilter(this)" data-LeeftijdClasse="@tvm.LeeftijdsCategorieID" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
+                    }
 
 
-                    </select>
+                </select>
 
-                </div>
-                <div>
-                    <select name="uitClubID" asp-for=UitCLubID id="uitClubID">
-                        @foreach (ClubVM cvm in Model.Clubs)
-                        {
-                            <option onload="UitTeamFilter(this)" onclick="UitTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
-                        }
-
-                    </select>
-                    <select name="uitTeamID" asp-for=UitTeamID id="uitTeamID">
-                        @foreach (TeamVM tvm in Model.Teams)
-                        {
-                            <option class="UitTeamIDList" onclick="uitTeamAgeFilter(this)" data-LeeftijdClasse="@tvm.LeeftijdsCategorieID" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
-                        }
-
-                    </select>
-
-                </div>
             </div>
-            <div class="align-content-center">
-                <button type="submit" class="btn btn-primary btn-md">
-                    Create &nbsp;
-                    <span class="glyphicon glyphicon-save"></span>
-                </button>
+            <div>
+                <select name="uitClubID" asp-for=UitCLubID id="uitClubID">
+                    <option hidden disabled selected> -- Selecteer een Club -- </option>
+                    @foreach (ClubVM cvm in Model.Clubs)
+                    {
+                        <option onload="UitTeamFilter(this)" onclick="UitTeamFilter(this)" data-ClubID="@cvm.ID" value=@cvm.ID>@cvm.Name</option>
+                    }
+
+                </select>
+                <select name="uitTeamID" asp-for=UitTeamID id="uitTeamID">
+                    <option hidden disabled selected> -- Selecteer een Team-- </option>
+                    @foreach (TeamVM tvm in Model.Teams)
+                    {
+                        <option hidden class="UitTeamIDList" onclick="uitTeamAgeFilter(this)" data-LeeftijdClasse="@tvm.LeeftijdsCategorieID" data-TeamClubID="@tvm.ClubID" value=@tvm.ID>@tvm.Name</option>
+                    }
+
+                </select>
+
             </div>
+        </div>
+        <br />
+        <div class=" offset-5">
+            <button type="submit" class="btn btn-primary btn-md">
+                Plan wedstrijd in
+            </button>
         </div>
     </form>
 

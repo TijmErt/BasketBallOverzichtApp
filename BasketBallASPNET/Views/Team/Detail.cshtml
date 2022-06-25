@@ -7,14 +7,15 @@
 <h1>Team Inhoud</h1>
 <br />
 <div class="container-fluid">
-    <ul class="list-group">
+    <div class="list-group">
 
         @foreach (SpelerVM vm in Model)
         {
             @if (vm.TeamID == Context.Session.GetInt32("TempTeamID"))
             {
-                <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST">
-                    <li class="list-group-item col-sm-3" id"="SpelerArea">@vm.FirstName &nbsp &nbsp &nbsp SpelerNmr: @vm.SpelerNummer</li>
+                <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST" class="d-flex ">
+                    <div class="list-group-item col-sm-3" id"="SpelerArea">@vm.FirstName @vm.LastName</div>
+                    <div class="list-group-item col-sm-2">SpelerNmr: @vm.SpelerNummer </div>
 
                         @if (3 != Context.Session.GetInt32("RoleID"))
                         {
@@ -24,7 +25,7 @@
                 </form>
             }
         }
-    </ul>
+    </div>
 </div>
 
 @if (3 != Context.Session.GetInt32("RoleID"))

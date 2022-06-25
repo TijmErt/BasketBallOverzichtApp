@@ -6,27 +6,38 @@
 
 <h1>Teams van onze club</h1>
 <br />
-<div class="container-fluid">
-    @foreach (TeamVM vm in Model.Teams)
-    {
-        <div class="form-control">
-            <a asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a>
-        </div>
-        @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
+<div class="container-fluid p-2 border border-2 border-dark rounded overflow-hidden" style="background-color: lightgray;">
+    <div class="row g-3 p-2" >
+        @foreach (TeamVM vm in Model.Teams.OrderByDescending(Team => Team.LeeftijdsCategorieID))
         {
-            <form asp-action=DeleteTeam asp-route-teamID=@vm.ID class="d-flex justify-content-end" method="POST">
-                <button type="submit" class="btn btn-danger btn-sm">Delete Team</button>
-            </form>
-        }
+            <div class="col-2" >
+                <form asp-action=DeleteTeam asp-route-teamID=@vm.ID class="d-flex text-center"  method="POST">
 
-        <br />
-    }
+                    <div class="col p-2 border border-1 border-dark rounded " style="background-color: whitesmoke; ">
+
+                        <a style="text-decoration: none;  color: black; display: block" asp-action=Detail asp-route-TeamID=@vm.ID>@vm.Name</a>
+
+                    </div>
+
+                    @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
+                    {
+
+                        <button type="submit" class="btn btn-danger btn-sm" >Delete Team</button>
+
+                    }
+                </form>
+            </div>
+
+        }
+    </div>
+
     <br />
+
     @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
     {
-        <form asp-action="CreateTeam" method="POST" >
-            <div class="container p-5 " style="background-color:lightgray;">
-                <input id="Name" type="text" asp-for="Name" class="form-control" placeholder="Voer Team naam in">
+        <form asp-action="CreateTeam" method="POST">
+            <div class="container p-5  border border-1 border-dark rounded" style="background-color:silver;">
+                <input id="Name" type="text" asp-for="Name" class="form-control" placeholder="Voer Team naam in" autocomplete="off">
 
                 <select name="LeeftijdsCategorieID" id="LeeftijdsCategorieID">
                     <option value=1>10</option>
@@ -36,9 +47,8 @@
                     <option value=5>18</option>
                     <option value=6>20</option>
                 </select>
-                <button type="submit" class="btn btn-primary btn-md" >
-                    Create &nbsp;
-                    <span class="glyphicon glyphicon-save"></span>
+                <button type="submit" class="btn btn-primary btn-md">
+                    Create
                 </button>
             </div>
         </form>
