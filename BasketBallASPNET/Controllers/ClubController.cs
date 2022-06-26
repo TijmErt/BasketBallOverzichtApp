@@ -36,7 +36,7 @@ namespace BasketBallASPNET.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             }
             
         }

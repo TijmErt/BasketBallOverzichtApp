@@ -13,6 +13,7 @@ namespace BasketBallASPNET.Controllers
     {
         private readonly GebruikerContainer gebruikerContainer = new(new GebruikerMSSQLDAL());
         private readonly ClubContainer clubContainer = new(new ClubMSSQLDAL());
+        private readonly TeamContainer teamContainer = new(new TeamMSSQLDAL());
 
         [HttpGet]
         public IActionResult Index()
@@ -23,15 +24,27 @@ namespace BasketBallASPNET.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            List<Club> clubs = clubContainer.GetAll();
-            List<ClubVM> clubVMs = new();
-            foreach(Club club in clubs)
+            try
             {
-                clubVMs.Add(new ClubVM(club.ID,club.Name));
+                List<Club> clubs = clubContainer.GetAll();
+                List<ClubVM> clubVMs = new();
+                foreach (Club club in clubs)
+                {
+                    clubVMs.Add(new ClubVM(club.ID, club.Name));
+                }
+                RegisterVM registerVM = new();
+                registerVM.Clubs = clubVMs;
+                return View(registerVM);
             }
-            RegisterVM registerVM = new();
-            registerVM.Clubs = clubVMs;
-            return View(registerVM);
+            catch (TemporaryExceptionDAL ex)
+            {
+                ViewBag.Error = ex.Message + " PLS try again later";
+                return RedirectToAction("Error", "Home");
+            }
+            catch (PermanentExceptionDAL ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -91,7 +104,10 @@ namespace BasketBallASPNET.Controllers
                     HttpContext.Session.SetInt32("ID", Ingelogde.ID.Value);
                     HttpContext.Session.SetInt32("RoleID", Ingelogde.RoleID);
                     HttpContext.Session.SetInt32("TeamID", Ingelogde.TeamID.Value);
+                    HttpContext.Session.SetString("TeamName", teamContainer.GetTeamDataByID(Ingelogde.TeamID.Value).Name);
                     HttpContext.Session.SetInt32("ClubID", Ingelogde.ClubID.Value);
+                    HttpContext.Session.SetString("ClubName", clubContainer.GetClubDataFromID(Ingelogde.ClubID.Value).Name);
+                    HttpContext.Session.SetInt32("SpelerNummer", Ingelogde.SpelerNummer.Value);
                     HttpContext.Session.SetInt32("LoggedIn", 1);
                 }
                 return Redirect("/");

@@ -6,33 +6,33 @@
 
 <h1>Team Inhoud</h1>
 <br />
-<div class="container-fluid">
-    <div class="list-group">
+<div class="container-sm ">
+    <div class="border border-2 border-secondary col-7">
 
         @foreach (SpelerVM vm in Model)
         {
             @if (vm.TeamID == Context.Session.GetInt32("TempTeamID"))
             {
-                <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST" class="d-flex ">
-                    <div class="list-group-item col-sm-3" id"="SpelerArea">@vm.FirstName @vm.LastName</div>
-                    <div class="list-group-item col-sm-2">SpelerNmr: @vm.SpelerNummer </div>
+                <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST" class="d-flex border border-2  ">
+                    <div class="col-md-3 p-1 " >@vm.FirstName @vm.LastName</div>
+                    <div class="col-md-2 flex-fill border-start border-2  p-1">Speler nummer: @vm.SpelerNummer </div>
 
                         @if (3 != Context.Session.GetInt32("RoleID"))
                         {
 
-                        <button type="submit" class="btn btn-danger btn-sm" aria-describedby="SpelerArea">Remove Speler</button>
+                        <button type="submit" class="btn btn-danger btn-md " style="float: right;" >Remove Speler</button>
                         }
                 </form>
             }
         }
     </div>
-</div>
-
-@if (3 != Context.Session.GetInt32("RoleID"))
+    <br />
+    @if (3 != Context.Session.GetInt32("RoleID"))
 {
     <form asp-action="InsertPlayerToTeam" method="POST">
         <div>
             <select name="SpelerID" id="SpelerID" placeholder="Kies een Speler">
+                 <option hidden disabled selected> -- Selecteer een Speler-- </option>
                 @foreach (SpelerVM vm in Model)
                 {
                     @if (vm.TeamID == null)
@@ -41,13 +41,15 @@
                     }
                 }
             </select>
-            <input type="number" id="SpelerNummer" name="SpelerNummer" step="1" min="1" required>
-            <button type="submit" class="btn btn-success btn-sm">
-                Add Speler &nbsp;
-                <span class="glyphicon glyphicon-ok"></span>
+            <input class="col-2" type="number" id="SpelerNummer" name="SpelerNummer" step="1" min="1" placeholder="SpelerNummer" required>
+            <button type="submit" class="btn btn-success ">
+                Voeg Speler Toe
             </button>
         </div>
     </form>
 }
+</div>
+
+
 <br />
 <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>

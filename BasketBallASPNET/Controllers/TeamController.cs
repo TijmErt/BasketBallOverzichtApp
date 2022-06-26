@@ -42,7 +42,7 @@ namespace BasketBallASPNET.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             }
 
         }
@@ -123,7 +123,7 @@ namespace BasketBallASPNET.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             }
 
         }

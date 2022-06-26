@@ -48,7 +48,7 @@ namespace BasketBallASPNET.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             }
         }
 
@@ -76,12 +76,16 @@ namespace BasketBallASPNET.Controllers
 
                     foreach (Gebruiker g in ThuisSpelers)
                     {
-                        ThuisSpelersVM.Add(new SpelerVM(g));
+                        ThuisSpelersVM.Add(new SpelerVM(g.ID, g.FirstName, g.LastName,g.GeboorteDatum, g.Geslacht,
+                                                        g.TeamID,g.ClubID,g.Email,g.SpelerNummer,
+                                                        wc.GetPresentie(g.ID.Value, WedstrijdID)));
                     }
 
                     foreach (Gebruiker g in UitSpelers)
                     {
-                        UitSpelersVM.Add(new SpelerVM(g));
+                        UitSpelersVM.Add(new SpelerVM(g.ID, g.FirstName, g.LastName, g.GeboorteDatum, g.Geslacht,
+                                                        g.TeamID, g.ClubID, g.Email, g.SpelerNummer,
+                                                        wc.GetPresentie(g.ID.Value, WedstrijdID)));
                     }
 
                     WedstrijdInzienVM vm;
@@ -110,7 +114,7 @@ namespace BasketBallASPNET.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             };
         }
 
@@ -150,7 +154,7 @@ namespace BasketBallASPNET.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             }
         }
 
