@@ -8,6 +8,7 @@ namespace BusnLogic
         public int? ClubID;
         public string Name;
         public int? LeeftijdsCategorieID;
+        public int? LeeftijdsCategorieNaam;
 
         public Team(string name, int? leeftijdsCategorieID, int? clubID, int? id = null)
         {

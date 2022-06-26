@@ -7,22 +7,80 @@
 <body>
     <div class="text-center">
         <h1>Jouw Wedstrijden</h1>
-        @foreach (WedstrijdVM vm in Model.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList())
-        {
-            <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID
-           display: block; style="text-decoration: none;">
-                <div class="col-sm-6 offset-3 pt-2 border border-3 border-dark rounded BasketballSecondaryTheme">
-                    <p>
-                        <h3><strong>@vm.thuisClub.Name VS @vm.uitClub.Name</strong></h3> <br>
-                        <p  class="text-center">@vm.speelDatum</p>
-                    </p>
-                </div>
-            </a>
-            <br />
-        }
-        
+
+        <ul class="nav nav-pills justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#Komende">Komende </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#Geweest">Geweest </a>
+            </li>
+
+        </ul>
+        <br />
+
+        <div class="tab-content">
+            <div class="tab-pane container active" id="Komende">
+                @if (Model.FirstOrDefault() != null)
+                {
+                    @foreach (WedstrijdVM vm in Model.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList())
+                    {
+
+                        <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID
+                   display: block; style="text-decoration: none;">
+                            <div class="col-sm-6 offset-3 pt-2 border border-3 border-dark rounded BasketballSecondaryTheme">
+                                <div>
+                                    <h3><strong>@vm.thuisClub.Name VS @vm.uitClub.Name</strong></h3>
+                                    <p class="text-center">@DateOnly.FromDateTime(vm.speelDatum.Value).ToLongDateString()</p>
+                                    <p class="text-center">@TimeOnly.FromDateTime(vm.speelDatum.Value)</p>
+                                </div>
+                            </div>
+                        </a>
+
+
+                        <br />
+                    }
+                }
+                else
+                {
+                    <div class="container">
+                        <h3>U heeft momenteel geen komende wedstrijden meer</h3>
+                    </div>
+                }
+
+            </div>
+
+            <div class="tab-pane container fade" id="Geweest">
+                @if (Model.FirstOrDefault() != null)
+                {
+                    @foreach (WedstrijdVM vm in Model.OrderByDescending(Date => Date.speelDatum).Where(e => e.speelDatum < DateTime.Now).ToList())
+                    {
+
+                        <a asp-controller="Wedstrijd" asp-action="Detail" asp-route-WedstrijdID=@vm.ID
+                        display: block; style="text-decoration: none;">
+                            <div class="col-sm-6 offset-3 pt-2 border border-3 border-dark rounded BasketballSecondaryTheme">
+                                <div>
+                                    <h3><strong>@vm.thuisClub.Name VS @vm.uitClub.Name</strong></h3>
+                                    <p class="text-center">@DateOnly.FromDateTime(vm.speelDatum.Value).ToLongDateString()</p>
+                                    <p class="text-center">@TimeOnly.FromDateTime(vm.speelDatum.Value)</p>
+                                </div>
+                            </div>
+                        </a>
+
+
+                        <br />
+                    }
+                }
+                else
+                {
+                    <div class="container">
+                        <h3>U heeft nog geen wedstrijden gehad</h3>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
     </div>
-
-
-
 </body>

@@ -15,6 +15,7 @@ namespace BasketBallASPNET.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly WedstrijdConainer wc = new WedstrijdConainer(new WedstrijdMSSQLDAL());
         private readonly ClubContainer cc = new ClubContainer(new ClubMSSQLDAL());
+        private readonly TeamContainer tc = new TeamContainer(new TeamMSSQLDAL());
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -36,7 +37,13 @@ namespace BasketBallASPNET.Controllers
                         Club UitClub = cc.GetClubDataFromID(temp.uitClubID.Value);
                         ClubVM UitClubVM = new(UitClub.ID, UitClub.Name);
 
-                        vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, temp.thuisTeamID, temp.uitTeamID, temp.speelDatum, temp.ID));
+                        Team thuisTeam = tc.GetTeamDataByID(temp.thuisTeamID.Value);
+                        Team uitTeam = tc.GetTeamDataByID(temp.uitTeamID.Value);
+
+                        TeamVM thuisTeamVM = new(thuisTeam);
+                        TeamVM uitTeamVM = new(uitTeam);
+
+                        vm.Add(new WedstrijdVM(ThuisClubVM, UitClubVM, thuisTeamVM, uitTeamVM, temp.speelDatum, temp.ID));
                     }
                     
                     return View(vm.OrderBy(Date => Date.speelDatum).Where(e => e.speelDatum > DateTime.Now).ToList());

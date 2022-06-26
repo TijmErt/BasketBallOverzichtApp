@@ -3,46 +3,72 @@
     ViewData["Title"] = "Detail";
 }
 
-<body>
-    <div>
-        <p>
-            @Model.wedstrijd.thuisClub.Name VS @Model.wedstrijd.uitClub.Name <br />
-            @Model.wedstrijd.speelDatum
-        </p>
+<div class="container-fluid col-11 p-1" style="background-color: lightgray;">
 
-        <form asp-action="UpdatePresentie" method="POST">
-            <button type="submit" class="btn btn-success btn-sm" id="presentie" name="presentie" value="true">Ik ben er</button>
-            <button type="submit" class="btn btn-danger btn-sm" id="presentie" name="presentie" value="false">Ik ben er Niet</button>
-        </form>
-    </div>
-
-    <div class="d-flex justify-content-between">
+    <div class="container-fluid text-center BasketballSecondaryTheme p-2">
         <div>
-            <ul>
-                @foreach (SpelerVM vm in Model.ThuisTeam)
-                {
-                    <li class="">
-                        @vm.FirstName
-                    </li>
-                }
-            </ul>
-        </div>
-        <div>
-            <ul>
-                @foreach (SpelerVM vm in Model.UitTeam)
-                {
-                    <li class="">
-                        @vm.FirstName
-                    </li>
+            <div class="d-flex justify-content-evenly">
+                <div class="d-flex flex-column col-2">
+                    <h1>@Model.wedstrijd.thuisClub.Name</h1>
+                    <h2>@Model.wedstrijd.thuisTeam.Name</h2>
+                </div>
+                <h1>VS </h1>
+                <div class="d-flex flex-column col-2">
+                    <h1>@Model.wedstrijd.uitClub.Name</h1>
+                    <h2>@Model.wedstrijd.uitTeam.Name</h2>
+                </div>
 
-                }
-            </ul>
+            </div>
+            <h3>
+                @DateOnly.FromDateTime(Model.wedstrijd.speelDatum.Value).ToLongDateString()
+            </h3>
+            <h3>
+                @TimeOnly.FromDateTime(Model.wedstrijd.speelDatum.Value)
+            </h3>
+            <form asp-action="UpdatePresentie" method="POST" class="d-flex justify-content-center">
+                <div class="col-auto p-2 border border-2" style="background-color: lightgrey;">
+                    <button type="submit" class="btn btn-success btn-sm" id="presentie" name="presentie" value="true">Ik ben er</button>
+                    <button type="submit" class="btn btn-danger btn-sm" id="presentie" name="presentie" value="false">Ik ben er Niet</button>
+                </div>
+            </form>
         </div>
-
 
 
     </div>
 
-    <button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
-</body>
+    <div class="d-flex justify-content-between p-4">
+        <div class="border border-2 border-secondary col-5" style="background-color: white;">
+            @foreach (SpelerVM vm in Model.ThuisTeam)
+            {
+                <div class="d-flex border border-2">
+                    <div class="col-md-5 p-1 ">@vm.FirstName @vm.LastName</div>
+                    <div class="col-md-2 flex-fill border-start border-2  p-1">Speler nummer: @vm.SpelerNummer </div>
+                    @if (vm.PresentieWedstrijd == true)
+                    {
+                        <div class="col-md-1 flex-fill border-start border-2  p-1">present </div>
+                    }
+                    else
+                    {
+                         <div class="col-md-1 flex-fill border-start border-2  p-1">absent </div>
+                    }
+
+                </div>
+            }
+        </div>
+        <div class=" border border-2 border-secondary col-5" style="background-color: white;">
+            @foreach (SpelerVM vm in Model.UitTeam)
+            {
+                <div class="d-flex border border-2">
+                    <div class="col-md-5 p-1 ">@vm.FirstName @vm.LastName</div>
+                    <div class="col-md-2 flex-fill border-start border-2  p-1">Speler nummer: @vm.SpelerNummer </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>
 

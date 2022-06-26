@@ -1,53 +1,74 @@
 ﻿@model List<SpelerVM>
 
 @{
-    ViewData["Title"] = "Detail";
+    TempData["Title"] = "Detail";
 }
-
+@if (ViewData["InGebruik"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["InGebruik"]
+    </div>
+}
 <h1>Team Inhoud</h1>
 <br />
 <div class="container-sm ">
     <div class="border border-2 border-secondary col-7">
 
-        @foreach (SpelerVM vm in Model)
+        @foreach (SpelerVM vm in Model.Where(x => x.TeamID == Context.Session.GetInt32("TempTeamID")))
         {
-            @if (vm.TeamID == Context.Session.GetInt32("TempTeamID"))
-            {
+
                 <form asp-action=RemoveSpelerFromTeam asp-route-SpelerID=@vm.ID method="POST" class="d-flex border border-2  ">
-                    <div class="col-md-3 p-1 " >@vm.FirstName @vm.LastName</div>
+                    <div class="col-md-3 p-1 ">@vm.FirstName @vm.LastName</div>
                     <div class="col-md-2 flex-fill border-start border-2  p-1">Speler nummer: @vm.SpelerNummer </div>
 
-                        @if (3 != Context.Session.GetInt32("RoleID"))
-                        {
+                    @if (3 != Context.Session.GetInt32("RoleID"))
+                    {
 
-                        <button type="submit" class="btn btn-danger btn-md " style="float: right;" >Remove Speler</button>
-                        }
+                        <button type="submit" class="btn btn-danger btn-md " style="float: right;">Remove Speler</button>
+                    }
                 </form>
-            }
+            
         }
     </div>
     <br />
-    @if (3 != Context.Session.GetInt32("RoleID"))
-{
-    <form asp-action="InsertPlayerToTeam" method="POST">
-        <div>
-            <select name="SpelerID" id="SpelerID" placeholder="Kies een Speler">
-                 <option hidden disabled selected> -- Selecteer een Speler-- </option>
-                @foreach (SpelerVM vm in Model)
-                {
-                    @if (vm.TeamID == null)
+    @if (3 != Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("SelectedClubID") == Context.Session.GetInt32("ClubID"))
+    {
+
+        <form asp-action="InsertPlayerToTeam" method="POST">
+            <div>
+                <select name="SpelerID" id="SpelerID" placeholder="Kies een Speler">
+                    <option hidden disabled selected> -- Selecteer een Speler-- </option>
+                    @foreach (SpelerVM vm in Model)
                     {
-                        <option value=@vm.ID> @vm.FirstName @vm.LastName</option>
+                        @if (vm.TeamID == null)
+                        {
+                            if ((int)ViewData["LeeftijdsCategorieNaam"] == 20)
+                            {
+                                if ((int)ViewData["LeeftijdsCategorieNaam"]-2 <= (DateTime.Now.Subtract(vm.GeboorteDatum).Days / 365))
+                                {
+                                    <option value=@vm.ID> @vm.FirstName @vm.LastName  Leeftijd: @(DateTime.Now.Subtract(vm.GeboorteDatum).Days / 365) </option>
+                                }
+                            }
+                            else
+                            {
+                                if ((int)ViewData["LeeftijdsCategorieNaam"] - 2 <= (DateTime.Now.Subtract(vm.GeboorteDatum).Days / 365)
+                                && (int)ViewData["LeeftijdsCategorieNaam"] >= (DateTime.Now.Subtract(vm.GeboorteDatum).Days / 365))
+                                {
+                                    <option value=@vm.ID> @vm.FirstName @vm.LastName  Leeftijd: @(DateTime.Now.Subtract(vm.GeboorteDatum).Days / 365) </option>
+                                }
+                            }
+
+
+                        }
                     }
-                }
-            </select>
-            <input class="col-2" type="number" id="SpelerNummer" name="SpelerNummer" step="1" min="1" placeholder="SpelerNummer" required>
-            <button type="submit" class="btn btn-success ">
-                Voeg Speler Toe
-            </button>
-        </div>
-    </form>
-}
+                </select>
+                <input class="col-2" type="number" id="SpelerNummer" name="SpelerNummer" step="1" min="1" placeholder="SpelerNummer" required>
+                <button type="submit" class="btn btn-success ">
+                    Voeg Speler Toe
+                </button>
+            </div>
+        </form>
+    }
 </div>
 
 

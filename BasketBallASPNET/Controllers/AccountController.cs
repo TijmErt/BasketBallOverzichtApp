@@ -67,7 +67,7 @@ namespace BasketBallASPNET.Controllers
             {
                 if (vm.Wachtwoord == vm.BevestigWachtwoord)
                 {
-                    Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, 3, null, vm.ClubID, null);
+                    Gebruiker g = new(vm.FirstName, vm.LastName, vm.GeboorteDatum, vm.Geslacht, vm.Email, vm.RoleID, null, vm.ClubID, null);
                     gebruikerContainer.CreateGebruikerAccount(g, vm.Wachtwoord);
                     ViewData["Success"] = "Account gecreëerd";
                     return RedirectToAction("Login", "Account");
@@ -103,11 +103,26 @@ namespace BasketBallASPNET.Controllers
                     HttpContext.Session.SetString("Name", Ingelogde.GetFullName());
                     HttpContext.Session.SetInt32("ID", Ingelogde.ID.Value);
                     HttpContext.Session.SetInt32("RoleID", Ingelogde.RoleID);
-                    HttpContext.Session.SetInt32("TeamID", Ingelogde.TeamID.Value);
-                    HttpContext.Session.SetString("TeamName", teamContainer.GetTeamDataByID(Ingelogde.TeamID.Value).Name);
+                    if (Ingelogde.TeamID.HasValue)
+                    {
+                        HttpContext.Session.SetInt32("TeamID", Ingelogde.TeamID.Value);
+                        HttpContext.Session.SetString("TeamName", teamContainer.GetTeamDataByID(Ingelogde.TeamID.Value).Name);
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetInt32("TeamID", 0);
+                        HttpContext.Session.SetString("TeamName", "");
+                    }
                     HttpContext.Session.SetInt32("ClubID", Ingelogde.ClubID.Value);
                     HttpContext.Session.SetString("ClubName", clubContainer.GetClubDataFromID(Ingelogde.ClubID.Value).Name);
-                    HttpContext.Session.SetInt32("SpelerNummer", Ingelogde.SpelerNummer.Value);
+                    if (Ingelogde.SpelerNummer.HasValue)
+                    {
+                        HttpContext.Session.SetInt32("SpelerNummer", Ingelogde.SpelerNummer.Value);
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetInt32("SpelerNummer", 0);
+                    }
                     HttpContext.Session.SetInt32("LoggedIn", 1);
                 }
                 return Redirect("/");

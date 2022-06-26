@@ -59,6 +59,19 @@ namespace InterfaceLib.InterFaces
         /// <param name="GebruikerID">Geef hier de ID mee van de speler die er uit moet</param>
         public void RemoveGebruikerFromTeam(int GebruikerID);
 
+        /// <summary>
+        /// Geeft de IDs van de gebruikers mee die in bij de teams horen van de wedstrijd
+        /// </summary>
+        /// <param name="ThuisTeam"></param>
+        /// <param name="UitTeam"></param>
+        /// <returns>geeft terug een lijst van ints wat de IDs zijn van de gebruikers</returns>
         public List<int> GetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam);
+
+        /// <summary>
+        /// Haalt alle gebruikers op die bij een wedstrijd horen
+        /// </summary>
+        /// <param name="wedstrijdID">Het ID van de wedstrijd waarvan je de spelers ophaalt</param>
+        /// <returns>Geeft een lijst van gebruikers terug</returns>
+        public List<GebruikerDTO> GetAllGebruikersFromWedstrijdID(int wedstrijdID);
     }
 }

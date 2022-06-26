@@ -458,5 +458,62 @@ namespace DALMSSQLServer
                 throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
             }
         }
+
+        public List<GebruikerDTO> GetAllGebruikersFromWedstrijdID(int wedstrijdID)
+        {
+            try
+            {
+                SqlDataReader reader;
+                SqlCommand cmd;
+
+                string sql = "SELECT * FROM WedstrijdGebruiker, Gebruiker WHERE Wedstrijd_ID = @wedstrijdID AND  Gebruiker.ID = Gebruiker_ID";
+                cmd = new SqlCommand(sql, databaseConnection);
+                cmd.Parameters.AddWithValue("@wedstrijdID", wedstrijdID);
+                databaseConnection.Open();
+                reader = cmd.ExecuteReader();
+
+                List<GebruikerDTO> list = new();
+                while (reader.Read())
+                {
+                    list.Add(
+
+                        new GebruikerDTO(
+
+                        reader.GetString("FirstName"),
+                        reader.GetString("LastName"),
+                        reader.GetDateTime("BirthDate"),
+                        reader.GetString("Geslacht"),
+                        reader.GetString("Email"),
+                        reader.GetInt32("Role_ID"),
+                        reader.IsDBNull("Team_ID") ? null : reader.GetInt32("Team_ID"),
+                        reader.GetInt32("Club_ID"),
+                        reader.IsDBNull("PlayerNumber") ? null : reader.GetInt32("PlayerNumber"),
+                        reader.GetInt32("ID")
+                        ));
+                }
+                databaseConnection.Close();
+                return list;
+            }
+            catch (InvalidOperationException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (IOException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("Temporary error with connection");
+            }
+            catch (SqlException ex)
+            {
+                databaseConnection.Close();
+                throw new TemporaryExceptionDAL("No connection with server");
+            }
+            catch (Exception ex)
+            {
+                databaseConnection.Close();
+                throw new PermanentExceptionDAL("errpr PLS check twitter for updates");
+            }
+        }
     }
 }

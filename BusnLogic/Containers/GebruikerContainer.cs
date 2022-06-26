@@ -106,9 +106,18 @@ namespace BusnLogic.Containers
             Container.RemoveGebruikerFromTeam(GebruikerID);
         }
 
-        public List<int> GetWedstrijdSpelersGetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam)
+        public List<int> GetGebruikerIDFromWedstrijdTeams(int ThuisTeam, int UitTeam)
         {
             return Container.GetGebruikerIDFromWedstrijdTeams(ThuisTeam, UitTeam);
+        }
+        public List<Gebruiker> GetAllGebruikersFromWedstrijdID(int wedstrijdID)
+        {
+            List<Gebruiker> list = new();
+            foreach (GebruikerDTO dto in Container.GetAllGebruikersFromWedstrijdID(wedstrijdID))
+            {
+                list.Add(new Gebruiker(dto));
+            }
+            return list;
         }
     }
 }

@@ -3,8 +3,6 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login van Account</h1>
-
 <div class="col-md-12">
     @if (ViewData["Error"] != null)
     {
@@ -13,24 +11,32 @@
         </div>
     }
 </div>
+<div class="d-flex mx-auto ">
+    <div class="container border border-3 w-75 box-shadow rounded-3 border-secondary ">
+        <div class="row ">
+            <form asp-action="LoginAction" method="POST" class="col rounded-start p-4 BasketballSecondaryTheme text-center">
+                <h1 class="p-2 fw-bold ">Login</h1>
+                <div class="form-group">
+                    <p>Email Adress</p>
+                    <input id="Email" type="text" asp-for="Email"
+                           class=" form-control" placeholder="Voer Email in" required><br>
+                </div>
+                <div class="form-group">
+                    <p>Wachtwoord</p>
+                    <input id="Wachtwoord" type="password" asp-for="Wachtwoord"
+                           class=" form-control" placeholder="Voer wachtwoord in" required><br>
+                </div>
 
-<form asp-action="LoginAction" method="POST">
-    <div class="form-group" style="color: black;">
-        <label class="sr-only" for="Email">Email</label>
-        <input id="Email" type="text" asp-for="Email" 
-        class=" form-control" placeholder="Voer Email in" required><br>
+                <button type="submit" class="btn btn-primary btn-lg col-3 rounded-pill" asp-for=>Login</button>
+            </form>
+
+            <div class="col d-flex flex-column justify-content-center align-items-center BasketballMainTheme rounded-end">
+                <h1 class="p-2 fw-bold " >Registeren</h1>
+                <p >Heb je nog geen account? Maak er een!</p>
+                <div class="col-auto p-2 border border-1 border-dark rounded-pill " style="background-color: white; ">
+                    <a asp-action="Register" style="text-decoration: none;  color: black; display: block"> Registreer een account</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group" style="color: black;">
-        <label class="sr-only" for="Wachtwoord">Wachtwoord</label>
-        <input id="Wachtwoord" type="password" asp-for="Wachtwoord" 
-        class=" form-control" placeholder="Voer wachtwoord in" required><br>
-    </div>
-
-    <button type="submit" class="btn btn-primary btn-lg" asp-for=>Login</button>
-</form>
-
-<div>
-    <a asp-action="Register" class=" form-control "> Registreren</a>
 </div>
-
-<button class="btn btn-default btn-sm" href="##" onClick="history.go(-1); return false;">Go back</button>

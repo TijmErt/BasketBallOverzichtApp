@@ -17,6 +17,7 @@ namespace BasketBallASPNET.Models
 
         public string BevestigWachtwoord{ get; set; }
         public int ClubID { get; set; }
+        public int RoleID { get; set; }
         public List<ClubVM> Clubs { get; set; }
 
         public RegisterVM()

@@ -23,11 +23,14 @@ namespace BusnLogic
         public Team GetTeamDataByID(int id)
         {
             TeamDTO dto = container.GetTeamDataByID(id);
+            
             if(dto == null)
             {
                 return null;
             }
-            return new Team(dto);
+            Team temp = new Team(dto);
+            temp.LeeftijdsCategorieNaam = dto.LeeftijdsCategorieNaam;
+            return temp;
         }
 
 

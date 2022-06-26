@@ -156,7 +156,7 @@ namespace DALMSSQLServer
                 SqlDataReader reader;
                 SqlCommand cmd;
 
-                string sql = "SELECT * FROM Team WHERE ID = @TeamID";
+                string sql = "SELECT * FROM Team T, LeeftijdsCategorieën LG WHERE T.ID = @TeamID AND LeeftijdsCategorieën_ID = LG.ID";
                 cmd = new SqlCommand(sql, databaseConnection);
                 databaseConnection.Open();
                 cmd.Parameters.AddWithValue("@TeamID", id);
@@ -165,6 +165,7 @@ namespace DALMSSQLServer
                 if (reader.HasRows)
                 {
                     TeamDTO dto = new(reader.GetString("TeamName"), reader.GetInt32("LeeftijdsCategorieën_ID"), reader.GetInt32("Club_ID"), reader.GetInt32("ID"));
+                    dto.LeeftijdsCategorieNaam = reader.GetInt32("LeeftijdsCategorieënNaam");
                     databaseConnection.Close();
                     return dto;
 

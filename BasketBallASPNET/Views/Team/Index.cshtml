@@ -19,7 +19,7 @@
 
                     </div>
 
-                    @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
+                    @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("SelectedClubID"))
                     {
 
                         <button type="submit" class="btn btn-danger btn-sm" >Delete Team</button>
@@ -33,7 +33,7 @@
 
     <br />
 
-    @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("TempClubID"))
+    @if (1 == Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("ClubID") == Context.Session.GetInt32("SelectedClubID"))
     {
         <form asp-action="CreateTeam" method="POST">
             <div class="container p-5  border border-1 border-dark rounded" style="background-color:silver;">

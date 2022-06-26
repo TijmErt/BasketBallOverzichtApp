@@ -8,19 +8,19 @@
 
         public ClubVM? uitClub { get; set; }
 
-        public int? thuisTeamID { get; set; }
+        public TeamVM? thuisTeam { get; set; }
 
-        public int? uitTeamID { get; set; }
+        public TeamVM? uitTeam { get; set; }
 
         public DateTime? speelDatum { get; set; }
 
-        public WedstrijdVM( ClubVM? thuisClub, ClubVM? uitClub, int? thuisTeamID, int? uitTeamID, DateTime? speelDatum, int? iD= null)
+        public WedstrijdVM( ClubVM? thuisClub, ClubVM? uitClub, TeamVM? thuisTeam, TeamVM? uitTeam, DateTime? speelDatum, int? iD= null)
         {
             ID = iD;
             this.thuisClub = thuisClub;
             this.uitClub = uitClub;
-            this.thuisTeamID = thuisTeamID;
-            this.uitTeamID = uitTeamID;
+            this.thuisTeam = thuisTeam;
+            this.uitTeam = uitTeam;
             this.speelDatum = speelDatum;
         }
 
