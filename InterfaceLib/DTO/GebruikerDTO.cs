@@ -34,5 +34,10 @@ namespace InterfaceLib.DTO
             this.ClubID = clubID;
             this.SpelerNummer = SpelerNummer;
         }
+
+        public GebruikerDTO()
+        {
+
+        }
     }
 }

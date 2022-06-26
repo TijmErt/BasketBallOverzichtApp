@@ -16,7 +16,7 @@
 
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BasketBall Bond</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BasketBal Bond</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,9 @@
 
                     </ul>
                     <ul class="navbar-nav ">
+                        <li>
+                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Help"> help</a>
+                        </li>
                         <li class="nav-item justify-content-end">
                             @if (Context.Session.GetInt32("LoggedIn") == 1)
                             {
