@@ -21,7 +21,7 @@
                     <div class="col-md-3 p-1 ">@vm.FirstName @vm.LastName</div>
                     <div class="col-md-2 flex-fill border-start border-2  p-1">Speler nummer: @vm.SpelerNummer </div>
 
-                    @if (3 != Context.Session.GetInt32("RoleID"))
+                    @if (3 != Context.Session.GetInt32("RoleID") && Context.Session.GetInt32("SelectedClubID") == Context.Session.GetInt32("ClubID"))
                     {
 
                         <button type="submit" class="btn btn-danger btn-md " style="float: right;">Remove Speler</button>
